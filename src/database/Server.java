@@ -8,7 +8,7 @@ public class Server {
 	static Socket socket;
 	static DataOutputStream out;
 	static DataInputStream in;
-	static Users[] user = new Users[10];
+	static Chatroom[] user = new Chatroom[10];
 	public static void main(String [] args) throws IOException {
 		System.out.println("Starting server...");
 		serverSocket = new ServerSocket(7777);
@@ -20,7 +20,7 @@ public class Server {
 				out = new DataOutputStream(socket.getOutputStream());
 				in = new DataInputStream(socket.getInputStream());
 				if (user[i] == null) {
-					user[i] = new Users(out, in, user);
+					user[i] = new Chatroom(out, in, user);
 					Thread thread = new Thread(user[i]);
 					thread.start();
 					break;
@@ -30,13 +30,13 @@ public class Server {
 	}
 }
 
-class Users implements Runnable {
+class Chatroom implements Runnable {
 	
 	DataOutputStream out;
 	DataInputStream in;
-	Users[] user = new Users[10];
+	Chatroom[] user = new Chatroom[10];
 	String name;
-	public Users(DataOutputStream out, DataInputStream in, Users[] user) {
+	public Chatroom(DataOutputStream out, DataInputStream in, Chatroom[] user) {
 		this.out = out;
 		this.in = in;
 		this.user = user;
