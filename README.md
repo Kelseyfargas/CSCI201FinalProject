@@ -22,3 +22,15 @@ Everything else you might need to know is pretty well demonstrated via this yout
   <li> How to:        <a href="http://www.objectaid.com/class-diagram">http://www.objectaid.com/class-diagram</a> </li>
 </ul>
 
+*CodePretty*: Making our documents look like they have actual code.
+
+<ul>
+  <li> Download: <a href="https://chrome.google.com/webstore/detail/code-pretty/igjbncgfgnfpbnifnnlcmjfbnidkndnh?hl=en">https://chrome.google.com/webstore/detail/code-pretty/igjbncgfgnfpbnifnnlcmjfbnidkndnh?hl=en</a> </li>
+  <li> How to:
+    <ol>
+      <li> Highlight Selection of code or comments </li>
+      <li> Select "Format Selection </li>
+    </ol>
+  </li>
+</ul>
+
