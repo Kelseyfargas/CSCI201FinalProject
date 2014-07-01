@@ -4,7 +4,7 @@ import java.awt.Image;
 import java.util.Vector;
 
 
-/* Recieve and send conos to server */
+/* Recieve and send convos to server */
 public class User {
 	private String name;
 	private String aboutme;
@@ -12,13 +12,14 @@ public class User {
 	private String status;
 	private Image icon;
 	private Vector<User> friendList;
-	private Vector<Conversation> convo;								
+	private Vector<GroupConversation> convo;								
 	
 	/* Constructor */
-	public User(String name,String password,String status) {
+	public User(String name,String password,String status, Image icon) {
 		this.name = name;
 		this.password = password;
 		this.status = status;
+		this.icon = icon;
 	}
 	
 	public	String getName() {
@@ -28,11 +29,10 @@ public class User {
 	public void addFriend(String username) {
 		User friend = findUser(username);
 		this.friendList.add(friend);								// add as friend
-		friend.notifyNewAdd(this.username);				// notify friend that this user added you as friend
+		friend.notifyNewAdd(username);				// notify friend that this user added you as friend
 	}
 	
 	public User findUser(String username) {
-
 		//TODO: find whether given username exists in data base
 	}
 	
@@ -51,6 +51,7 @@ public class User {
 			newConversation(user);
 		}
 	}
+	
 	public void startNewMessage(User[] users) {
 		
 	}
@@ -69,7 +70,7 @@ public class User {
 	}
 	
 	/* send message to the users in conversation */
-	public void sendMessage(String message, Conversation convo)	{
+	public void sendMessage(String message, GroupConversation convo)	{
 		//TODO: create Message class and send Message class to server 
 		String time = null;							// TODO: how to store time information 
 		new Message(this.getName(),message,time);
