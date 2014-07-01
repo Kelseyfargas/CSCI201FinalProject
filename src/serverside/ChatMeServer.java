@@ -1,5 +1,7 @@
 package serverside;
 
+import java.io.IOException;
+import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ChatMeServer {
@@ -10,11 +12,16 @@ public class ChatMeServer {
 		
 		database = recoverDatabase();
 		
-		//Creates new ServerSocket
-		//While(true)
-		/* Infinitely waits for connects to the ServerSocket
-		 * Creates new Socket when connection is established
-		 */
+		try {
+			ServerSocket ss = new ServerSocket(port);
+			while(true){
+				Socket s = ss.accept();
+				handleSocket(s);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println("IOE: " + e.getMessage());
+		}
 	}
 	
 	private Database recoverDatabase() {
@@ -34,7 +41,7 @@ public class ChatMeServer {
 
 	private void handleSocket(Socket s){
 		//Create and Start new Chat Thread
-		ChatThread ct = new ChatThread(s, database);
+		ChatThread ct = new ChatThread(s);
 		ct.start();
 	}
 	
@@ -44,7 +51,7 @@ public class ChatMeServer {
 	/* Chat Thread Class */
 	class ChatThread extends Thread {
 		private Socket s;
-		public ChatThread(Socket s, Database db){
+		public ChatThread(Socket s){
 			this.s = s;
 			
 		}
