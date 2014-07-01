@@ -1,6 +1,8 @@
 package conversation;
 
 import java.awt.Image;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Vector;
 
 
@@ -71,10 +73,9 @@ public class User {
 	
 	/* send message to the users in conversation */
 	public void sendMessage(String message, GroupConversation convo)	{
-		//TODO: create Message class and send Message class to server 
-		String time = null;							// TODO: how to store time information 
-		new Message(this.getName(),message,time);
-		convo.storeConversation(message);
+		String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());							 
+		new Message(this.getName(),message,time);							// create new message class 
+		//TODO: send message class to server 
 	}
 	
 	/* Generate ChatMe window after logging in */
@@ -87,3 +88,11 @@ public class User {
 		//TODO: receive message from server
 	}
 }
+
+/* class ChatMeClient() ?? 
+ * 
+ * 
+ * 
+ * 
+ * 
+*/
