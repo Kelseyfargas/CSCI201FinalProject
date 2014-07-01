@@ -1,27 +1,37 @@
 package serverside;
-
+import java.io.*;
+import java.net.*;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ChatMeServer {
+	
+	public static int NEW_USER_REQUEST = 0;
+	public static int LOGIN_REQUEST = 1;
+	public static int SIGN_OUT_REQUEST = 2;
 
 	Database database;
-	public ChatMeServer(int port){
-		/* Database upload */
+	static ServerSocket serverSocket;
+	static Socket socket;
+	static DataOutputStream out;
+	static DataInputStream in;
+	
+	public ChatMeServer(int port) throws IOException{
+		System.out.println("Starting server...");
+		serverSocket = new ServerSocket(7777);
+		System.out.println("Server started...");
 		
-		database = recoverDatabase();
-		
-		try {
-			ServerSocket ss = new ServerSocket(port);
-			while(true){
-				Socket s = ss.accept();
-				handleSocket(s);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.out.println("IOE: " + e.getMessage());
+		while(true){
+			socket = serverSocket.accept();
+			System.out.println("Connection from: " + socket.getInetAddress());
+			out = new DataOutputStream(socket.getOutputStream());
+			in = new DataInputStream(socket.getInputStream());
+			ChatThread ct = new ChatThread(out, in);
+			
+			
 		}
+		
 	}
 	
 	private Database recoverDatabase() {
@@ -39,26 +49,39 @@ public class ChatMeServer {
 
 	}
 
-	private void handleSocket(Socket s){
-		//Create and Start new Chat Thread
-		ChatThread ct = new ChatThread(s);
-		ct.start();
-	}
-	
+
 	public static void main(String [] args){
-		new ChatMeServer(1111);
+		//new ChatMeServer(1111);
 	}
 	/* Chat Thread Class */
 	class ChatThread extends Thread {
-		private Socket s;
-		public ChatThread(Socket s){
-			this.s = s;
-			
+		
+		DataOutputStream out;
+		DataInputStream in;
+		public ChatThread(DataOutputStream out, DataInputStream in){
+			this.out = out;
+			this.in = in;
 		}
 		public void run(){
-
 			while(true){
 				/* Listens */
+				try {
+					int command = in.readInt();
+					
+					if(command == NEW_USER_REQUEST){
+						
+					}
+					if(command==LOGIN_REQUEST){
+						
+					}
+					if(command == SIGN_OUT_REQUEST){
+						
+					}
+					
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				
 				/* *********************** *
 				 * 	1. Log In / New User   *
