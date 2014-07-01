@@ -4,6 +4,7 @@ import java.net.*;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class ChatMeServer {
 	
@@ -28,7 +29,7 @@ public class ChatMeServer {
 			out = new DataOutputStream(socket.getOutputStream());
 			in = new DataInputStream(socket.getInputStream());
 			ChatThread ct = new ChatThread(out, in);
-			
+			ct.run();
 			
 		}
 		
@@ -50,8 +51,8 @@ public class ChatMeServer {
 	}
 
 
-	public static void main(String [] args){
-		//new ChatMeServer(1111);
+	public static void main(String [] args) throws IOException{
+		new ChatMeServer(7777);
 	}
 	/* Chat Thread Class */
 	class ChatThread extends Thread {
@@ -64,23 +65,37 @@ public class ChatMeServer {
 		}
 		public void run(){
 			while(true){
-				/* Listens */
+				
+				//1. Send Welcome Message
+				String message = "Welcome. Please Enter a Command.";
+				try {
+					System.out.println("Welcome message Sent");
+					out.writeUTF(message);
+					
+				} catch (IOException e1) {
+	
+					e1.printStackTrace();
+				}
+				
+				
 				try {
 					int command = in.readInt();
 					
 					if(command == NEW_USER_REQUEST){
-						
+						System.out.println("Command recieved: New User");
 					}
 					if(command==LOGIN_REQUEST){
-						
+						System.out.println("Command recieved: Login");
 					}
 					if(command == SIGN_OUT_REQUEST){
-						
+						System.out.println("Command recieved: Sign Out");	
 					}
 					
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					this.out = null;
+					this.in = null;
 				}
 				
 				/* *********************** *
