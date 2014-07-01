@@ -28,19 +28,37 @@ public class User {
 		return this.name;
 	}
 	
-	public void addFriend(String username) {
-		User friend = findUser(username);
-		this.friendList.add(friend);								// add as friend
-		friend.notifyNewAdd(username);				// notify friend that this user added you as friend
+	public String getStatus() {
+		return this.status;
 	}
 	
-	public User findUser(String username) {
-		//TODO: find whether given username exists in data base
+	public Image getIcon() {
+		return this.icon;
+	}
+	
+	public void addFriend(String username) {
+		if(findUser(username)) {
+			this.friendList.add(getUser(username));								// add as friend
+			notifyNewAdd(username);				// notify friend that this user added you as friend
+		}
+		else {
+			//TODO: display error message saying user does not exist
+		}
+	}
+	
+	/* Given a username, return a User object from database */
+	public User getUser(String username)	{
+		//TODO: return User object from database
+	}
+	/* Find friend using given username, return User object */
+	public boolean findUser(String username) {
+		//TODO: Find whether username exist in database. Return true if exist
+		// If not exist, return null
 	}
 	
 	/* display a gui(dialogbox) that a user added me as a friend*/
 	public void notifyNewAdd(String username) 	{
-		//TODO: display gui 
+		//TODO: display gui for new add notification
 	}
 
 	/* if conversation exist with given user, resume
