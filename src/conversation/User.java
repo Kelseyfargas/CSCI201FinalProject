@@ -1,13 +1,28 @@
 package conversation;
 
+import gui.LogIn;
+
 import java.awt.Image;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Vector;
 
+import javax.swing.JFrame;
+
 
 /* Recieve and send convos to server */
 public class User {
+	private int signal = 1;
+	/*
+	static int  
+	static int 
+	static int 
+	static int 
+	static int
+	*/ 
+	private JFrame buddyList;
+	private JFrame loginWindow;
+	private JFrame chatWindow; 
 	private String name;
 	private String aboutme;
 	private String password;
@@ -17,45 +32,25 @@ public class User {
 	private Vector<GroupConversation> convo;								
 	
 	/* Constructor */
-	public User(String name,String password,String status, Image icon) {
-		this.name = name;
-		this.password = password;
-		this.status = status;
-		this.icon = icon;
+	public User() {
+		loginWindow = new LogIn("");  				// create log in GUI (First GUI of the program)
+		buddyList = null;
+		chatWindow = null; 
 	}
 	
-	public	String getName() {
-		return this.name;
+	public int getSignal() {
+		return signal;
 	}
 	
-	public String getStatus() {
-		return this.status;
+	public void setSignal(int command)  {
+		signal = command; 
 	}
 	
-	public Image getIcon() {
-		return this.icon;
+	/* Called from client */
+	public void addFriend(String username, Image img, boolean status) {
+		 UpdateFriendList(username,img,status);
 	}
-	
-	public void addFriend(String username) {
-		if(findUser(username)) {
-			this.friendList.add(getUser(username));								// add as friend
-			notifyNewAdd(username);				// notify friend that this user added you as friend
-		}
-		else {
-			//TODO: display error message saying user does not exist
-		}
-	}
-	
-	/* Given a username, return a User object from database */
-	public User getUser(String username)	{
-		//TODO: return User object from database
-	}
-	/* Find friend using given username, return User object */
-	public boolean findUser(String username) {
-		//TODO: Find whether username exist in database. Return true if exist
-		// If not exist, return null
-	}
-	
+
 	/* display a gui(dialogbox) that a user added me as a friend*/
 	public void notifyNewAdd(String username) 	{
 		//TODO: display gui for new add notification
@@ -73,10 +68,10 @@ public class User {
 	}
 	
 	public void startNewMessage(User[] users) {
-		
+			
 	}
 	
-	/* chech whether previous conversation exists with given user */
+	/* check whether previous conversation exists with given user */
 	public boolean conversationExist(String username) {
 		//TODO: check if conversation exist 
 	}
@@ -103,8 +98,24 @@ public class User {
 	
 	/*Update the display after receiving a message from server */
 	public void displayMessage()	{
-		//TODO: receive message from server
+		//TODO: receive message from server and display on gui
 	}
+	
+	/*public	String getName() {
+		return this.name;
+	}
+	
+	public String getStatus() {
+		return this.status;
+	}
+	
+	public Image getIcon() {
+		return this.icon;
+	}
+	
+	public void setSignal() {
+		
+	} */
 }
 
 /* class ChatMeClient() ?? 

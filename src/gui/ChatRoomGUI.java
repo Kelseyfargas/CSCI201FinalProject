@@ -18,7 +18,7 @@ import javax.swing.JTextField;
 
 public class ChatRoomGUI extends JFrame {
 	
-	ChatRoomGUI(String title){
+	public ChatRoomGUI(String title){
 		super(title);
 
 		JPanel jp = new JPanel(); 

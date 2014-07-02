@@ -21,7 +21,7 @@ public class LogIn extends JFrame {
 	private JTextField usernameTF;
 	private JTextField passwordTF;
 	private JButton logInButton;
-	LogIn(String name){
+	public LogIn(String name){
 		super(name);
 		
 		JPanel westPanel = new JPanel();

@@ -22,7 +22,7 @@ public class CreateAccount extends JFrame{
 	private JButton createAccount;
 	private JButton logInButton;
 	
-	CreateAccount(String name){
+	public CreateAccount(String name){
 		super(name);
 		setLayout(new GridBagLayout()); 
 		GridBagConstraints gbc = new GridBagConstraints(); 

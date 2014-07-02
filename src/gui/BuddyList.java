@@ -21,7 +21,7 @@ import javax.swing.JTextArea;
 
 class BuddyList extends JFrame{
 	
-	BuddyList(String name){
+	public BuddyList(String name){
 		super(name);
 		//menu bar
 		JMenuBar jmb = new JMenuBar();
