@@ -19,20 +19,27 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion.User;
+
 public class CreateAccount extends JFrame{
 	
 	private JButton createAccount;
 	private JButton logInButton;
 	public static CreateAccount ca;
 	public static LogIn LG;
-
-	public CreateAccount(String name){
-		super(name);
+	public static User user;
+	private JTextField usernameField;
+	private JTextField passwordField;
+	private JTextArea Bio;
+	
+	public CreateAccount(User user){
+		//change super to super("LogIn"); 7.3.14
+		super("Create Account");
 		setLayout(new GridBagLayout()); 
 		GridBagConstraints gbc = new GridBagConstraints(); 
 
 		Font inputfont = new Font("Courrier New", Font.ITALIC, 12);
-		JTextField usernameField = new JTextField(15); //user can type in
+		usernameField = new JTextField(15); //user can type in
 		usernameField.setFont(inputfont);
 		JLabel username = new JLabel("Desired UserName:");
 		gbc.gridx = 0; 
@@ -45,7 +52,7 @@ public class CreateAccount extends JFrame{
 		gbc.gridwidth = 2; 
 		add(usernameField,gbc);
 		
-		JTextField passwordField = new JTextField(15);
+		passwordField = new JTextField(15);
 		passwordField.setFont(inputfont);
 		JLabel password = new JLabel("Desired Password:");
 		gbc.gridx = 0; 
@@ -95,7 +102,6 @@ public class CreateAccount extends JFrame{
 		gbc.gridy = 6;
 		gbc.gridwidth = 5;
 		add(SecBottomPanel, gbc);
-		
 		for(int v = 0; v < buttonsArray.size(); v++){
 			final JButton B = buttonsArray.get(v);
 			B.addActionListener(new ActionListener(){
@@ -117,7 +123,7 @@ public class CreateAccount extends JFrame{
 		add(BioLabel, gbc);
 		
 
-		JTextArea Bio = new JTextArea(3,25);
+		Bio = new JTextArea(3,25);
 		//Bio.setLineWrap(true);
 		Bio.setWrapStyleWord(true);
 		gbc.gridx = 0;
@@ -181,7 +187,9 @@ public class CreateAccount extends JFrame{
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 	public static void main(String []args){
-		ca = new CreateAccount("LogIn");
+		//change to ca = new CreateAccount(); 7.3.14
+		//ca = new CreateAccount("LogIn");
+		new CreateAccount(user);
 //		final CreateAccount ca = new CreateAccount("LogIn");
 //		ca.createAccount.addActionListener(new ActionListener(){
 //			public void actionPerformed(ActionEvent e) {
