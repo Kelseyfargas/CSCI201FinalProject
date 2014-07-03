@@ -20,10 +20,17 @@ public class LogIn extends JFrame {
 	
 	private JTextField usernameTF;
 	private JTextField passwordTF;
-	private JButton logInButton;
+	public JButton logInButton;
+	//public static LogIn log;
+	
 	LogIn(String name){
 		super(name);
-		
+	}
+//    public void pullThePlug() {
+//        WindowEvent wev = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
+//        Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(wev);
+//    }
+    public void createLogin(final LogIn lg){
 		JPanel westPanel = new JPanel();
 		JLabel image = new JLabel();
 		ImageIcon ii = new ImageIcon("Pictures/Message_Icon_Final.png");
@@ -47,7 +54,17 @@ public class LogIn extends JFrame {
 		JPanel flowPanel = new JPanel();
 		flowPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		logInButton = new JButton("Log In");
-		JButton createAccount = new JButton("Create Account");
+		logInButton.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent ae) {
+				//new BuddyList("Buddy List");
+				new BuddyList(lg.usernameTF.getText() +"'s Buddy List");
+				lg.dispose();
+			}
+		});
+		
+//		JButton createAccount = new JButton("Create Account");
 //		logInButton.addActionListener(new ActionListener(){
 //
 //			@Override
@@ -65,15 +82,15 @@ public class LogIn extends JFrame {
 //			}
 //			
 //		});
-		createAccount.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent arg0) {
-				new CreateAccount("Create Account");
-			}
-		});
+//		createAccount.addActionListener(new ActionListener(){
+//			public void actionPerformed(ActionEvent arg0) {
+//				new CreateAccount("Create Account");
+//			}
+//		});
 		
 
 		flowPanel.add(logInButton);
-		flowPanel.add(createAccount);
+//		flowPanel.add(createAccount);
 		centerPanel.add(flowPanel);
 		
 		//adding the layouts
@@ -85,21 +102,8 @@ public class LogIn extends JFrame {
 		this.setLocation(100,100);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		//this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
+    
 	public static void main(String []args){
-		final LogIn l = new LogIn("Login");
-		l.logInButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				new BuddyList(l.usernameTF.getText() +"'s Buddy List");
-				l.pullThePlug();
-			}
-			
-		});
 	}
-	
-    public void pullThePlug() {
-        WindowEvent wev = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
-        Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(wev);
-    }
 }
