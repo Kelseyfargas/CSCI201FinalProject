@@ -7,14 +7,14 @@ import java.util.Scanner;
 import conversation.User;
 
 public class ChatMeClient {
+	public static final int NEW_ACCOUNT_REQUEST = 0;
 
-	private User me;
+	private User user;
 	static Socket socket;
 	static ObjectInputStream in;
 	static ObjectOutputStream out;
 	
-	public ChatMeClient(String hostname, int port, User user) throws IOException{
-		me = user;
+	public ChatMeClient(String hostname, int port) throws IOException{
 		String ipAddress = "localhost";
 		
 		System.out.println("Connecting...");
@@ -24,15 +24,22 @@ public class ChatMeClient {
 		in = new ObjectInputStream(socket.getInputStream());
 		out = new ObjectOutputStream(socket.getOutputStream());
 		
-		InputOutputClass ioc = new InputOutputClass(socket, in,out, user);
+		InputOutputClass ioc = new InputOutputClass(socket, in,out);
 		ioc.run();
+	}
+	
+	public void addUser(User user){
+		this.user = user;
+	}
+	public void sendCommand(int command){
+		
 	}
 	
 	class InputOutputClass extends Thread {
 		ObjectInputStream in;
 		ObjectOutputStream out;
 		Socket s;
-		public InputOutputClass(Socket s, ObjectInputStream in, ObjectOutputStream out, User user){
+		public InputOutputClass(Socket s, ObjectInputStream in, ObjectOutputStream out){
 			this.in  = in;
 			this.out = out;
 			this.s = s;
@@ -98,20 +105,6 @@ public class ChatMeClient {
 				out.writeObject(msg);
 				System.out.println("Finished.");
 			}
-		}
-	}
-	
-
-	
-	public static void main(String [] args){
-		
-		User me = new User();
-		
-		try {
-			ChatMeClient cme = new ChatMeClient("localhost", 7777, me);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 
