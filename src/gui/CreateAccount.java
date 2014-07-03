@@ -200,6 +200,15 @@ public class CreateAccount extends JFrame{
 	public static void main(String []args){
 		new CreateAccount(user);
 	}
+	public String getUserNameField(){
+		return 	usernameField.getText();
+	}
+	public String getUserPasswordField(){
+		return passwordField.getText();
+	}
+	public String getUserBio(){
+		return Bio.getText();
+	}
 //	public void pullThePlug() {
 //	    WindowEvent wev = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
 //	    Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(wev);
