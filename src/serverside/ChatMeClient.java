@@ -7,7 +7,7 @@ import java.util.Scanner;
 import conversation.User;
 
 public class ChatMeClient {
-	public static final int NEW_ACCOUNT_REQUEST = 0;
+	
 
 	private User user;
 	static Socket socket;
