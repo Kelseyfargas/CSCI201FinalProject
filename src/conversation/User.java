@@ -57,6 +57,7 @@ public class User {
 
 	public void createNewAccount() {
 		this.chatClient.sendCommand(ChatMeServer.NEW_USER_REQUEST);
+		createAccountWindow.dispose();
 	}
 	public int getSignal() {
 		return signal;
