@@ -11,6 +11,7 @@ public class ClientUserCommunicator {
 			ChatMeClient cme = new ChatMeClient("localhost", 7777);
 			user.addClient(cme);
 			cme.addUser(user);
+			cme.startIO();
 			
 			//client.sendCommand(NEW_USER_REQUEST)
 		} catch (IOException e) {

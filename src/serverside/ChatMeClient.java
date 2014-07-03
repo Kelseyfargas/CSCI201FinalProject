@@ -25,11 +25,12 @@ public class ChatMeClient {
 		
 		in = new ObjectInputStream(socket.getInputStream());
 		out = new ObjectOutputStream(socket.getOutputStream());
-		
+
+	}
+	public void startIO(){
 		ioclass = new InputOutputClass(socket, in,out);
 		ioclass.run();
 	}
-	
 	public void addUser(User user){
 		this.user = user;
 	}
