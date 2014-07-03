@@ -102,6 +102,7 @@ public class CreateAccount extends JFrame{
 		gbc.gridy = 6;
 		gbc.gridwidth = 5;
 		add(SecBottomPanel, gbc);
+		//create class for Icon
 		class setIconAction implements ActionListener{
 			User us;
 			JButton imageButton;
@@ -185,7 +186,7 @@ public class CreateAccount extends JFrame{
 				System.out.println("Image is: " + us.getImage());
 				LG = new LogIn("Login");
 				LG.createLogin(LG);
-				ca.dispose();
+				ca.hide();
 			}
 			
 		}
