@@ -23,6 +23,7 @@ public class LogIn extends JFrame {
 	private JButton logInButton;
 	public LogIn(String name){
 		super(name);
+		System.out.println("login");
 		
 		JPanel westPanel = new JPanel();
 		JLabel image = new JLabel();
@@ -85,6 +86,7 @@ public class LogIn extends JFrame {
 		this.setLocation(100,100);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		
 		//this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	public static void main(String []args){
@@ -95,6 +97,13 @@ public class LogIn extends JFrame {
 				l.pullThePlug();
 			}
 		}); 
+	}
+	
+	public String getPassword(){
+		return passwordTF.getText();
+	}
+	public String getUsername(){
+		return usernameTF.getText();
 	}
 	
     public void pullThePlug() {

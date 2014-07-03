@@ -4,6 +4,8 @@ import java.io.*;
 import java.net.*;
 import java.util.Scanner;
 
+import conversation.User;
+
 public class ChatMeClient {
 
 	private User me;
@@ -65,6 +67,7 @@ public class ChatMeClient {
 			out.writeInt(command);
 			Scanner scan = new Scanner(System.in);
 			if(command == ChatMeServer.LOGIN_REQUEST){
+				
 				System.out.println("Please Enter username, then password:");
 				String un = scan.nextLine();
 				String pw = scan.nextLine();
@@ -103,6 +106,7 @@ public class ChatMeClient {
 	public static void main(String [] args){
 		
 		User me = new User();
+		
 		try {
 			ChatMeClient cme = new ChatMeClient("localhost", 7777, me);
 		} catch (IOException e) {
@@ -111,7 +115,4 @@ public class ChatMeClient {
 		}
 	}
 
-}
-class User{
-	//super fake
 }
