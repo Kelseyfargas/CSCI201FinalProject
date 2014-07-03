@@ -94,8 +94,7 @@ public class LogIn extends JFrame {
 				new BuddyList(l.usernameTF.getText() +"'s Buddy List");
 				l.pullThePlug();
 			}
-			
-		});
+		}); 
 	}
 	
     public void pullThePlug() {
