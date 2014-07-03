@@ -52,12 +52,20 @@ public class User {
 		this.chatClient = client;
 		System.out.println("adding client");
 	}
+	
+	public void createNewAccount() {
+		client.sendCommand(NEW_ACCOUNT_REQUEST);
+	}
 	public int getSignal() {
 		return signal;
 	}
 
 	public void setSignal(int command)  {
 		signal = command; 
+	}
+	
+	public void sendCreateNewAccountRequest() {
+		
 	}
 
 	/* Deleted Feature! */
