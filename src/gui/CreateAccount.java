@@ -179,13 +179,13 @@ public class CreateAccount extends JFrame{
 				us.setName(usernameField.getText());
 				us.setAboutme(Bio.getText());
 				us.createNewAccount();
-				LG = new LogIn("Login");
-				LG.createLogin(LG);
-				ca.dispose();
 				System.out.println("Name is:" + us.getName());
 				System.out.println("Password is:" + us.getPassword());
 				System.out.println("About me is:" + us.getAboutme());
 				System.out.println("Image is: " + us.getImage());
+				LG = new LogIn("Login");
+				LG.createLogin(LG);
+				ca.dispose();
 			}
 			
 		}
