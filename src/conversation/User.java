@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 import serverside.ChatMeClient;
+import serverside.ChatMeServer;
 
 
 /* Recieve and send convos to server */
@@ -55,7 +56,7 @@ public class User {
 	}
 
 	public void createNewAccount() {
-		this.chatClient.sendCommand(ChatMeClient.NEW_ACCOUNT_REQUEST);
+		this.chatClient.sendCommand(ChatMeServer.NEW_USER_REQUEST);
 	}
 	public int getSignal() {
 		return signal;
