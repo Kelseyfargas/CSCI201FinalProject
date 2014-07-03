@@ -104,14 +104,14 @@ public class CreateAccount extends JFrame{
 		add(SecBottomPanel, gbc);
 		class setIconAction implements ActionListener{
 			User us;
-			JButton image;
+			JButton imageButton;
 			setIconAction(User u, JButton B){
 				this.us = u;
-				this.image = B;
+				this.imageButton = B;
 			}
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("User image chose:" + image.getIcon());
-				us.setImage(image.getIcon());
+				System.out.println("User image chose:" + imageButton.getIcon());
+				us.setImage(imageButton.getIcon());
 				//set setImage needs to be ImageIcon
 			}
 			
