@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
@@ -33,7 +34,7 @@ public class User {
 	private String aboutme;
 	private String password;
 	private String status;
-	private ImageIcon icon;
+	private Icon icon;
 	private ArrayList<User> friendList;
 	private ArrayList<GroupConversation> currentConversations;		// change to Conversation 						
 	private ChatMeClient chatClient;
@@ -109,11 +110,11 @@ public class User {
 		return this.password;
 	}
 
-	public void setImage(ImageIcon icon)		{
+	public void setImage(Icon icon)		{
 		this.icon = icon;
 	}
 
-	public ImageIcon getImage()				{
+	public Icon getImage()				{
 		return this.icon;
 	}
 }
