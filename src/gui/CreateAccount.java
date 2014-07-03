@@ -102,18 +102,23 @@ public class CreateAccount extends JFrame{
 		gbc.gridy = 6;
 		gbc.gridwidth = 5;
 		add(SecBottomPanel, gbc);
+		class setIconAction implements ActionListener{
+			User us;
+			JButton image;
+			setIconAction(User u, JButton B){
+				this.us = u;
+				this.image = B;
+			}
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("User image chose:" + image.getIcon());
+				us.setImage(image.getIcon());
+				//set setImage needs to be ImageIcon
+			}
+			
+		}
 		for(int v = 0; v < buttonsArray.size(); v++){
 			final JButton B = buttonsArray.get(v);
-			B.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent arg0) {
-					//if the button is clicked, then assign it to the user
-					//something like
-					//User User1;
-					//User1.setIcon(B.getIcon());
-					System.out.println("Selected icon is: "+ B.getIcon());
-				}
-				
-			});
+			B.addActionListener(new setIconAction(user, B));
 		}
 		
 		JLabel BioLabel = new JLabel("Enter Short Bio:");
@@ -150,7 +155,6 @@ public class CreateAccount extends JFrame{
 				System.out.println("Button Pressed");
 				LG = new LogIn("Login");
 				LG.createLogin(LG);
-				//ca.pullThePlug();
 				ca.dispose();
 			}
 			
@@ -191,35 +195,10 @@ public class CreateAccount extends JFrame{
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 	public static void main(String []args){
-		//change to ca = new CreateAccount(); 7.3.14
-		//ca = new CreateAccount("LogIn");
 		new CreateAccount(user);
-//		final CreateAccount ca = new CreateAccount("LogIn");
-//		ca.createAccount.addActionListener(new ActionListener(){
-//			public void actionPerformed(ActionEvent e) {
-//				System.out.println("Button Pressed");
-//				new LogIn("Login");
-//				//ca.pullThePlug();
-//				ca.dispose();
-//			}
-//			
-//		});
-//		ca.logInButton.addActionListener(new ActionListener(){
-//			public void actionPerformed(ActionEvent e) {
-//				System.out.println("CA Button Pressed");
-//				LogIn log = new LogIn("Login");
-//				System.out.println(log.logInButton.getModel().isPressed());
-////				if(log.logInButton.getModel().isPressed()){
-////					System.out.println("Login Pressed");
-////					log.pullThePlug();
-////				}
-//				//ca.pullThePlug();
-//			}
-//			
-//		});
 	}
-	public void pullThePlug() {
-	    WindowEvent wev = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
-	    Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(wev);
-	}
+//	public void pullThePlug() {
+//	    WindowEvent wev = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
+//	    Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(wev);
+//	}
 }
