@@ -111,7 +111,7 @@ public class CreateAccount extends JFrame{
 				this.imageButton = B;
 			}
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("User image chose:" + imageButton.getIcon());
+				//System.out.println("User image chose:" + imageButton.getIcon());
 				us.setImage(imageButton.getIcon());
 				//set setImage needs to be ImageIcon
 			}
@@ -153,7 +153,7 @@ public class CreateAccount extends JFrame{
 		add(logInButton,gbc);
 		logInButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Button Pressed");
+				//System.out.println("Button Pressed");
 				LG = new LogIn("Login");
 				LG.createLogin(LG);
 				ca.dispose();
@@ -174,7 +174,7 @@ public class CreateAccount extends JFrame{
 				this.us = u;
 			}
 			public void actionPerformed(ActionEvent ae) {
-				System.out.println("Button Pressed");;
+				//System.out.println("Button Pressed");;
 				//ca.pullThePlug();
 				us.setPassword(passwordField.getText());
 				us.setName(usernameField.getText());
@@ -186,7 +186,6 @@ public class CreateAccount extends JFrame{
 				System.out.println("Image is: " + us.getImage());
 				LG = new LogIn("Login");
 				LG.createLogin(LG);
-				ca.hide();
 			}
 			
 		}

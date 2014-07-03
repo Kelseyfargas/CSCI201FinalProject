@@ -35,6 +35,7 @@ public class ChatMeClient {
 		this.user = user;
 	}
 	public void sendCommand(int command){
+		System.out.println("GETTING COMMAND");
 		try{
 			ioclass.sendCommandAndListen(command);
 		} catch(Exception e){

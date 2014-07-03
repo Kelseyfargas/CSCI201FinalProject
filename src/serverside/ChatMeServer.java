@@ -103,7 +103,7 @@ public class ChatMeServer {
 				
 			}
 			if(command==LOGIN_REQUEST){
-				System.out.println("Command recieved: Login\n");
+				System.out.println("Command recieved on server: Login\n");
 				System.out.println("Reading in: " + in.readObject());
 				System.out.println("Reading in: " + in.readObject());
 				System.out.println("Does this look correct? (1) Yes. (2)No.\n");
@@ -127,7 +127,10 @@ public class ChatMeServer {
 				}
 			}
 			if(command == SIGN_OUT_REQUEST){
-				System.out.println("Command recieved: Sign Out");	
+				System.out.println("Command recieved on server: Sign Out");	
+			}
+			if(command == NEW_USER_REQUEST){
+				System.out.println("Command recieved on server: New User");
 			}
 			if(command == NEW_MESSAGE_REQUEST){
 				System.out.println("Command recieved: New Message");
