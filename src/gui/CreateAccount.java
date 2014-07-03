@@ -27,14 +27,14 @@ public class CreateAccount extends JFrame{
 	private JButton logInButton;
 	public static CreateAccount ca;
 	public static LogIn LG;
-	public static User user;
+	private static User user;
 	private JTextField usernameField;
 	private JTextField passwordField;
 	private JTextArea Bio;
 	
 	public CreateAccount(User user){
-		//change super to super("LogIn"); 7.3.14
 		super("Create Account");
+		this.user = user;
 		setLayout(new GridBagLayout()); 
 		GridBagConstraints gbc = new GridBagConstraints(); 
 
@@ -174,12 +174,6 @@ public class CreateAccount extends JFrame{
 			
 		});
 		add(createAccount,gbc);
-//		createAccount.addActionListener(new ActionListener(){
-//			public void actionPerformed(ActionEvent e) {
-//				System.out.println("Created Account");
-//				new LogIn("Login");
-//			}
-//		});
 	
 		this.setSize(450,500);
 		this.setLocation(100,100);
