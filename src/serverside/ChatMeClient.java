@@ -14,6 +14,8 @@ public class ChatMeClient {
 	static ObjectInputStream in;
 	static ObjectOutputStream out;
 	
+	private InputOutputClass ioclass;
+	
 	public ChatMeClient(String hostname, int port) throws IOException{
 		String ipAddress = "localhost";
 		
@@ -24,15 +26,19 @@ public class ChatMeClient {
 		in = new ObjectInputStream(socket.getInputStream());
 		out = new ObjectOutputStream(socket.getOutputStream());
 		
-		InputOutputClass ioc = new InputOutputClass(socket, in,out);
-		ioc.run();
+		ioclass = new InputOutputClass(socket, in,out);
+		ioclass.run();
 	}
 	
 	public void addUser(User user){
 		this.user = user;
 	}
 	public void sendCommand(int command){
-		
+		try{
+			ioclass.sendCommandAndListen(command);
+		} catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 	class InputOutputClass extends Thread {
@@ -53,23 +59,14 @@ public class ChatMeClient {
 				
 				while(true){
 
-					Scanner sc = new Scanner(System.in); //Make input from terminal
-					int command = sc.nextInt(); //gets (int) command
-					
-					
-					System.out.println("Sending Command: ");
-					
-					sendCommandAndListen(command);
-					
-					System.out.println("Command Sequence Terminated (" + command + ").");
-					System.out.println("Please enter another command.\n");
+					//Scanner sc = new Scanner(System.in); //Make input from terminal
+					//int command = sc.nextInt(); //gets (int) command
 				
 				}
 			} catch(IOException | ClassNotFoundException e){
 				e.printStackTrace();
 			}
 		}
-		
 		private void sendCommandAndListen(int command) throws IOException, ClassNotFoundException{
 			out.writeInt(command);
 			Scanner scan = new Scanner(System.in);
@@ -94,6 +91,9 @@ public class ChatMeClient {
 				else{
 					System.out.println("Could not log in");
 				}
+			}
+			else if(command == ChatMeServer.NEW_USER_REQUEST){
+				System.out.println("Got new user request");
 			}
 			else if(command == ChatMeServer.NEW_MESSAGE_REQUEST){
 				System.out.println("Enter ChatName: ");
