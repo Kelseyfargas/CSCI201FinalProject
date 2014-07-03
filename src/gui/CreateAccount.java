@@ -15,13 +15,17 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class CreateAccount extends JFrame{
 	
 	private JButton createAccount;
 	private JButton logInButton;
-	
+	public static CreateAccount ca;
+	public static LogIn LG;
+
 	public CreateAccount(String name){
 		super(name);
 		setLayout(new GridBagLayout()); 
@@ -112,23 +116,40 @@ public class CreateAccount extends JFrame{
 		gbc.gridy = 7;
 		add(BioLabel, gbc);
 		
-		JTextField Bio = new JTextField(20);
+
+		JTextArea Bio = new JTextArea(3,25);
+		//Bio.setLineWrap(true);
+		Bio.setWrapStyleWord(true);
 		gbc.gridx = 0;
 		gbc.gridy = 8;
-		gbc.gridwidth = 5;
+		gbc.gridwidth = 6;
 		gbc.gridheight = 2;
-		gbc.ipadx = 20;
-		gbc.ipady = 20;
-		add(Bio, gbc);
+		gbc.ipadx = 2;
+		gbc.ipady = 2;
+		JScrollPane src = new JScrollPane(Bio,
+				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		add(src, gbc);
 		
 		logInButton = new JButton("LogIn");
 		gbc.ipadx = 0; 
 		gbc.ipady = 0;
 		gbc.gridheight = 1;
 		gbc.gridwidth =  1;
-		gbc.gridx = 1;
+		gbc.gridx = 0;
 		gbc.gridy = 10;
-		add(createAccount,gbc);
+		add(logInButton,gbc);
+		logInButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Button Pressed");
+				LG = new LogIn("Login");
+				LG.createLogin(LG);
+				//ca.pullThePlug();
+				ca.dispose();
+			}
+			
+		});
+		
 		createAccount = new JButton("Create Account");
 		gbc.ipadx = 0; 
 		gbc.ipady = 0;
@@ -136,6 +157,16 @@ public class CreateAccount extends JFrame{
 		gbc.gridwidth =  1;
 		gbc.gridx = 1;
 		gbc.gridy = 10;
+		createAccount.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Button Pressed");
+				LG = new LogIn("Login");
+				LG.createLogin(LG);
+				//ca.pullThePlug();
+				ca.dispose();
+			}
+			
+		});
 		add(createAccount,gbc);
 //		createAccount.addActionListener(new ActionListener(){
 //			public void actionPerformed(ActionEvent e) {
@@ -150,16 +181,30 @@ public class CreateAccount extends JFrame{
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 	public static void main(String []args){
-		
-		final CreateAccount ca = new CreateAccount("LogIn");
-		ca.createAccount.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("Button Pressed");
-				new LogIn("Login");
-				ca.pullThePlug();
-			}
-			
-		});
+		ca = new CreateAccount("LogIn");
+//		final CreateAccount ca = new CreateAccount("LogIn");
+//		ca.createAccount.addActionListener(new ActionListener(){
+//			public void actionPerformed(ActionEvent e) {
+//				System.out.println("Button Pressed");
+//				new LogIn("Login");
+//				//ca.pullThePlug();
+//				ca.dispose();
+//			}
+//			
+//		});
+//		ca.logInButton.addActionListener(new ActionListener(){
+//			public void actionPerformed(ActionEvent e) {
+//				System.out.println("CA Button Pressed");
+//				LogIn log = new LogIn("Login");
+//				System.out.println(log.logInButton.getModel().isPressed());
+////				if(log.logInButton.getModel().isPressed()){
+////					System.out.println("Login Pressed");
+////					log.pullThePlug();
+////				}
+//				//ca.pullThePlug();
+//			}
+//			
+//		});
 	}
 	public void pullThePlug() {
 	    WindowEvent wev = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
