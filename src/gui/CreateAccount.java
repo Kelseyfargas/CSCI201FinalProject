@@ -163,16 +163,26 @@ public class CreateAccount extends JFrame{
 		gbc.gridwidth =  1;
 		gbc.gridx = 1;
 		gbc.gridy = 10;
-		createAccount.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("Button Pressed");
-				LG = new LogIn("Login");
-				LG.createLogin(LG);
+		class createAcc implements ActionListener{
+			private User us;
+			createAcc(User u){
+				this.us = u;
+			}
+			public void actionPerformed(ActionEvent ae) {
+				System.out.println("Button Pressed");;
 				//ca.pullThePlug();
 				ca.dispose();
+				us.setPassword(passwordField.getText());
+				us.setName(usernameField.getText());
+				us.setAboutme(Bio.getText());
+				us.createNewAccount();
+				LG = new LogIn("Login");
+				LG.createLogin(LG);
+				
 			}
 			
-		});
+		}
+		createAccount.addActionListener(new createAcc(this.user));
 		add(createAccount,gbc);
 	
 		this.setSize(450,500);
