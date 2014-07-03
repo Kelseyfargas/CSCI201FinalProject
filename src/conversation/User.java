@@ -7,8 +7,8 @@ import java.awt.Image;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Vector;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 import serverside.ChatMeClient;
@@ -33,7 +33,7 @@ public class User {
 	private String aboutme;
 	private String password;
 	private String status;
-	private Image icon;
+	private ImageIcon icon;
 	private ArrayList<User> friendList;
 	private ArrayList<GroupConversation> currentConversations;		// change to Conversation 						
 	private ChatMeClient chatClient;
@@ -41,9 +41,9 @@ public class User {
 	public User() {
 		createAccountWindow();
 	}
-	
+
 	public void createAccountWindow() {
-		 createAccountWindow =  new CreateAccount(this);
+		createAccountWindow =  new CreateAccount(this);
 	}
 	public LogIn getLoginWindow(){
 		return loginWindow;
@@ -52,7 +52,7 @@ public class User {
 		this.chatClient = client;
 		System.out.println("adding client");
 	}
-	
+
 	public void createNewAccount() {
 		this.chatClient.sendCommand(ChatMeClient.NEW_ACCOUNT_REQUEST);
 	}
@@ -63,9 +63,9 @@ public class User {
 	public void setSignal(int command)  {
 		signal = command; 
 	}
-	
+
 	public void sendCreateNewAccountRequest() {
-		
+
 	}
 
 	/* Deleted Feature! */
@@ -85,7 +85,7 @@ public class User {
 		//new Message(message,time,conversationName);							// create new message class 
 		//TODO: send message class to server 
 	}
-	
+
 	public void setName(String name)	{
 		this.name = name;
 	}
@@ -109,11 +109,11 @@ public class User {
 		return this.password;
 	}
 
-	public void setImage(Image icon)		{
+	public void setImage(ImageIcon icon)		{
 		this.icon = icon;
 	}
 
-	public Image getImage()				{
+	public ImageIcon getImage()				{
 		return this.icon;
 	}
 }
