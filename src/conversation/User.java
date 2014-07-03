@@ -1,116 +1,77 @@
 package conversation;
 
+import gui.LogIn;
+
 import java.awt.Image;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Vector;
+
+import javax.swing.JFrame;
+
+import serverside.ChatMeClient;
 
 
 /* Recieve and send convos to server */
 public class User {
+	private int signal = 1;
+	public  Message messagePackage;
+
+	/*
+	static int  
+	static int 
+	static int 
+	static int
+	*/ 
+	private JFrame buddyList;
+	private LogIn loginWindow;
+	private JFrame chatWindow; 
 	private String name;
 	private String aboutme;
 	private String password;
 	private String status;
 	private Image icon;
-	private Vector<User> friendList;
-	private Vector<GroupConversation> convo;								
-	
+	private ArrayList<User> friendList;
+	private ArrayList<GroupConversation> currentConversations;		// change to Conversation 						
+	private ChatMeClient chatClient;
 	/* Constructor */
-	public User(String name,String password,String status, Image icon) {
-		this.name = name;
-		this.password = password;
-		this.status = status;
-		this.icon = icon;
-	}
-	
-	public	String getName() {
-		return this.name;
-	}
-	
-	public String getStatus() {
-		return this.status;
-	}
-	
-	public Image getIcon() {
-		return this.icon;
-	}
-	
-	public void addFriend(String username) {
-		if(findUser(username)) {
-			this.friendList.add(getUser(username));								// add as friend
-			notifyNewAdd(username);				// notify friend that this user added you as friend
-		}
-		else {
-			//TODO: display error message saying user does not exist
-		}
-	}
-	
-	/* Given a username, return a User object from database */
-	public User getUser(String username)	{
-		//TODO: return User object from database
-	}
-	/* Find friend using given username, return User object */
-	public boolean findUser(String username) {
-		//TODO: Find whether username exist in database. Return true if exist
-		// If not exist, return null
-	}
-	
-	/* display a gui(dialogbox) that a user added me as a friend*/
-	public void notifyNewAdd(String username) 	{
-		//TODO: display gui for new add notification
-	}
-
-	/* if conversation exist with given user, resume
-	 * Else start new conversation with given user */
-	public void startNewMessage(User user) {
-		if(conversationExist(user.getName())) {
-			resumeConversation(user);
-		}
-		else {
-			newConversation(user);
-		}
-	}
-	
-	public void startNewMessage(User[] users) {
+	public User() {
 		
+		loginWindow = new LogIn("Test");  				// create log in GUI (First GUI of the program)
+		buddyList = null;
+		chatWindow = null; 
+	}
+	public LogIn getLoginWindow(){
+		return loginWindow;
+	}
+	public void addClient(ChatMeClient client){
+		this.chatClient = client;
+		System.out.println("adding client");
+	}
+	public int getSignal() {
+		return signal;
 	}
 	
-	/* chech whether previous conversation exists with given user */
-	public boolean conversationExist(String username) {
-		//TODO: check if conversation exist 
+	public void setSignal(int command)  {
+		signal = command; 
 	}
 	
-	public void resumeConversation(User user) {
-		//TODO: resume convo
+	/* Deleted Feature! */
+	public void addFriend(String username, Image img, boolean status) {
+		 //buddyList.updateFriendList(username,img,status);
 	}
+	// update design document (notifynewAdd deleted) //
 	
-	public void newConversation(User user) {
-		//TODO: start new convo
+	
+	public void startNewMessage(String conversationName) {					//single conversation
+		//chatWindow.beginConversation(conversationName);
 	}
 	
 	/* send message to the users in conversation */
 	public void sendMessage(String message, GroupConversation convo)	{
 		String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());							 
-		new Message(this.getName(),message,time);							// create new message class 
+		//new Message(message,time,conversationName);							// create new message class 
 		//TODO: send message class to server 
 	}
-	
-	/* Generate ChatMe window after logging in */
-	public void generateChatMeWindow() {
-		// new ChatMeFrame();		
-	}
-	
-	/*Update the display after receiving a message from server */
-	public void displayMessage()	{
-		//TODO: receive message from server
-	}
 }
-
-/* class ChatMeClient() ?? 
- * 
- * 
- * 
- * 
- * 
-*/

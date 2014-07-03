@@ -22,8 +22,7 @@ public class LogIn extends JFrame {
 	private JTextField passwordTF;
 	public JButton logInButton;
 	//public static LogIn log;
-	
-	LogIn(String name){
+	public LogIn(String name){
 		super(name);
 	}
 //    public void pullThePlug() {
@@ -31,6 +30,7 @@ public class LogIn extends JFrame {
 //        Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(wev);
 //    }
     public void createLogin(final LogIn lg){
+		System.out.println("login");
 		JPanel westPanel = new JPanel();
 		JLabel image = new JLabel();
 		ImageIcon ii = new ImageIcon("Pictures/Message_Icon_Final.png");
@@ -102,8 +102,23 @@ public class LogIn extends JFrame {
 		this.setLocation(100,100);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+		//this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
     
 	public static void main(String []args){
 	}
+
+	public String getPassword(){
+		return passwordTF.getText();
+	}
+	public String getUsername(){
+		return usernameTF.getText();
+	}
+	
+    public void pullThePlug() {
+        WindowEvent wev = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
+        Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(wev);
+    }
+
 }

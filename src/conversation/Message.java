@@ -2,18 +2,14 @@ package conversation;
 
 /* This class is sent to the server and holds information about the message */
 public class Message {
-		private String sender;
+		private String conversationName;
 		private String content;
 		private String time;
 	
-	public Message(String sender, String content, String time) {
-		this.sender = sender;
+	public Message(String content, String time, String conversationName) {
 		this.content = content;
 		this.time = time;
-	}
-	
-	public String getSender() {
-		return this.sender;
+		this.conversationName = conversationName;
 	}
 	
 	public String getContent() {
@@ -22,5 +18,9 @@ public class Message {
 	
 	public String getTime() {
 		return this.time; 
+	}
+	
+	public String getconversationName() {
+		return this.conversationName;
 	}
 }
