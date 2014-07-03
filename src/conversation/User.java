@@ -43,7 +43,7 @@ public class User {
 	}
 	
 	public void createAccountWindow() {
-		 createAccountWindow = new CreateAccountWindow(this);
+		 createAccountWindow =  new CreateAccount(this);
 	}
 	public LogIn getLoginWindow(){
 		return loginWindow;
