@@ -10,6 +10,8 @@ import java.util.Vector;
 
 import javax.swing.JFrame;
 
+import serverside.ChatMeClient;
+
 
 /* Recieve and send convos to server */
 public class User {
@@ -23,7 +25,7 @@ public class User {
 	static int
 	*/ 
 	private JFrame buddyList;
-	private JFrame loginWindow;
+	private LogIn loginWindow;
 	private JFrame chatWindow; 
 	private String name;
 	private String aboutme;
@@ -32,14 +34,21 @@ public class User {
 	private Image icon;
 	private ArrayList<User> friendList;
 	private ArrayList<GroupConversation> currentConversations;		// change to Conversation 						
-	
+	private ChatMeClient chatClient;
 	/* Constructor */
 	public User() {
-		loginWindow = new LogIn("");  				// create log in GUI (First GUI of the program)
+		
+		loginWindow = new LogIn("Test");  				// create log in GUI (First GUI of the program)
 		buddyList = null;
 		chatWindow = null; 
 	}
-	
+	public LogIn getLoginWindow(){
+		return loginWindow;
+	}
+	public void addClient(ChatMeClient client){
+		this.chatClient = client;
+		System.out.println("adding client");
+	}
 	public int getSignal() {
 		return signal;
 	}
