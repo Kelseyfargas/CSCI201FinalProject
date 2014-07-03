@@ -54,7 +54,7 @@ public class User {
 	}
 	
 	public void createNewAccount() {
-		client.sendCommand(NEW_ACCOUNT_REQUEST);
+		client.sendCommand(ChatMeClient.NEW_ACCOUNT_REQUEST);
 	}
 	public int getSignal() {
 		return signal;
