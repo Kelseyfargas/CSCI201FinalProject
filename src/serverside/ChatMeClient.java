@@ -88,7 +88,7 @@ public class ChatMeClient {
 				boolean OK = in.readBoolean();
 				if(OK == true){
 					System.out.println("you have been cleared to log in.");
-					//user.createBuddyList();
+					
 					ArrayList<String> onlineUsers = (ArrayList<String>) in.readObject();
 					
 					//Debug, display everyone online

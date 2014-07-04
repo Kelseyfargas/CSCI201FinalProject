@@ -202,9 +202,8 @@ public class CreateAccount extends JFrame{
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
-	public static void main(String []args){
-		new CreateAccount(user);
-	}
+
+	
 	public String getUserNameField(){
 		return 	usernameField.getText();
 	}
