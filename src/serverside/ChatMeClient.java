@@ -1,8 +1,12 @@
 package serverside;
 
+import java.awt.Image;
 import java.io.*;
 import java.net.*;
 import java.util.Scanner;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 import conversation.User;
 
@@ -95,7 +99,20 @@ public class ChatMeClient {
 				}
 			}
 			else if(command == ChatMeServer.NEW_USER_REQUEST){
-				System.out.println("Got new user request");
+				System.out.println("Got new user request on client");
+				String username = user.getName();
+				String password = user.getPassword();
+				String aboutMe  = user.getAboutme();
+				Icon image	= user.getImage();
+				
+				//out.writeObject(ChatMeServer.NEW_USER_REQUEST);
+				System.out.println("writing username, password, aboutme, and image");
+				out.writeObject(username);
+				out.writeObject(password);
+				out.writeObject(aboutMe);
+				out.writeObject(image);
+				
+				
 			}
 			else if(command == ChatMeServer.NEW_MESSAGE_REQUEST){
 				System.out.println("Enter ChatName: ");

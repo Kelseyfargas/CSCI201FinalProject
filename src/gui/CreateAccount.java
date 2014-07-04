@@ -151,15 +151,19 @@ public class CreateAccount extends JFrame{
 		gbc.gridx = 0;
 		gbc.gridy = 10;
 		add(logInButton,gbc);
-		logInButton.addActionListener(new ActionListener(){
+		
+		class LogInListener implements ActionListener {
+			User user;
+			public LogInListener(User user) {
+				this.user = user;
+			}
+
 			public void actionPerformed(ActionEvent e) {
 				//System.out.println("Button Pressed");
-				LG = new LogIn("Login");
-				LG.createLogin(LG);
-				ca.dispose();
+				user.createLoginWindow();
 			}
-			
-		});
+		}
+		logInButton.addActionListener(new LogInListener(user));
 		
 		createAccount = new JButton("Create Account");
 		gbc.ipadx = 0; 
@@ -184,8 +188,7 @@ public class CreateAccount extends JFrame{
 				System.out.println("Password is:" + us.getPassword());
 				System.out.println("About me is:" + us.getAboutme());
 				System.out.println("Image is: " + us.getImage());
-				LG = new LogIn("Login");
-				LG.createLogin(LG);
+				
 			}
 			
 		}

@@ -8,6 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Scanner;
 
+import javax.swing.Icon;
+
 public class ChatMeServer {
 	
 	public static int NEW_USER_REQUEST = 0;
@@ -82,9 +84,11 @@ public class ChatMeServer {
 			}
 				
 			//2. Listen for Signal
+			System.out.println("SERVER: Listening for command");
 			while(true){
 				try {
 					int command = in.readInt();
+
 					handleCommand(command);
 					
 				} catch (IOException | ClassNotFoundException e) {
@@ -98,10 +102,7 @@ public class ChatMeServer {
 		}
 		private void handleCommand(int command) throws IOException, ClassNotFoundException {
 			Scanner scan = new Scanner(System.in);
-			if(command == NEW_USER_REQUEST){
-				System.out.println("Command recieved: New User");
-				
-			}
+			System.out.println("SERVER: parsing command...");
 			if(command==LOGIN_REQUEST){
 				System.out.println("Command recieved on server: Login\n");
 				System.out.println("Reading in: " + in.readObject());
@@ -130,7 +131,13 @@ public class ChatMeServer {
 				System.out.println("Command recieved on server: Sign Out");	
 			}
 			if(command == NEW_USER_REQUEST){
-				System.out.println("Command recieved on server: New User");
+				System.out.println("SERVER: Command recieved on server: New User");
+				String username = (String) in.readObject();
+				String password = (String) in.readObject();
+				String bio 	    = (String) in.readObject();
+				Icon   img 		= (Icon)   in.readObject();
+				System.out.println("SERVER READS:"
+						+ username + " " + password + " " + bio + " " + img);
 			}
 			if(command == NEW_MESSAGE_REQUEST){
 				System.out.println("Command recieved: New Message");
