@@ -33,6 +33,7 @@ public class LogIn extends JFrame {
 //        Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(wev);
 //    }
     public void createLogin(final LogIn lg){
+		System.out.println("login");
 		JPanel westPanel = new JPanel();
 		JLabel image = new JLabel();
 		ImageIcon ii = new ImageIcon("Pictures/Message_Icon_Final.png");
