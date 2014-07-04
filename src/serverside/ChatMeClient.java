@@ -95,7 +95,7 @@ public class ChatMeClient {
 				boolean OK = in.readBoolean();
 				if(OK == true){
 					System.out.println("you have been cleared to log in.");
-
+					//user.createBuddyList();
 					ArrayList<String> onlineUsers = (ArrayList<String>) in.readObject();
 					
 					//Debug, display everyone online
@@ -114,7 +114,6 @@ public class ChatMeClient {
 				String aboutMe  = user.getAboutme();
 				Icon image	= user.getImage();
 				
-				//out.writeObject(ChatMeServer.NEW_USER_REQUEST);
 				System.out.println("writing username, password, aboutme, and image");
 				out.writeObject(username);
 				out.writeObject(password);
