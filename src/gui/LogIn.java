@@ -30,7 +30,6 @@ public class LogIn extends JFrame {
 		super("Login");
 		this.user = user;
 		
-		System.out.println("login");
 		JPanel westPanel = new JPanel();
 		JLabel image = new JLabel();
 		ImageIcon ii = new ImageIcon("Pictures/Message_Icon_Final.png");

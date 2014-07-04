@@ -95,9 +95,10 @@ public class ChatMeClient {
 					for(int i=0; i< onlineUsers.size();i++){
 						System.out.println("Online: " + onlineUsers.get(i));
 					}
+					user.createBuddyList();
 				}
 				else{
-					System.out.println("Could not log in");
+					System.out.println("Could not log in. Incorrect Credentials");
 				}
 			}
 			else if(command == ChatMeServer.NEW_USER_REQUEST){
