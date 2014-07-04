@@ -49,6 +49,7 @@ public class User {
 	}
 	
 	public void createLoginWindow() {
+		createAccountWindow.dispose();
 		loginWindow = new LogIn(this);
 	}
 	
@@ -62,7 +63,6 @@ public class User {
 
 	public void createNewAccount() {
 		this.chatClient.sendCommand(ChatMeServer.NEW_USER_REQUEST);
-		createAccountWindow.dispose();
 		createLoginWindow();
 	}
 	
