@@ -24,15 +24,12 @@ public class LogIn extends JFrame {
 	private JTextField usernameTF;
 	private JTextField passwordTF;
 	public JButton logInButton;
+	private User user;
 	//public static LogIn log;
-	public LogIn(){
+	public LogIn(User user){
 		super("Login");
-	}
-//    public void pullThePlug() {
-//        WindowEvent wev = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
-//        Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(wev);
-//    }
-    public void createLogin(final LogIn lg){
+		this.user = user;
+		
 		System.out.println("login");
 		JPanel westPanel = new JPanel();
 		JLabel image = new JLabel();
@@ -64,11 +61,13 @@ public class LogIn extends JFrame {
 				this.user = user;
 			}
 			public void actionPerformed(ActionEvent ae){
-				user.sendLogInRequest(usernameTF.getText(), passwordTF.getText());
+				user.setName(usernameTF.getText());
+				user.setPassword(passwordTF.getText());
+				user.sendLogInRequest();
 			}
 		}
-		logInButton.addActionListener(new LogInListener());
-
+		logInButton.addActionListener(new LogInListener(user));
+		
 		
 
 		flowPanel.add(logInButton);
@@ -86,7 +85,11 @@ public class LogIn extends JFrame {
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 	}
-    
+//    public void pullThePlug() {
+//        WindowEvent wev = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
+//        Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(wev);
+//    }
+   
 	/*public static void main(String []args){
 		final LogIn l = new LogIn("Login");
 		l.logInButton.addActionListener(new ActionListener(){
