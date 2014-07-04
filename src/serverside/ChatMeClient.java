@@ -24,8 +24,8 @@ public class ChatMeClient {
 	private UserInputOutputClass uioclass;
 	
 	private Socket serverRequestSocket;
-	private ObjectInputStream serverIn;
-	private ObjectOutputStream serverOut;
+	private ObjectInputStream servIn;
+	private ObjectOutputStream servOut;
 	private ServerInputOutputClass sioclass;
 	
 	private Lock lock = new ReentrantLock();
@@ -41,15 +41,15 @@ public class ChatMeClient {
 		userIn = new ObjectInputStream(userRequestSocket.getInputStream());
 		userOut = new ObjectOutputStream(userRequestSocket.getOutputStream());
 		
-		//sioIn ...
-		//sioOut ...
+		servIn = new ObjectInputStream(serverRequestSocket.getInputStream());
+		servOut = new ObjectOutputStream(serverRequestSocket.getOutputStream());
 		
 	}
 	public void startUserIO(){
 		uioclass = new UserInputOutputClass();
 		uioclass.start();
-		//sioclass = new ServerInputOutputClass();
-		//sioclass.start();
+		sioclass = new ServerInputOutputClass();
+		sioclass.start();
 	}
 	public void addUser(User user){
 		this.user = user;

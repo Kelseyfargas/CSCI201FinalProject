@@ -42,14 +42,12 @@ public class ChatMeServer {
 			userOut = new ObjectOutputStream(userReqSocket.getOutputStream());
 			userIn = new ObjectInputStream(userReqSocket.getInputStream());
 			
-			//servOut = new ObjectOutputStream(servReqSocket.getOutputStream());
-			//servIn = new ObjectInputStream(servReqSocket.getInputStream());
+			servOut = new ObjectOutputStream(servReqSocket.getOutputStream());
+			servIn = new ObjectInputStream(servReqSocket.getInputStream());
 			
 			UserReqThread ct = new UserReqThread(userOut, userIn);
 			ct.start();
-			
-		}
-		
+		}		
 	}
 	
 
@@ -66,8 +64,8 @@ public class ChatMeServer {
 			this.userOut = userOut;
 			this.userIn = userIn;
 		}
-		public void run(){
-			
+		
+		public void run(){	
 				
 			//1. Send Welcome Message
 			String message = "Welcome. Please Enter a Command.";
@@ -85,7 +83,6 @@ public class ChatMeServer {
 				try {
 					/* */
 					int command = userIn.readInt();
-
 					handleCommand(command);
 					
 				} catch (IOException | ClassNotFoundException e) {
@@ -164,6 +161,7 @@ public class ChatMeServer {
 		}
 		public void run(){
 			//Listen for Commands from database
+			
 		}
 	}
 
