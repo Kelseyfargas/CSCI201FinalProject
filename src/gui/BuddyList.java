@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -19,10 +20,14 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import conversation.User;
+
 class BuddyList extends JFrame{
+	private User user;
 	
-	public BuddyList(String name){
+	public BuddyList(String name, User user){
 		super(name);
+		this.user = user;
 		//menu bar
 		JMenuBar jmb = new JMenuBar();
 		JMenu fileMenu = new JMenu("File");
@@ -30,25 +35,30 @@ class BuddyList extends JFrame{
 		JMenu contactsMenu = new JMenu("Contacts");
 		JMenu helpMenu = new JMenu("Help");
 		JMenuItem aboutMenuItem = new JMenuItem("About");
-		aboutMenuItem.addActionListener(new ActionListener() {
-			 public void actionPerformed(ActionEvent ae) {
-			 JDialog jd = new JDialog();
-			 jd.setTitle("About");
-			 jd.setLocation(450,300);
-			 jd.setSize(200, 200);
-			 jd.setModal(true);
-			 JPanel jp = new JPanel();
-			 BoxLayout bl = new BoxLayout(jp, BoxLayout.Y_AXIS);
-			 jp.setLayout(bl);
-			 JLabel jl = new JLabel("Created for CSCI 201L");
-			 JLabel jl1 = new JLabel("Kelsey, Katrina, "
-			 		+ "Ryan C., Ryan J.");
-			 jp.add(jl);
-			 jp.add(jl1);
-			 jd.add(jp);
-			 jd.setVisible(true);
-			 }
-		});
+		class aboutMenuClass implements ActionListener{
+			User us;
+			public aboutMenuClass(User s){
+				this.us = s;
+			}
+			public void actionPerformed(ActionEvent ae){
+				 JDialog jd = new JDialog();
+				 jd.setTitle("About");
+				 jd.setLocation(450,300);
+				 jd.setSize(200, 200);
+				 jd.setModal(true);
+				 JPanel jp = new JPanel();
+				 BoxLayout bl = new BoxLayout(jp, BoxLayout.Y_AXIS);
+				 jp.setLayout(bl);
+				 JLabel jl = new JLabel("Created for CSCI 201L");
+				 JLabel jl1 = new JLabel("Kelsey, Katrina, "
+				 		+ "Ryan C., Ryan J.");
+				 jp.add(jl);
+				 jp.add(jl1);
+				 jd.add(jp);
+				 jd.setVisible(true);
+			}
+		}
+		aboutMenuItem.addActionListener(new aboutMenuClass(user));
 
 		helpMenu.add(aboutMenuItem);
 		jmb.add(fileMenu);
@@ -62,14 +72,17 @@ class BuddyList extends JFrame{
 		westPanel.setLayout(new BoxLayout(westPanel, BoxLayout.Y_AXIS));
 		westPanel.setBackground(Color.WHITE);
 		
-		ImageIcon picIcon = new ImageIcon("Pictures/Kelsey_Icon.jpg");
+		Icon picIcon = user.getImage();
 		JButton iconButton = new JButton(picIcon);
 		iconButton.setPressedIcon(picIcon);
 		iconButton.setSize(50,50);
 		iconButton.setLocation(0,0);
 		iconButton.setBorderPainted(false);
-		iconButton.addActionListener(new ActionListener(){
-			
+		class iconButtonClass implements ActionListener{
+			User us;
+			public iconButtonClass(User u){
+				this.us = u;
+			}
 			public void actionPerformed(ActionEvent e) {
 				 JDialog jd = new JDialog();
 //				 jd.setTitle("About");
@@ -79,31 +92,20 @@ class BuddyList extends JFrame{
 				 JPanel jp = new JPanel();
 				 BoxLayout bl = new BoxLayout(jp, BoxLayout.Y_AXIS);
 				 jp.setLayout(bl);
-				 JLabel jl = new JLabel("About Me");
-				 JLabel jl1 = new JLabel("I go to school");
-				 jp.add(jl);
-				 jp.add(jl1);
+				 JTextArea aboutMeTA = new JTextArea(us.getAboutme());
+//				 JLabel jl = new JLabel("About Me");
+//				 JLabel jl1 = new JLabel("I go to school");
+//				 jp.add(jl);
+//				 jp.add(jl1);
+				 jd.add(aboutMeTA);
 				 jd.add(jp);
 				 jd.setVisible(true);
 			}
-			
-		});
-//		JTextField aboutMeTF = new JTextField("About me: I love cats. My cat's"
-//				+ " name is Clover");
-//		Dimension preferredSize = new Dimension(1,1);
-//		aboutMeTF.setPreferredSize(preferredSize);
-		
-//		ImageIcon messageIcon = new ImageIcon("Message.png");
-//		JButton messageButton = new JButton(messageIcon);
-//		messageButton.setPressedIcon(messageIcon);
-//		messageButton.setSize(30,30);
-//		messageButton.setLocation(10,10);
-		
+		}
+		iconButton.addActionListener(new iconButtonClass(user));
 		
 		westPanel.add(iconButton);
-//		westPanel.add(aboutMeTF);
-
-
+		
 		//center panel
 		JPanel centerPanel = new JPanel();
 		centerPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -189,6 +191,7 @@ class BuddyList extends JFrame{
 			});
 			centerPanel.add(friends);
 		}
+
 		
 		JTextArea jtaNote1 = new JTextArea("Offline Chats", 1, 16);
 		jtaNote1.setEditable(false);
