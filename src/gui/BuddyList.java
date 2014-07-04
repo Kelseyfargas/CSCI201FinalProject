@@ -23,10 +23,11 @@ import javax.swing.JTextArea;
 import conversation.User;
 
 class BuddyList extends JFrame{
-	private User user;
 	
-	public BuddyList(String name, User user){
-		super(name);
+	public static User user;
+	
+	public BuddyList(User user){
+		super("Buddy List");
 		this.user = user;
 		//menu bar
 		JMenuBar jmb = new JMenuBar();
