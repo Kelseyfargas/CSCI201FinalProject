@@ -36,7 +36,7 @@ public class User {
 	private String password;
 	private String status;
 	private Icon icon;
-	private ArrayList<User> friendList;
+	private ArrayList<String> onlineUsers;
 	private ArrayList<GroupConversation> currentConversations;		// change to Conversation 						
 	private ChatMeClient chatClient;
 	/* Constructor */
@@ -49,7 +49,7 @@ public class User {
 	}
 	
 	public void createLoginWindow() {
-		loginWindow = new LogIn("Login");
+		loginWindow = new LogIn();
 	}
 	
 	public LogIn getLoginWindow(){
@@ -66,7 +66,9 @@ public class User {
 		createLoginWindow();
 	}
 	
-	//public void createLoginWindow() {
+	public void sendLogInRequest() {
+		chatClient.sendCommand(ChatMeServer.LOGIN_REQUEST);
+	}
 	
 	public int getSignal() {
 		return signal;
@@ -98,6 +100,10 @@ public class User {
 		//TODO: send message class to server 
 	}
 
+	public void setOnlineUsers(ArrayList<String> onlineUsers) {
+		this.onlineUsers = onlineUsers;
+	}	
+	
 	public void setName(String name)	{
 		this.name = name;
 	}
