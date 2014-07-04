@@ -24,9 +24,11 @@ public class LogIn extends JFrame {
 	private JTextField usernameTF;
 	private JTextField passwordTF;
 	public JButton logInButton;
+	private User user;
 	//public static LogIn log;
-	public LogIn(){
+	public LogIn(User user){
 		super("Login");
+		this.user = user;
 	}
 //    public void pullThePlug() {
 //        WindowEvent wev = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
@@ -69,7 +71,7 @@ public class LogIn extends JFrame {
 				user.sendLogInRequest();
 			}
 		}
-		logInButton.addActionListener(new LogInListener());
+		logInButton.addActionListener(new LogInListener(user));
 		
 		
 
