@@ -1,0 +1,5 @@
+module SumApp {
+  interface SumServer {
+    long sum(in long a, in long b);
+  };
+};
