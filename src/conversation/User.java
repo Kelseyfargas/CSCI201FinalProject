@@ -49,7 +49,7 @@ public class User {
 	}
 	
 	public void createLoginWindow() {
-		loginWindow = new LogIn();
+		loginWindow = new LogIn(this);
 	}
 	
 	public LogIn getLoginWindow(){
