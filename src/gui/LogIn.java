@@ -1,5 +1,6 @@
 package gui;
 
+
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -15,21 +16,21 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import conversation.User;
+
 
 public class LogIn extends JFrame {
 	
 	private JTextField usernameTF;
 	private JTextField passwordTF;
 	public JButton logInButton;
+	private User user;
 	//public static LogIn log;
-	public LogIn(String name){
-		super(name);
-	}
-//    public void pullThePlug() {
-//        WindowEvent wev = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
-//        Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(wev);
-//    }
-    public void createLogin(final LogIn lg){
+	public LogIn(User user){
+		super("Login");
+		this.user = user;
+		
+		System.out.println("login");
 		JPanel westPanel = new JPanel();
 		JLabel image = new JLabel();
 		ImageIcon ii = new ImageIcon("Pictures/Message_Icon_Final.png");
@@ -53,39 +54,20 @@ public class LogIn extends JFrame {
 		JPanel flowPanel = new JPanel();
 		flowPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		logInButton = new JButton("Log In");
-		logInButton.addActionListener(new ActionListener(){
 
-			@Override
-			public void actionPerformed(ActionEvent ae) {
-				//new BuddyList("Buddy List");
-				new BuddyList(lg.usernameTF.getText() +"'s Buddy List");
-				lg.dispose();
+		class LogInListener implements ActionListener{
+			User user;
+			public LogInListener(User user){
+				this.user = user;
 			}
-		});
+			public void actionPerformed(ActionEvent ae){
+				user.setName(usernameTF.getText());
+				user.setPassword(passwordTF.getText());
+				user.sendLogInRequest();
+			}
+		}
+		logInButton.addActionListener(new LogInListener(user));
 		
-//		JButton createAccount = new JButton("Create Account");
-//		logInButton.addActionListener(new ActionListener(){
-//
-//			@Override
-//			public void actionPerformed(ActionEvent ae) {
-//					System.out.println("Username is:" + usernameTF.getText());
-//					System.out.println("Password is:" + passwordTF.getText());
-//					//if(username password is wrong){
-//					//	JOptionPane.showMessageDialog(Login.this, "Incorrect password/username. Try again", "Log In",JOptionPane.OK_CANCEL_OPTION);
-//					//}	
-//					//when logging in, make sure that you pass in the Username, Iconname, and FriendsList
-//					//when calling chatroom
-//					//The BuddyList constructor will change to something like
-//					//new BuddyList((usernameTF.getText() + "'s Friend's List"), image icon, friendslist)
-//					new BuddyList(usernameTF.getText() +"'s Buddy List");
-//			}
-//			
-//		});
-//		createAccount.addActionListener(new ActionListener(){
-//			public void actionPerformed(ActionEvent arg0) {
-//				new CreateAccount("Create Account");
-//			}
-//		});
 		
 
 		flowPanel.add(logInButton);
@@ -102,10 +84,13 @@ public class LogIn extends JFrame {
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-		//this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-    
-	public static void main(String []args){
+//    public void pullThePlug() {
+//        WindowEvent wev = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
+//        Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(wev);
+//    }
+   
+	/*public static void main(String []args){
 		final LogIn l = new LogIn("Login");
 		l.logInButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
@@ -114,7 +99,7 @@ public class LogIn extends JFrame {
 			}
 		}); 
 
-	}
+	}*/
 
 	public String getPassword(){
 		return passwordTF.getText();

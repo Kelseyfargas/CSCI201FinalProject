@@ -11,6 +11,7 @@ import java.util.Calendar;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import gui.*;
 
 import serverside.ChatMeClient;
 import serverside.ChatMeServer;
@@ -27,7 +28,7 @@ public class User {
 	static int 
 	static int
 	 */ 
-	private JFrame buddyList;
+	private BuddyList buddyList;
 	private CreateAccount createAccountWindow;
 	private LogIn loginWindow;
 	private JFrame chatWindow; 
@@ -36,7 +37,7 @@ public class User {
 	private String password;
 	private String status;
 	private Icon icon;
-	private ArrayList<User> friendList;
+	private ArrayList<String> onlineUsers;
 	private ArrayList<GroupConversation> currentConversations;		// change to Conversation 						
 	private ChatMeClient chatClient;
 	/* Constructor */
@@ -47,6 +48,12 @@ public class User {
 	public void createAccountWindow() {
 		createAccountWindow =  new CreateAccount(this);
 	}
+	
+	public void createLoginWindow() {
+		createAccountWindow.dispose();
+		loginWindow = new LogIn(this);
+	}
+	
 	public LogIn getLoginWindow(){
 		return loginWindow;
 	}
@@ -57,8 +64,18 @@ public class User {
 
 	public void createNewAccount() {
 		this.chatClient.sendCommand(ChatMeServer.NEW_USER_REQUEST);
-		createAccountWindow.dispose();
+		createLoginWindow();
 	}
+	
+	public void sendLogInRequest() {
+		chatClient.sendCommand(ChatMeServer.LOGIN_REQUEST);
+	}
+	
+	public void createBuddyList() {
+		buddyList = new BuddyList(this);
+		loginWindow.dispose();
+	}
+	
 	public int getSignal() {
 		return signal;
 	}
@@ -89,6 +106,10 @@ public class User {
 		//TODO: send message class to server 
 	}
 
+	public void setOnlineUsers(ArrayList<String> onlineUsers) {
+		this.onlineUsers = onlineUsers;
+	}	
+	
 	public void setName(String name)	{
 		this.name = name;
 	}
