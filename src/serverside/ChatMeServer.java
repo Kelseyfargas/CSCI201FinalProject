@@ -83,7 +83,7 @@ public class ChatMeServer {
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
-				
+			
 			//2. Listen for Signal
 			System.out.println("SERVER: Listening for command");
 			while(true){
@@ -125,6 +125,15 @@ public class ChatMeServer {
 					out.flush();
 					out.writeObject(strArr);
 					System.out.println("Finished command");
+					
+					try {
+						Thread.sleep(3000);
+						System.out.println("trying to write double");
+						out.writeDouble(1.3);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					return;
 				}
 				else{

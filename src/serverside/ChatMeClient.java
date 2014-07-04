@@ -5,6 +5,8 @@ import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -30,7 +32,7 @@ public class ChatMeClient {
 		
 		in = new ObjectInputStream(socket.getInputStream());
 		out = new ObjectOutputStream(socket.getOutputStream());
-
+		
 	}
 	public void startIO(){
 		ioclass = new InputOutputClass(socket, in,out);
@@ -51,6 +53,7 @@ public class ChatMeClient {
 		ObjectInputStream in;
 		ObjectOutputStream out;
 		Socket s;
+		Lock lock = new ReentrantLock();
 		public InputOutputClass(Socket s, ObjectInputStream in, ObjectOutputStream out){
 			this.in  = in;
 			this.out = out;
@@ -64,9 +67,15 @@ public class ChatMeClient {
 				System.out.println(message);
 				
 				while(true){
-
-					//Scanner sc = new Scanner(System.in); //Make input from terminal
-					//int command = sc.nextInt(); //gets (int) command
+					lock.lock();
+					if(in.available() == 8){
+						//if there is a double in the stream, read from the stream
+						System.out.println("Double in stream");
+						Double dubresponse = in.readDouble();
+						System.out.println(dubresponse);
+					}
+					lock.unlock();
+					//Wait for Users to give commands
 				
 				}
 			} catch(IOException | ClassNotFoundException e){
@@ -86,7 +95,8 @@ public class ChatMeClient {
 				
 				System.out.println("waiting . . .");
 				boolean OK = in.readBoolean();
-				if(OK == true){
+				if(OK == true)
+				{
 					System.out.println("you have been cleared to log in.");
 					
 					ArrayList<String> onlineUsers = (ArrayList<String>) in.readObject();

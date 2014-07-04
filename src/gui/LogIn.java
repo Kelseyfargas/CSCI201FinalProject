@@ -25,7 +25,7 @@ public class LogIn extends JFrame {
 	private JTextField passwordTF;
 	public JButton logInButton;
 	private User user;
-	//public static LogIn log;
+
 	public LogIn(User user){
 		super("Login");
 		this.user = user;
