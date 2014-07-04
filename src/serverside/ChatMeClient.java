@@ -17,65 +17,61 @@ public class ChatMeClient {
 	
 
 	private User user;
-	static Socket socket;
-	static ObjectInputStream in;
-	static ObjectOutputStream out;
 	
-	private InputOutputClass ioclass;
+	private Socket userRequestSocket;
+	private ObjectInputStream userIn;
+	private ObjectOutputStream userOut;
+	private UserInputOutputClass uioclass;
 	
-	public ChatMeClient(String hostname, int port) throws IOException{
+	private Socket serverRequestSocket;
+	private ObjectInputStream serverIn;
+	private ObjectOutputStream serverOut;
+	private ServerInputOutputClass sioclass;
+	
+	private Lock lock = new ReentrantLock();
+	
+	public ChatMeClient(String hostname) throws IOException{
 		String ipAddress = "localhost";
 		
 		System.out.println("Connecting...");
-		socket = new Socket(ipAddress, 7777);
+		userRequestSocket = new Socket(ipAddress, 7777);
+		serverRequestSocket = new Socket(ipAddress, 8888);
 		System.out.println("Connection Successful...");
 		
-		in = new ObjectInputStream(socket.getInputStream());
-		out = new ObjectOutputStream(socket.getOutputStream());
+		userIn = new ObjectInputStream(userRequestSocket.getInputStream());
+		userOut = new ObjectOutputStream(userRequestSocket.getOutputStream());
 		
 	}
-	public void startIO(){
-		ioclass = new InputOutputClass(socket, in,out);
-		ioclass.run();
+	public void startUserIO(){
+		uioclass = new UserInputOutputClass();
+		uioclass.start();
+		sioclass = new ServerInputOutputClass();
+		sioclass.start();
 	}
 	public void addUser(User user){
 		this.user = user;
 	}
 	public void sendCommand(int command){
 		try{
-			ioclass.sendCommandAndListen(command);
+			uioclass.sendCommandAndListen(command);
 		} catch(Exception e){
 			e.printStackTrace();
 		}
 	}
 	
-	class InputOutputClass extends Thread {
-		ObjectInputStream in;
-		ObjectOutputStream out;
-		Socket s;
-		Lock lock = new ReentrantLock();
-		public InputOutputClass(Socket s, ObjectInputStream in, ObjectOutputStream out){
-			this.in  = in;
-			this.out = out;
-			this.s = s;
-		}
+	class UserInputOutputClass extends Thread {
+		
+		boolean continueRunning = true;
+		
 		public void run(){
-			
+
 			try{
 				System.out.println("Attempting to read welcome message: \n");
-				String message = (String) in.readObject();
+				String message = (String) userIn.readObject();
 				System.out.println(message);
 				
-				while(true){
-					lock.lock();
-					if(in.available() == 8){
-						//if there is a double in the stream, read from the stream
-						System.out.println("Double in stream");
-						Double dubresponse = in.readDouble();
-						System.out.println(dubresponse);
-					}
-					lock.unlock();
-					//Wait for Users to give commands
+				while(continueRunning){
+					
 				
 				}
 			} catch(IOException | ClassNotFoundException e){
@@ -83,25 +79,25 @@ public class ChatMeClient {
 			}
 		}
 		private void sendCommandAndListen(int command) throws IOException, ClassNotFoundException{
-			out.writeInt(command);
-			Scanner scan = new Scanner(System.in);
+			lock.lock();
+			
+			userOut.writeInt(command);
+			Scanner scan = new Scanner(System.in); //For Debug Purposes
 			if(command == ChatMeServer.LOGIN_REQUEST){
 				System.out.println("CLIENT: log in request");
 				
 				String un = user.getName();
 				String pw = user.getPassword();
-				out.writeObject(un);
-				out.writeObject(pw);
+				userOut.writeObject(un);
+				userOut.writeObject(pw);
 				
 				System.out.println("waiting . . .");
-				boolean OK = in.readBoolean();
+				boolean OK = userIn.readBoolean();
 				if(OK == true)
 				{
 					System.out.println("you have been cleared to log in.");
 					
-					ArrayList<String> onlineUsers = (ArrayList<String>) in.readObject();
-					
-					//Debug, display everyone online
+					ArrayList<String> onlineUsers = (ArrayList<String>) userIn.readObject();
 					for(int i=0; i< onlineUsers.size();i++){
 						System.out.println("Online: " + onlineUsers.get(i));
 					}
@@ -119,10 +115,10 @@ public class ChatMeClient {
 				Icon image	= user.getImage();
 				
 				System.out.println("writing username, password, aboutme, and image");
-				out.writeObject(username);
-				out.writeObject(password);
-				out.writeObject(aboutMe);
-				out.writeObject(image);
+				userOut.writeObject(username);
+				userOut.writeObject(password);
+				userOut.writeObject(aboutMe);
+				userOut.writeObject(image);
 				
 				
 			}
@@ -133,19 +129,41 @@ public class ChatMeClient {
 				String content = scan.nextLine();
 				Message msg = new Message(chatName, content);
 				System.out.println("\nSending Message Packet...");
-				out.writeObject(msg);
+				userOut.writeObject(msg);
 				System.out.println("Finished.");
 			}
+			lock.unlock();
 		}
 	}
 
+	class ServerInputOutputClass extends Thread{
+		
+		public void run(){
+			System.out.println("SIO RUN");
+			try{
+				while(true){
+					
+					lock.lock();
+					Thread.sleep(1);
+					lock.unlock();
+				}
+				
+			}catch(InterruptedException e){
+				e.printStackTrace();
+			}
+		}
+		
+		public void handleCommand(int command){
+			
+		}
+	}
 	public static void main(String [] args){
 		try{
 			User user = new User();
-			ChatMeClient cme = new ChatMeClient("localhost", 7777);
+			ChatMeClient cme = new ChatMeClient("localhost");
 			user.addClient(cme);
 			cme.addUser(user);
-			cme.startIO();
+			cme.startUserIO();
 			
 			//client.sendCommand(NEW_USER_REQUEST)
 		} catch (IOException e) {
