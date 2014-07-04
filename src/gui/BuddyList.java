@@ -11,36 +11,90 @@ import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import conversation.User;
 
-class BuddyList extends JFrame{
+public class BuddyList extends JFrame{
 	
 	public static User user;
 	
-	public BuddyList(User user){
+	public BuddyList(){
 		super("Buddy List");
-		this.user = user;
+		//this.user = user;
 		//menu bar
+
+		class StartMessage implements ActionListener{
+			StartMessage(){
+			}
+			public void actionPerformed(ActionEvent ae){
+				//Katrina will give table of users that are online
+				Object values[] = {"Online user 1", "Online user 2", "Online user 3"};
+				String user = (String)JOptionPane.showInputDialog(BuddyList.this, 
+				"Choose User to Start Chat!", 
+				"Start Message", 
+				JOptionPane.QUESTION_MESSAGE,
+				null, // icon
+				values, values[0]);
+				try{
+					if(!user.equals(null)){
+					System.out.println("User selected is" + user);
+					new ChatRoomGUI(user);
+					}
+				} catch (NullPointerException npe){
+					System.out.println(npe.getMessage());
+				}
+			}
+		}
+		class GroupMessage implements ActionListener{
+			GroupMessage(){
+			}
+			public void actionPerformed(ActionEvent ae){
+				 JDialog jd = new JDialog();
+				 jd.setTitle("Group Message");
+				 jd.setLocation(450,300);
+				 jd.setSize(200, 200);
+				 jd.setModal(true);
+				 
+				 JPanel topPanel = new JPanel();
+				 topPanel.setLayout( new FlowLayout(FlowLayout.LEFT));
+				 JLabel nameOfConversation = new JLabel("Name Conversation:");
+				 JTextArea NOCTextArea = new JTextArea();
+				 
+				 JPanel centerPanel = new JPanel();
+				 String options[] = {"Item 1", "Item 2", "Item 3", "Item 4"};
+				 JComboBox jcb = new JComboBox(options);
+				 jcb.setForeground(Color.red);
+				 jcb.setBackground(Color.white);
+				 jcb.setSelectedItem("Item 2");
+				 add(jcb);
+				 
+				 JLabel jl1 = new JLabel("Kelsey, Katrina, "
+				 		+ "Ryan C., Ryan J.");
+				 topPanel.add(nameOfConversation);
+				 topPanel.add(NOCTextArea);
+				 jd.add(topPanel);
+				 jd.setVisible(true);
+			}
+		}
 		JMenuBar jmb = new JMenuBar();
 		JMenu fileMenu = new JMenu("File");
-		JMenu editMenu = new JMenu("Edit");
-		JMenu contactsMenu = new JMenu("Contacts");
+		JMenuItem startMessageMenuItem = new JMenuItem("Start Message");
+		JMenuItem startGroupMessageMI = new JMenuItem("Start Group Message");
 		JMenu helpMenu = new JMenu("Help");
 		JMenuItem aboutMenuItem = new JMenuItem("About");
-		class aboutMenuClass implements ActionListener{
-			User us;
-			public aboutMenuClass(User s){
-				this.us = s;
-			}
+		startMessageMenuItem.addActionListener(new StartMessage());
+		startGroupMessageMI.addActionListener(new GroupMessage());
+		aboutMenuItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
 				 JDialog jd = new JDialog();
 				 jd.setTitle("About");
@@ -58,13 +112,11 @@ class BuddyList extends JFrame{
 				 jd.add(jp);
 				 jd.setVisible(true);
 			}
-		}
-		aboutMenuItem.addActionListener(new aboutMenuClass(user));
-
+		});
 		helpMenu.add(aboutMenuItem);
+		fileMenu.add(startMessageMenuItem);
+		fileMenu.add(startGroupMessageMI);
 		jmb.add(fileMenu);
-		jmb.add(editMenu);
-		jmb.add(contactsMenu);
 		jmb.add(helpMenu);
 		setJMenuBar(jmb);
 		
@@ -73,9 +125,10 @@ class BuddyList extends JFrame{
 		westPanel.setLayout(new BoxLayout(westPanel, BoxLayout.Y_AXIS));
 		westPanel.setBackground(Color.WHITE);
 		
-		Icon picIcon = user.getImage();
-		JButton iconButton = new JButton(picIcon);
-		iconButton.setPressedIcon(picIcon);
+		//Icon picIcon = user.getImage();
+		//JButton iconButton = new JButton(picIcon);
+		JButton iconButton = new JButton("b");
+		//iconButton.setPressedIcon(picIcon);
 		iconButton.setSize(50,50);
 		iconButton.setLocation(0,0);
 		iconButton.setBorderPainted(false);
@@ -120,12 +173,7 @@ class BuddyList extends JFrame{
 		messageButton.setSize(30,30);
 		messageButton.setLocation(10,10);
 		messageButton.setBorderPainted(false);
-		messageButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				new ChatRoomGUI("Messages");
-			}
-			
-		});
+		messageButton.addActionListener(new StartMessage());
 		topPanel.add(messageButton);
 		
 		ImageIcon groupChatIcon = new ImageIcon("Pictures/GroupChat.png");
@@ -146,10 +194,10 @@ class BuddyList extends JFrame{
 		
 		//topPanel.add(jtf);
 		//topPanel.add(chatLabel);
-		centerPanel.add(topPanel);
-
 		
-		JTextArea jtaNote = new JTextArea("Recent Chats", 1, 16);
+		centerPanel.add(topPanel);
+		
+		JTextArea jtaNote = new JTextArea("Online Users", 1, 16);
 		jtaNote.setEditable(false);
 		jtaNote.setLineWrap(true);
 		jtaNote.setWrapStyleWord(true);
@@ -192,13 +240,6 @@ class BuddyList extends JFrame{
 			});
 			centerPanel.add(friends);
 		}
-
-		
-		JTextArea jtaNote1 = new JTextArea("Offline Chats", 1, 16);
-		jtaNote1.setEditable(false);
-		jtaNote1.setLineWrap(true);
-		jtaNote1.setFont(new Font("Courier", Font.BOLD, 22));
-		centerPanel.add(jtaNote1);
 		
 		ImageIcon offlineIcon = new ImageIcon("Pictures/"+Users[Users.length-1]);
 		JButton offlineFriend = new JButton(Users[Users.length-1].substring(0, Users[Users.length-1].indexOf('.')));
@@ -215,5 +256,6 @@ class BuddyList extends JFrame{
 		//this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	public static void main(String []args){
+		new BuddyList();
 	}
 }
