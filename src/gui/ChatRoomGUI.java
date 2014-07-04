@@ -18,8 +18,8 @@ import javax.swing.JTextField;
 
 public class ChatRoomGUI extends JFrame {
 	
-	public ChatRoomGUI(String title){
-		super(title);
+	public ChatRoomGUI(String user){
+		super("Chat with " + user);
 
 		JPanel jp = new JPanel(); 
 		
@@ -29,7 +29,7 @@ public class ChatRoomGUI extends JFrame {
 		jp.add(searchField); 
 		
 		
-		JTextArea toUsernameField = new JTextArea("To: Katrina");
+		JTextArea toUsernameField = new JTextArea("To: " + user);
 		toUsernameField.setPreferredSize(new Dimension(450,20));
 		toUsernameField.setEditable(false); 
 		toUsernameField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
