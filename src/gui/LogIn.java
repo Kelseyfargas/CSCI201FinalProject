@@ -70,7 +70,7 @@ public class LogIn extends JFrame {
 			}
 		}
 		logInButton.addActionListener(new LogInListener());
-
+		
 		
 
 		flowPanel.add(logInButton);
