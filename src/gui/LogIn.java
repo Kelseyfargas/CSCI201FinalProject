@@ -64,7 +64,9 @@ public class LogIn extends JFrame {
 				this.user = user;
 			}
 			public void actionPerformed(ActionEvent ae){
-				user.sendLogInRequest(usernameTF.getText(), passwordTF.getText());
+				user.setName(usernameTF.getText());
+				user.setPassword(passwordTF.getText());
+				user.sendLogInRequest();
 			}
 		}
 		logInButton.addActionListener(new LogInListener());

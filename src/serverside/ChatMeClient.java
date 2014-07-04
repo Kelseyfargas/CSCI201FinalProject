@@ -3,6 +3,7 @@ package serverside;
 import java.awt.Image;
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.swing.Icon;
@@ -39,7 +40,13 @@ public class ChatMeClient {
 		this.user = user;
 	}
 	public void sendCommand(int command){
-		System.out.println("GETTING COMMAND");
+		try{
+			ioclass.sendCommandAndListen(command);
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	public void sendCommand(int command, String username, String password){
 		try{
 			ioclass.sendCommandAndListen(command);
 		} catch(Exception e){
@@ -77,21 +84,23 @@ public class ChatMeClient {
 			out.writeInt(command);
 			Scanner scan = new Scanner(System.in);
 			if(command == ChatMeServer.LOGIN_REQUEST){
+				System.out.println("CLIENT: log in request");
 				
-				System.out.println("Please Enter username, then password:");
-				String un = scan.nextLine();
-				String pw = scan.nextLine();
-				out.writeObject("un:" + un);
-				out.writeObject("pw:" + pw);
+				String un = user.getName();
+				String pw = user.getPassword();
+				out.writeObject(un);
+				out.writeObject(pw);
 				
 				System.out.println("waiting . . .");
 				boolean OK = in.readBoolean();
 				if(OK == true){
 					System.out.println("you have been cleared to log in.");
 
-					String [] sarr = (String[]) in.readObject();
-					for(int i=0; i< sarr.length;i++){
-						System.out.println("Online: " + sarr[i]);
+					ArrayList<String> onlineUsers = (ArrayList<String>) in.readObject();
+					
+					//Debug, display everyone online
+					for(int i=0; i< onlineUsers.size();i++){
+						System.out.println("Online: " + onlineUsers.get(i));
 					}
 				}
 				else{

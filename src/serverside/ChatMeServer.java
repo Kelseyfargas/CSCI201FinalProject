@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Scanner;
 
@@ -110,7 +111,13 @@ public class ChatMeServer {
 				System.out.println("Does this look correct? (1) Yes. (2)No.\n");
 				int response = scan.nextInt();
 				
-				String [] strArr = new String []{"RyanC", "RyanJ", "Katrina", "Kelsey"};
+				//debug
+				ArrayList<String> strArr = new ArrayList<String>();
+				strArr.add("RyanC");
+				strArr.add("RyanJ");
+				strArr.add("Katrina");
+				strArr.add("Kelsey");
+				
 				if(response == 1){
 					System.out.println("Giving OK to log in.");
 					System.out.println("Attempting to send online Users");
