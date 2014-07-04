@@ -11,6 +11,7 @@ import java.util.Calendar;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import gui.*;
 
 import serverside.ChatMeClient;
 import serverside.ChatMeServer;
@@ -27,7 +28,7 @@ public class User {
 	static int 
 	static int
 	 */ 
-	private JFrame buddyList;
+	private BuddyList buddyList;
 	private CreateAccount createAccountWindow;
 	private LogIn loginWindow;
 	private JFrame chatWindow; 
@@ -68,6 +69,11 @@ public class User {
 	
 	public void sendLogInRequest() {
 		chatClient.sendCommand(ChatMeServer.LOGIN_REQUEST);
+	}
+	
+	public void createBuddyList() {
+		buddyList = new BuddyList(this);
+		loginWindow.dispose();
 	}
 	
 	public int getSignal() {
