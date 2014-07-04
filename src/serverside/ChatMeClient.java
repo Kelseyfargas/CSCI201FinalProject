@@ -35,7 +35,7 @@ public class ChatMeClient {
 		
 		System.out.println("Connecting...");
 		userRequestSocket = new Socket(ipAddress, 7777);
-		//serverRequestSocket = new Socket(ipAddress, 8888);
+		serverRequestSocket = new Socket(ipAddress, 8888);
 		System.out.println("Connection Successful...");
 		
 		userIn = new ObjectInputStream(userRequestSocket.getInputStream());

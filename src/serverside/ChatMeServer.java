@@ -36,7 +36,7 @@ public class ChatMeServer {
 		
 		while(true){
 			userReqSocket = ss1.accept();
-			//servReqSocket = ss2.accept();
+			servReqSocket = ss2.accept();
 			System.out.println("Connection from: " + userReqSocket.getInetAddress());
 			
 			userOut = new ObjectOutputStream(userReqSocket.getOutputStream());
