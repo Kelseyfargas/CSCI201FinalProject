@@ -36,17 +36,17 @@ public class ChatMeServer {
 		
 		while(true){
 			userReqSocket = ss1.accept();
-			servReqSocket = ss2.accept();
+			//servReqSocket = ss2.accept();
 			System.out.println("Connection from: " + userReqSocket.getInetAddress());
 			
 			userOut = new ObjectOutputStream(userReqSocket.getOutputStream());
 			userIn = new ObjectInputStream(userReqSocket.getInputStream());
 			
-			servOut = new ObjectOutputStream(servReqSocket.getOutputStream());
-			servIn = new ObjectInputStream(servReqSocket.getInputStream());
+			//servOut = new ObjectOutputStream(servReqSocket.getOutputStream());
+			//servIn = new ObjectInputStream(servReqSocket.getInputStream());
 			
 			UserReqThread ct = new UserReqThread(userOut, userIn);
-			ct.run();
+			ct.start();
 			
 		}
 		
@@ -56,7 +56,7 @@ public class ChatMeServer {
 	public static void main(String [] args) throws IOException{
 		new ChatMeServer();
 	}
-	/* Chat Thread Class */
+
 	class UserReqThread extends Thread {
 		
 		ObjectOutputStream userOut;
@@ -163,7 +163,7 @@ public class ChatMeServer {
 			this.servIn  = servIn;
 		}
 		public void run(){
-			
+			//Listen for Commands from database
 		}
 	}
 

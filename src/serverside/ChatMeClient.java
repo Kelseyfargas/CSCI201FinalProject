@@ -35,18 +35,21 @@ public class ChatMeClient {
 		
 		System.out.println("Connecting...");
 		userRequestSocket = new Socket(ipAddress, 7777);
-		serverRequestSocket = new Socket(ipAddress, 8888);
+		//serverRequestSocket = new Socket(ipAddress, 8888);
 		System.out.println("Connection Successful...");
 		
 		userIn = new ObjectInputStream(userRequestSocket.getInputStream());
 		userOut = new ObjectOutputStream(userRequestSocket.getOutputStream());
 		
+		//sioIn ...
+		//sioOut ...
+		
 	}
 	public void startUserIO(){
 		uioclass = new UserInputOutputClass();
 		uioclass.start();
-		sioclass = new ServerInputOutputClass();
-		sioclass.start();
+		//sioclass = new ServerInputOutputClass();
+		//sioclass.start();
 	}
 	public void addUser(User user){
 		this.user = user;
@@ -139,18 +142,7 @@ public class ChatMeClient {
 	class ServerInputOutputClass extends Thread{
 		
 		public void run(){
-			System.out.println("SIO RUN");
-			try{
-				while(true){
-					
-					lock.lock();
-					Thread.sleep(1);
-					lock.unlock();
-				}
-				
-			}catch(InterruptedException e){
-				e.printStackTrace();
-			}
+//			
 		}
 		
 		public void handleCommand(int command){
