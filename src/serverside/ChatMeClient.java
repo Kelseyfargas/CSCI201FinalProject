@@ -74,7 +74,7 @@ public class ChatMeClient {
 				System.out.println(message);
 				
 				while(continueRunning){
-					
+					//int readCommandFromServer = userIn.readInt();
 				
 				}
 			} catch(IOException | ClassNotFoundException e){
@@ -93,6 +93,8 @@ public class ChatMeClient {
 				String pw = user.getPassword();
 				userOut.writeObject(un);
 				userOut.writeObject(pw);
+				
+				userOut.flush();
 				
 				System.out.println("waiting . . .");
 				boolean OK = userIn.readBoolean();

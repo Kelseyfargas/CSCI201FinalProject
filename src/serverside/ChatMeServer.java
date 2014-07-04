@@ -8,6 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Scanner;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javax.swing.Icon;
 
@@ -28,6 +30,8 @@ public class ChatMeServer {
 	private ObjectOutputStream servOut;
 	private ObjectInputStream servIn;
 	
+	private Lock lock= new ReentrantLock();
+	
 	public ChatMeServer() throws IOException{
 		System.out.println("Starting server...");
 		ServerSocket ss1 = new ServerSocket(7777);
@@ -37,6 +41,7 @@ public class ChatMeServer {
 		while(true){
 			userReqSocket = ss1.accept();
 			servReqSocket = ss2.accept();
+			
 			System.out.println("Connection from: " + userReqSocket.getInetAddress());
 			
 			userOut = new ObjectOutputStream(userReqSocket.getOutputStream());
@@ -45,7 +50,7 @@ public class ChatMeServer {
 			servOut = new ObjectOutputStream(servReqSocket.getOutputStream());
 			servIn = new ObjectInputStream(servReqSocket.getInputStream());
 			
-			UserReqThread ct = new UserReqThread(userOut, userIn);
+			UserReqThread ct = new UserReqThread();
 			ct.start();
 		}		
 	}
@@ -56,13 +61,9 @@ public class ChatMeServer {
 	}
 
 	class UserReqThread extends Thread {
-		
-		ObjectOutputStream userOut;
-		ObjectInputStream userIn;
 
-		public UserReqThread(ObjectOutputStream userOut, ObjectInputStream userIn){
-			this.userOut = userOut;
-			this.userIn = userIn;
+		public UserReqThread(){
+			
 		}
 		
 		public void run(){	
@@ -88,8 +89,8 @@ public class ChatMeServer {
 				} catch (IOException | ClassNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-					this.userOut = null;
-					this.userIn = null;
+					userOut = null;
+					userIn = null;
 				}
 				
 			}
