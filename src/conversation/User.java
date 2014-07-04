@@ -47,6 +47,11 @@ public class User {
 	public void createAccountWindow() {
 		createAccountWindow =  new CreateAccount(this);
 	}
+	
+	public void createLoginWindow() {
+		loginWindow = new LogIn("Login");
+	}
+	
 	public LogIn getLoginWindow(){
 		return loginWindow;
 	}
@@ -58,7 +63,11 @@ public class User {
 	public void createNewAccount() {
 		this.chatClient.sendCommand(ChatMeServer.NEW_USER_REQUEST);
 		createAccountWindow.dispose();
+		createLoginWindow();
 	}
+	
+	//public void createLoginWindow() {
+	
 	public int getSignal() {
 		return signal;
 	}
