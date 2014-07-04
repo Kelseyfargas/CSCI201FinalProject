@@ -46,13 +46,6 @@ public class ChatMeClient {
 			e.printStackTrace();
 		}
 	}
-	public void sendCommand(int command, String username, String password){
-		try{
-			ioclass.sendCommandAndListen(command);
-		} catch(Exception e){
-			e.printStackTrace();
-		}
-	}
 	
 	class InputOutputClass extends Thread {
 		ObjectInputStream in;
@@ -135,4 +128,19 @@ public class ChatMeClient {
 		}
 	}
 
+	public static void main(String [] args){
+		try{
+			User user = new User();
+			ChatMeClient cme = new ChatMeClient("localhost", 7777);
+			user.addClient(cme);
+			cme.addUser(user);
+			cme.startIO();
+			
+			//client.sendCommand(NEW_USER_REQUEST)
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 }
