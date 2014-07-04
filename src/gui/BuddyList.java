@@ -21,6 +21,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 import conversation.User;
 
@@ -28,8 +29,9 @@ public class BuddyList extends JFrame{
 	
 	public static User user;
 	
-	public BuddyList(){
+	public BuddyList(User user){
 		super("Buddy List");
+		this.user = user;
 		//this.user = user;
 		//menu bar
 
@@ -62,15 +64,25 @@ public class BuddyList extends JFrame{
 				 JDialog jd = new JDialog();
 				 jd.setTitle("Group Message");
 				 jd.setLocation(450,300);
-				 jd.setSize(200, 200);
+				 jd.setSize(350,350);
 				 jd.setModal(true);
 				 
 				 JPanel topPanel = new JPanel();
 				 topPanel.setLayout( new FlowLayout(FlowLayout.LEFT));
-				 JLabel nameOfConversation = new JLabel("Name Conversation:");
-				 JTextArea NOCTextArea = new JTextArea();
+				 JLabel nameOfConversation = new JLabel("Name the Conversation:");
+				 JTextField NOCTextField = new JTextField("My text field", 10);
+				 topPanel.add(nameOfConversation);
+				 topPanel.add(NOCTextField);
 				 
 				 JPanel centerPanel = new JPanel();
+				 centerPanel.setLayout( new FlowLayout(FlowLayout.CENTER));
+				 JLabel usersAddedToConversation = new JLabel("Users Added:");
+				 JTextArea usersAddedTX = new JTextArea("Users Added field", 5, 20);
+				 centerPanel.add(usersAddedToConversation);
+				 centerPanel.add(usersAddedTX);
+				 
+				 JPanel bottomPanel = new JPanel();
+				 bottomPanel.setLayout( new FlowLayout(FlowLayout.LEFT));
 				 String options[] = {"Item 1", "Item 2", "Item 3", "Item 4"};
 				 JComboBox jcb = new JComboBox(options);
 				 jcb.setForeground(Color.red);
@@ -80,8 +92,7 @@ public class BuddyList extends JFrame{
 				 
 				 JLabel jl1 = new JLabel("Kelsey, Katrina, "
 				 		+ "Ryan C., Ryan J.");
-				 topPanel.add(nameOfConversation);
-				 topPanel.add(NOCTextArea);
+	
 				 jd.add(topPanel);
 				 jd.setVisible(true);
 			}
@@ -256,6 +267,6 @@ public class BuddyList extends JFrame{
 		//this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	public static void main(String []args){
-		new BuddyList();
+		new BuddyList(user);
 	}
 }
