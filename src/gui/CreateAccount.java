@@ -189,6 +189,8 @@ public class CreateAccount extends JFrame{
 				System.out.println("About me is:" + us.getAboutme());
 				System.out.println("Image is: " + us.getImage());
 				
+				us.createLoginWindow();
+				
 			}
 			
 		}
