@@ -45,7 +45,7 @@ public class BuddyList extends JFrame{
 		
 		JPanel onlineusersPanel = new JPanel();
 		onlineusersPanel.setLayout(new BoxLayout(onlineusersPanel, BoxLayout.Y_AXIS));
-		JTextArea currentOnlineUsers = new JTextArea();
+		
 		for(int i = 0; i < online.size(); i++){
 //			if(OnlineUsers.equals(user.getName())){//if equal to current user
 //				OnlineUsers.remove(i);
@@ -55,15 +55,15 @@ public class BuddyList extends JFrame{
 				OUButton.setEnabled(true);
 				OUButton.setBorderPainted(false);
 				//onlineusersPanel.add(OUButton);
-				currentOnlineUsers.add(OUButton);
+				onlineusersPanel.add(OUButton);
 //			}
 		}
-		JScrollPane onlineUsersSP = new JScrollPane(currentOnlineUsers,
-									JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-									JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		JScrollPane onlineUsersSP = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+												JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		onlineUsersSP.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		onlineUsersSP.setPreferredSize(new Dimension(210,350));
-		onlineusersPanel.add(onlineUsersSP);
+		onlineUsersSP.add(onlineusersPanel);
+		//onlineusersPanel.add(onlineUsersSP);
 		centerPanel.add(onlineusersPanel);
 		//centerPanel.add(onlineUsersSP);
 		
@@ -251,6 +251,12 @@ public class BuddyList extends JFrame{
 		centerPanel.add(jtaNote);
 //
 		String []Users = {"Katrina.jpg",
+				"Sharads.jpg",
+				"Ryan C.jpg",
+				"Ryan J.jpg",
+				"Harvey.jpg",
+				"Mike.jpg",
+				"Katrina.jpg",
 				"Sharads.jpg",
 				"Ryan C.jpg",
 				"Ryan J.jpg",
