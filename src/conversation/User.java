@@ -23,7 +23,7 @@ public class User {
 	public  Message messagePackage;
 	private BuddyList buddyList;
 	private CreateAccount accountWindow;
-	private LogIn loginWindow;
+	public LogIn loginWindow;
 	private JFrame chatWindow; 
 	private String name;
 	private String aboutme;
@@ -138,7 +138,7 @@ public class User {
 
 	public void setImagePath(String imagePath)		{
 		this.imagePath = imagePath;
-		image = new ImageIcon(this.getClass().getResource(imagePath)).getImage();
+		image = new ImageIcon((imagePath)).getImage();
 	}
 
 	public String getImagePath()				{

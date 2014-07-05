@@ -149,8 +149,10 @@ public class ChatMeClient {
 			else if(command == ChatMeServer.NEW_MESSAGE_REQUEST){
 				System.out.println("Enter ChatName: ");
 				String chatName = scan.nextLine();
+				//String chatName = user.loginWindow.getUsername();
 				System.out.println("Enter Content: ");
 				String content = scan.nextLine();
+				//String content = user.loginWindow.getPassword();
 				Message msg = new Message(chatName, content);
 				System.out.println("\nSending Message Packet...");
 				userOut.writeObject(msg);
@@ -163,7 +165,7 @@ public class ChatMeClient {
 	class ServerInputOutputClass extends Thread{
 		
 		public void run(){
-//			
+			
 		}
 		
 		public void handleCommand(int command){
