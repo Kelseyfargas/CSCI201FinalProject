@@ -44,18 +44,28 @@ public class BuddyList extends JFrame{
 		OnlineUsers = online;
 		
 		JPanel onlineusersPanel = new JPanel();
-		onlineusersPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-		
+		onlineusersPanel.setLayout(new BoxLayout(onlineusersPanel, BoxLayout.Y_AXIS));
+		JTextArea currentOnlineUsers = new JTextArea();
 		for(int i = 0; i < online.size(); i++){
-			if(OnlineUsers.equals(user.getName())){//if equal to current user
-				OnlineUsers.remove(i);
-			}
-			else{
+//			if(OnlineUsers.equals(user.getName())){//if equal to current user
+//				OnlineUsers.remove(i);
+//			}
+//			else{
 				JButton OUButton = new JButton(OnlineUsers.get(i));
 				OUButton.setEnabled(true);
 				OUButton.setBorderPainted(false);
-			}
+				//onlineusersPanel.add(OUButton);
+				currentOnlineUsers.add(OUButton);
+//			}
 		}
+		JScrollPane onlineUsersSP = new JScrollPane(currentOnlineUsers,
+									JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+									JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		onlineUsersSP.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+		onlineUsersSP.setPreferredSize(new Dimension(210,350));
+		onlineusersPanel.add(onlineUsersSP);
+		centerPanel.add(onlineusersPanel);
+		//centerPanel.add(onlineUsersSP);
 		
 //		JTextArea onlineusers = new JTextArea();
 //		onlineusers.setPreferredSize(new Dimension(210,350));
@@ -229,7 +239,6 @@ public class BuddyList extends JFrame{
 		searchButton.setIcon(searchIcon);
 		searchButton.setBorderPainted(false);
 		topPanel.add(searchButton);
-
 		centerPanel.add(topPanel);
 		
 		JTextArea jtaNote = new JTextArea("Online Users", 1, 16); // online users section of code
@@ -241,13 +250,21 @@ public class BuddyList extends JFrame{
 		jtaNote.setFont(new Font("Courier", Font.BOLD, 22));
 		centerPanel.add(jtaNote);
 //
-//		ArrayList<String> Users = {"Katrina.jpg",
-//				"Sharads.jpg",
-//				"Ryan C.jpg",
-//				"Ryan J.jpg",
-//				"Harvey.jpg",
-//				"Mike.jpg"};
-
+		String []Users = {"Katrina.jpg",
+				"Sharads.jpg",
+				"Ryan C.jpg",
+				"Ryan J.jpg",
+				"Harvey.jpg",
+				"Mike.jpg"};
+		ArrayList<String> us = new ArrayList<String>(Users.length);
+		for(int u = 0; u < Users.length; u++){
+			
+			System.out.println("adding  " + Users[u]);
+			us.add(Users[u]);
+			System.out.println("ADDED: " + us.get(u));
+		}
+		setOnlineUsers(us);
+			
 		add(westPanel, BorderLayout.WEST);
 		add(centerPanel, BorderLayout.CENTER);
 		this.setSize(300,700);
@@ -256,6 +273,7 @@ public class BuddyList extends JFrame{
 		//this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}//public buddy list
 	public String temp = "";
+	private ArrayList<String> us;
 	public static void main(String []args){
 		new BuddyList(user);
 	}

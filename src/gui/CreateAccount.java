@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -81,12 +82,13 @@ public class CreateAccount extends JFrame{
 		
 		JPanel FirstBottomPanel = new JPanel();	
 		FirstBottomPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-		String [] images = {"BlackCat.png","Cow.png","Elephant1.png",
-				"FemaleLion.png","Fox.png","Kitten.png","Lion.png",
-				"Penguin.png","Tiger.png","Zebra.png"};
+		String [] images = {"Pictures/BlackCat.png","Pictures/Cow.png",
+				"Pictures/Elephant1.png","Pictures/FemaleLion.png",
+				"Pictures/Fox.png","Pictures/Kitten.png","Pictures/Lion.png",
+				"Pictures/Penguin.png","Pictures/Tiger.png","Pictures/Zebra.png"};
 		int left = (images.length)/2;
 		for(int i = 0; i < left; i++){
-			ImageIcon defaultIcon = new ImageIcon("Pictures/"+images[i]);
+			ImageIcon defaultIcon = new ImageIcon(images[i]);
 			JButton userIconButton = new JButton(defaultIcon);
 			FirstBottomPanel.add(userIconButton,gbc);
 			buttonsArray.add(userIconButton);
@@ -98,7 +100,7 @@ public class CreateAccount extends JFrame{
 		JPanel SecBottomPanel = new JPanel();	
 		SecBottomPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		for(int k = left; k < images.length; k++){
-			ImageIcon defaultIcon = new ImageIcon("Pictures/"+images[k]);
+			ImageIcon defaultIcon = new ImageIcon(images[k]);
 			JButton userIconButton = new JButton(defaultIcon);
 			SecBottomPanel.add(userIconButton,gbc);
 			buttonsArray.add(userIconButton);
@@ -116,8 +118,9 @@ public class CreateAccount extends JFrame{
 				this.imageButton = B;
 			}
 			public void actionPerformed(ActionEvent arg0) {
-				//System.out.println("User image chose:" + imageButton.getIcon());
-				us.setImagePath(imageButton.getName());
+				System.out.println("User image chose:" + imageButton.getIcon());
+				String name = imageButton.getIcon().toString();
+				us.setImagePath(name);
 				//set setImage needs to be ImageIcon
 			}
 			
