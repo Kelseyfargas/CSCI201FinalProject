@@ -108,23 +108,23 @@ public class CreateAccount extends JFrame{
 		gbc.gridwidth = 5;
 		add(SecBottomPanel, gbc);
 		//create class for Icon
-		class setIconAction implements ActionListener{
+		class setImageAction implements ActionListener{
 			User us;
 			JButton imageButton;
-			setIconAction(User u, JButton B){
+			setImageAction(User u, JButton B){
 				this.us = u;
 				this.imageButton = B;
 			}
 			public void actionPerformed(ActionEvent arg0) {
 				//System.out.println("User image chose:" + imageButton.getIcon());
-				us.setImage(imageButton.getIcon());
+				us.setImagePath(imageButton.getName());
 				//set setImage needs to be ImageIcon
 			}
 			
 		}
 		for(int v = 0; v < buttonsArray.size(); v++){
 			final JButton B = buttonsArray.get(v);
-			B.addActionListener(new setIconAction(user, B));
+			B.addActionListener(new setImageAction(user, B));
 		}
 		
 		JLabel BioLabel = new JLabel("Enter Short Bio:");
@@ -191,7 +191,7 @@ public class CreateAccount extends JFrame{
 				System.out.println("Name is:" + us.getName());
 				System.out.println("Password is:" + us.getPassword());
 				System.out.println("About me is:" + us.getAboutme());
-				System.out.println("Image is: " + us.getImage());
+				System.out.println("Image is: " + us.getImagePath());
 				
 			}
 			
