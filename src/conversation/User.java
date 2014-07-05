@@ -21,13 +21,6 @@ import serverside.ChatMeServer;
 public class User {
 	private int signal = 1;
 	public  Message messagePackage;
-
-	/*
-	static int  
-	static int 
-	static int 
-	static int
-	 */ 
 	private BuddyList buddyList;
 	private CreateAccount createAccountWindow;
 	private LogIn loginWindow;
@@ -57,6 +50,7 @@ public class User {
 	public LogIn getLoginWindow(){
 		return loginWindow;
 	}
+	
 	public void addClient(ChatMeClient client){
 		this.chatClient = client;
 		System.out.println("adding client");
