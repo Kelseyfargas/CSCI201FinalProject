@@ -25,12 +25,11 @@ public class LogIn extends JFrame {
 	private JTextField passwordTF;
 	public JButton logInButton;
 	private User user;
-	//public static LogIn log;
+
 	public LogIn(User user){
 		super("Login");
 		this.user = user;
 		
-		System.out.println("login");
 		JPanel westPanel = new JPanel();
 		JLabel image = new JLabel();
 		ImageIcon ii = new ImageIcon("Pictures/Message_Icon_Final.png");

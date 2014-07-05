@@ -8,6 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Scanner;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javax.swing.Icon;
 
@@ -17,98 +19,98 @@ public class ChatMeServer {
 	public static int LOGIN_REQUEST = 1;
 	public static int SIGN_OUT_REQUEST = 2;
 	public static int NEW_MESSAGE_REQUEST = 3;
+	public static int INVITE_CHAT_REQUEST = 4;
+	//public static int 
 
 	Database database;
-	static ServerSocket serverSocket;
-	static Socket socket;
-	static ObjectOutputStream out;
-	static ObjectInputStream in;
+
+	private Socket userReqSocket;
+	private ObjectOutputStream userOut;
+	private ObjectInputStream userIn;
+	private Socket servReqSocket;
+	private ObjectOutputStream servOut;
+	private ObjectInputStream servIn;
 	
-	public ChatMeServer(int port) throws IOException{
-		System.out.println("Starting server...");
-		serverSocket = new ServerSocket(7777);
-		System.out.println("Server started...");
+	private Lock lock= new ReentrantLock();
+	
+	public ChatMeServer() throws IOException{
+		printDbg("Starting server...");
+		ServerSocket ss1 = new ServerSocket(7777);
+		ServerSocket ss2 = new ServerSocket(8888);
+		printDbg("Server started...");
 		
 		while(true){
-			socket = serverSocket.accept();
-			System.out.println("Connection from: " + socket.getInetAddress());
-			out = new ObjectOutputStream(socket.getOutputStream());
-			in = new ObjectInputStream(socket.getInputStream());
-			ChatThread ct = new ChatThread(socket, out, in);
-			ct.run();
+			userReqSocket = ss1.accept();
+			servReqSocket = ss2.accept();
 			
-		}
-		
+			printDbg("Connection from: " + userReqSocket.getInetAddress());
+			
+			userOut = new ObjectOutputStream(userReqSocket.getOutputStream());
+			userIn = new ObjectInputStream(userReqSocket.getInputStream());
+			
+			servOut = new ObjectOutputStream(servReqSocket.getOutputStream());
+			servIn = new ObjectInputStream(servReqSocket.getInputStream());
+			
+			UserReqThread ct = new UserReqThread(userIn, userOut);
+			ct.start();
+		}		
 	}
 	
-	private Database recoverDatabase() {
-		boolean DATABASE_EXISTS = false; //Remove this during correct implementation
 
-
-		if(DATABASE_EXISTS){
-			//return Database from FILE
-		}
-		else{
-			Database database = new Database();
-			return database;
-		}
-		return database; // This should also be changed to take either existing or new database
-
+	public static void printDbg(String message) {
+		System.out.println(Thread.currentThread().toString() + message);
 	}
-
-
 	public static void main(String [] args) throws IOException{
-		new ChatMeServer(7777);
+		new ChatMeServer();
 	}
-	/* Chat Thread Class */
-	class ChatThread extends Thread {
+
+	class UserReqThread extends Thread {
+
+		private ObjectOutputStream threadUserOut;
+		private ObjectInputStream threadUserIn;
 		
-		ObjectOutputStream out;
-		ObjectInputStream in;
-		Socket s;
-		public ChatThread(Socket s, ObjectOutputStream out, ObjectInputStream in){
-			this.out = out;
-			this.in = in;
-			this.s = s;
+		public UserReqThread(ObjectInputStream in, ObjectOutputStream out) throws IOException{
+			threadUserIn = in;
+			threadUserOut = out;
 		}
-		public void run(){
-			
+		
+		public void run(){	
 				
 			//1. Send Welcome Message
 			String message = "Welcome. Please Enter a Command.";
 			try {
-				System.out.println("Welcome message Sent\n");
-				out.writeObject(message);
+				printDbg("Welcome message Sent\n");
+				threadUserOut.writeObject(message);
 				
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
-				
+			
 			//2. Listen for Signal
-			System.out.println("SERVER: Listening for command");
+			printDbg("SERVER: Listening for command");
 			while(true){
 				try {
-					int command = in.readInt();
-
+					/* */
+					int command = threadUserIn.readInt();
 					handleCommand(command);
 					
 				} catch (IOException | ClassNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-					this.out = null;
-					this.in = null;
+					threadUserOut = null;
+					threadUserIn = null;
 				}
 				
 			}
 		}
 		private void handleCommand(int command) throws IOException, ClassNotFoundException {
 			Scanner scan = new Scanner(System.in);
-			System.out.println("SERVER: parsing command...");
+			printDbg("SERVER: parsing command...");
 			if(command==LOGIN_REQUEST){
-				System.out.println("Command recieved on server: Login\n");
-				System.out.println("Reading in: " + in.readObject());
-				System.out.println("Reading in: " + in.readObject());
-				System.out.println("Does this look correct? (1) Yes. (2)No.\n");
+				printDbg("Command recieved on server: Login\n");
+				printDbg("Reading in: " + threadUserIn.readObject());
+				printDbg("Reading in: " + threadUserIn.readObject());
+				printDbg("Does this look correct? (1) Yes. (2)No.\n");
 				int response = scan.nextInt();
 				
 				//debug
@@ -119,42 +121,60 @@ public class ChatMeServer {
 				strArr.add("Kelsey");
 				
 				if(response == 1){
-					System.out.println("Giving OK to log in.");
-					System.out.println("Attempting to send online Users");
-					out.writeBoolean(true);
-					out.flush();
-					out.writeObject(strArr);
-					System.out.println("Finished command");
+					printDbg("Giving OK to log in.");
+					printDbg("Attempting to send online Users");
+					threadUserOut.writeBoolean(true);
+					threadUserOut.flush();
+					threadUserOut.writeObject(strArr);
+					printDbg("Finished command");
+					
+					
 					return;
 				}
 				else{
-					System.out.println("Denying user.");
-					out.writeBoolean(false);
-					out.flush();
-					System.out.println("Finished command");
+					printDbg("Denying user.");
+					threadUserOut.writeBoolean(false);
+					threadUserOut.flush();
+					printDbg("Finished command");
 				}
 			}
 			if(command == SIGN_OUT_REQUEST){
-				System.out.println("Command recieved on server: Sign Out");	
+				printDbg("Command recieved on server: Sign Out");	
 			}
 			if(command == NEW_USER_REQUEST){
-				System.out.println("SERVER: Command recieved on server: New User");
-				String username = (String) in.readObject();
-				String password = (String) in.readObject();
-				String bio 	    = (String) in.readObject();
-				Icon   img 		= (Icon)   in.readObject();
-				System.out.println("SERVER READS:"
+				printDbg("SERVER: Command recieved on server: New User");
+				String username = (String) threadUserIn.readObject();
+				String password = (String) threadUserIn.readObject();
+				String bio 	    = (String) threadUserIn.readObject();
+				Icon   img 		= (Icon)   threadUserIn.readObject();
+				printDbg("SERVER READS:"
 						+ username + " " + password + " " + bio + " " + img);
 			}
 			if(command == NEW_MESSAGE_REQUEST){
-				System.out.println("Command recieved: New Message");
-				System.out.println("Reading message . . .");
-				Message msg = (Message) in.readObject();
+				printDbg("Command recieved: New Message");
+				printDbg("Reading message . . .");
+				Message msg = (Message) threadUserIn.readObject();
 				msg.print();
-				System.out.println("Finished command");
+				printDbg("Finished command");
 			}
 		}
 	}
+	class ServReqThread extends Thread{
+		
+		ObjectOutputStream servOut;
+		ObjectInputStream  servIn;
+		
+		public ServReqThread(ObjectOutputStream servOut, ObjectInputStream userIn){
+			this.servOut = servOut;
+			this.servIn  = servIn;
+		}
+		public void run(){
+			//Listen for Commands from database
+			
+		}
+	}
+
+
 }
 class Database {
 	//super fake

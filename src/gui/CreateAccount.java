@@ -25,8 +25,7 @@ public class CreateAccount extends JFrame{
 	
 	private JButton createAccount;
 	private JButton logInButton;
-	public static CreateAccount ca;
-	public static LogIn LG;
+
 	private static User user;
 	private JTextField usernameField;
 	private JTextField passwordField;
@@ -178,18 +177,15 @@ public class CreateAccount extends JFrame{
 				this.us = u;
 			}
 			public void actionPerformed(ActionEvent ae) {
-				//System.out.println("Button Pressed");;
-				//ca.pullThePlug();
+
 				us.setPassword(passwordField.getText());
 				us.setName(usernameField.getText());
 				us.setAboutme(Bio.getText());
-				us.createNewAccount();
+				us.createNewAccount(); //This method also calls user.createNewAccount. No need to call it again
 				System.out.println("Name is:" + us.getName());
 				System.out.println("Password is:" + us.getPassword());
 				System.out.println("About me is:" + us.getAboutme());
 				System.out.println("Image is: " + us.getImage());
-				
-				us.createLoginWindow();
 				
 			}
 			
@@ -202,9 +198,8 @@ public class CreateAccount extends JFrame{
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
-	public static void main(String []args){
-		new CreateAccount(user);
-	}
+
+	
 	public String getUserNameField(){
 		return 	usernameField.getText();
 	}
