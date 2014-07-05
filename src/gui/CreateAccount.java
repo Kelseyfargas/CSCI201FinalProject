@@ -14,6 +14,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -31,6 +32,11 @@ public class CreateAccount extends JFrame{
 	private JTextField passwordField;
 	private JTextArea Bio;
 	
+	public void displayError(){
+		JOptionPane.showMessageDialog(CreateAccount.this, 
+				"User Exists","User already exists. Create a new username.",
+				JOptionPane.INFORMATION_MESSAGE);
+	}
 	public CreateAccount(User user){
 		super("Create Account");
 		this.user = user;
@@ -176,7 +182,7 @@ public class CreateAccount extends JFrame{
 			createAcc(User u){
 				this.us = u;
 			}
-			public void actionPerformed(ActionEvent ae) {
+			public void actionPerformed(ActionEvent  ae) {
 
 				us.setPassword(passwordField.getText());
 				us.setName(usernameField.getText());
@@ -213,4 +219,5 @@ public class CreateAccount extends JFrame{
 //	    WindowEvent wev = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
 //	    Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(wev);
 //	}
+
 }

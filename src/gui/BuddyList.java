@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.ItemSelectable;
@@ -9,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.BoxLayout;
@@ -33,20 +35,72 @@ import conversation.User;
 public class BuddyList extends JFrame{
 	
 	public static User user;
-	private  JButton addUserButton;
-	private JTextField NOCTextField;
-	private JTextArea usersAddedTX;
-	private JButton startChatButton;
-	private JComboBox userSelectedCB;
 	public static ChatRoomGUI CRG;
-	
+	public static JPanel centerPanel;
+	public void setOnlineUsers(ArrayList<String> online){//update the online users given the strings
+		//make sure that you dont create a chat with yourself
+		//add online users to a display list
+		ArrayList<String> OnlineUsers;
+		OnlineUsers = online;
+		
+		JPanel onlineusersPanel = new JPanel();
+		onlineusersPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+		
+		for(int i = 0; i < online.size(); i++){
+			if(OnlineUsers.equals(user.getName())){//if equal to current user
+				OnlineUsers.remove(i);
+			}
+			else{
+				JButton OUButton = new JButton(OnlineUsers.get(i));
+				OUButton.setEnabled(true);
+				OUButton.setBorderPainted(false);
+			}
+		}
+		
+//		JTextArea onlineusers = new JTextArea();
+//		onlineusers.setPreferredSize(new Dimension(210,350));
+//		onlineusers.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+//		for(int i = 0; i < Users.length; i++){
+//			ImageIcon friendsIcon = new ImageIcon("Pictures/"+Users[i]);
+//			final String usersname = Users[i].substring(0, Users[i].indexOf('.'));
+//			JButton friends = new JButton(usersname);
+//			friends.setEnabled(true);
+//			friends.setIcon(friendsIcon);
+//			friends.setBorderPainted(false);
+//			friends.addActionListener(new ActionListener(){
+//				public void actionPerformed(ActionEvent e) {
+//					 JDialog jd = new JDialog();
+////					 jd.setTitle("About");
+//					 jd.setLocation(450,300);
+//					 jd.setSize(200, 200);
+//					 jd.setModal(true);
+//					 JPanel jp = new JPanel();
+//					 BoxLayout bl = new BoxLayout(jp, BoxLayout.Y_AXIS);
+//					 jp.setLayout(bl);
+//					 JLabel jl = new JLabel("About Me");
+//					 JLabel jl1 = new JLabel("My Name is " + usersname);
+//					 jp.add(jl);
+//					 jp.add(jl1);
+//					 jd.add(jp);
+//					 jd.setVisible(true);
+//				}
+//				
+//			});
+//			//onlineUsers.add(friends);
+//		}//end of for loop
+//		JScrollPane onlineUsersSP = new JScrollPane(onlineUsers,
+//				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+//				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+//		onlineUsersSP.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+//		centerPanel.add(onlineUsersSP);s
+		
+	}
 	
 	public BuddyList(User user){
 		super("Buddy List");
 		this.user = user;
-		//this.user = user;
-		//menu bar
-
+		
+		//ALL CLASSES FOR ACTION LISTENER
 		class StartMessage implements ActionListener{
 			StartMessage(){
 			}
@@ -69,15 +123,32 @@ public class BuddyList extends JFrame{
 				}
 			}
 		}
-		class GroupMessage implements ActionListener{
-			GroupMessage(){
-			}
+		class StartGroupMessage implements ActionListener{
+			ChatRoomGUI cg;
 			public void actionPerformed(ActionEvent ae){
-				 createDialogeGroupMessage();
+				 cg.createDialogeGroupMessage();
 			}
 		}
-
-
+		class iconButtonClass implements ActionListener{
+			User us;
+			public iconButtonClass(User u){
+				this.us = u;
+			}
+			public void actionPerformed(ActionEvent e) {
+				 JDialog jd = new JDialog();
+//				 jd.setTitle("About");
+				 jd.setLocation(450,300);
+				 jd.setSize(200, 200);
+				 jd.setModal(true);
+				 JPanel jp = new JPanel();
+				 BoxLayout bl = new BoxLayout(jp, BoxLayout.Y_AXIS);
+				 jp.setLayout(bl);
+				 JTextArea aboutMeTA = new JTextArea(us.getAboutme());
+				 jd.add(aboutMeTA);
+				 jd.add(jp);
+				 jd.setVisible(true);
+			}
+		}
 		JMenuBar jmb = new JMenuBar();
 		JMenu fileMenu = new JMenu("File");
 		JMenuItem startMessageMenuItem = new JMenuItem("Start Message");
@@ -85,7 +156,7 @@ public class BuddyList extends JFrame{
 		JMenu helpMenu = new JMenu("Help");
 		JMenuItem aboutMenuItem = new JMenuItem("About");
 		startMessageMenuItem.addActionListener(new StartMessage());
-		startGroupMessageMI.addActionListener(new GroupMessage());
+		startGroupMessageMI.addActionListener(new StartGroupMessage());
 		aboutMenuItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
 				 JDialog jd = new JDialog();
@@ -119,41 +190,16 @@ public class BuddyList extends JFrame{
 		
 		//Icon picIcon = user.getImage();
 		//JButton iconButton = new JButton(picIcon);
-		JButton iconButton = new JButton("b");
+		JButton iconButton = new JButton("Icon");
 		//iconButton.setPressedIcon(picIcon);
 		iconButton.setSize(50,50);
 		iconButton.setLocation(0,0);
 		iconButton.setBorderPainted(false);
-		class iconButtonClass implements ActionListener{
-			User us;
-			public iconButtonClass(User u){
-				this.us = u;
-			}
-			public void actionPerformed(ActionEvent e) {
-				 JDialog jd = new JDialog();
-//				 jd.setTitle("About");
-				 jd.setLocation(450,300);
-				 jd.setSize(200, 200);
-				 jd.setModal(true);
-				 JPanel jp = new JPanel();
-				 BoxLayout bl = new BoxLayout(jp, BoxLayout.Y_AXIS);
-				 jp.setLayout(bl);
-				 JTextArea aboutMeTA = new JTextArea(us.getAboutme());
-//				 JLabel jl = new JLabel("About Me");
-//				 JLabel jl1 = new JLabel("I go to school");
-//				 jp.add(jl);
-//				 jp.add(jl1);
-				 jd.add(aboutMeTA);
-				 jd.add(jp);
-				 jd.setVisible(true);
-			}
-		}
 		iconButton.addActionListener(new iconButtonClass(user));
-		
 		westPanel.add(iconButton);
 		
 		//center panel
-		JPanel centerPanel = new JPanel();
+		centerPanel = new JPanel();
 		centerPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		
 		JPanel topPanel = new JPanel();
@@ -174,22 +220,19 @@ public class BuddyList extends JFrame{
 		groupChatButton.setSize(30,30);
 		groupChatButton.setLocation(10,10);
 		groupChatButton.setBorderPainted(false);
+		groupChatButton.addActionListener(new StartGroupMessage());//share action listener with group chat
 		topPanel.add(groupChatButton);
 		
-//		ImageIcon searchIcon = new ImageIcon("Search.png");
-//		JButton jtf = new JButton();
-//		jtf.setEnabled(true);
-//		jtf.setIcon(searchIcon);
-//		
-//		JTextField chatLabel = new JTextField("Start Chat",13);
-//		chatLabel.setEnabled(true);
-		
-		//topPanel.add(jtf);
-		//topPanel.add(chatLabel);
-		
+		ImageIcon searchIcon = new ImageIcon("Search.png");
+		JButton searchButton = new JButton();
+		searchButton.setEnabled(true);
+		searchButton.setIcon(searchIcon);
+		searchButton.setBorderPainted(false);
+		topPanel.add(searchButton);
+
 		centerPanel.add(topPanel);
 		
-		JTextArea jtaNote = new JTextArea("Online Users", 1, 16);
+		JTextArea jtaNote = new JTextArea("Online Users", 1, 16); // online users section of code
 		jtaNote.setEditable(false);
 		jtaNote.setLineWrap(true);
 		jtaNote.setWrapStyleWord(true);
@@ -197,48 +240,13 @@ public class BuddyList extends JFrame{
 		jtaNote.setBackground(Color.LIGHT_GRAY);
 		jtaNote.setFont(new Font("Courier", Font.BOLD, 22));
 		centerPanel.add(jtaNote);
-		
-		String [] Users = {"Katrina.jpg",
-				"Sharads.jpg",
-				"Ryan C.jpg",
-				"Ryan J.jpg",
-				"Harvey.jpg",
-				"Mike.jpg"};
-		for(int i = 0; i < Users.length-1; i++){
-			ImageIcon friendsIcon = new ImageIcon("Pictures/"+Users[i]);
-			final String usersname = Users[i].substring(0, Users[i].indexOf('.'));
-			JButton friends = new JButton(usersname);
-			friends.setEnabled(true);
-			friends.setIcon(friendsIcon);
-			friends.setBorderPainted(false);
-			friends.addActionListener(new ActionListener(){
-				public void actionPerformed(ActionEvent e) {
-					 JDialog jd = new JDialog();
-//					 jd.setTitle("About");
-					 jd.setLocation(450,300);
-					 jd.setSize(200, 200);
-					 jd.setModal(true);
-					 JPanel jp = new JPanel();
-					 BoxLayout bl = new BoxLayout(jp, BoxLayout.Y_AXIS);
-					 jp.setLayout(bl);
-					 JLabel jl = new JLabel("About Me");
-					 JLabel jl1 = new JLabel("My Name is " + usersname);
-					 jp.add(jl);
-					 jp.add(jl1);
-					 jd.add(jp);
-					 jd.setVisible(true);
-				}
-				
-			});
-			centerPanel.add(friends);
-		}
-		
-		ImageIcon offlineIcon = new ImageIcon("Pictures/"+Users[Users.length-1]);
-		JButton offlineFriend = new JButton(Users[Users.length-1].substring(0, Users[Users.length-1].indexOf('.')));
-		offlineFriend.setEnabled(true);
-		offlineFriend.setIcon(offlineIcon);
-		offlineFriend.setBorderPainted(false);
-		centerPanel.add(offlineFriend);
+//
+//		ArrayList<String> Users = {"Katrina.jpg",
+//				"Sharads.jpg",
+//				"Ryan C.jpg",
+//				"Ryan J.jpg",
+//				"Harvey.jpg",
+//				"Mike.jpg"};
 
 		add(westPanel, BorderLayout.WEST);
 		add(centerPanel, BorderLayout.CENTER);
@@ -246,109 +254,8 @@ public class BuddyList extends JFrame{
 		this.setLocation(950,500);
 		this.setVisible(true);
 		//this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	}
+	}//public buddy list
 	public String temp = "";
-	class addUserToChatClass implements ActionListener{
-		private String cn;
-		private JTextArea tx;	
-		addUserToChatClass(String selected, JTextArea tx){
-			this.cn = selected;
-			this.tx = tx;
-			
-		}
-		public void actionPerformed(ActionEvent ae){
-//			System.out.println(userSelectedCB.getItemListeners());
-//			String item = (String)userSelectedCB.getSelectedItem();
-			System.out.println("item is: " + cn);
-			tx.setText(cn+ ", ");
-			//temp += cn;
-			System.out.println("temp is: " + temp);
-		}
-
-
-	}
-	private void addUsersToTextField(String selected, JTextArea jta){
-		addUserButton.addActionListener( new addUserToChatClass(selected, jta));
-	}
-	class startChatClass implements ActionListener{
-		startChatClass(JTextField NOCTextField){
-			
-		}
-		public void actionPerformed(ActionEvent ae){
-			
-		}
-	}
-	static private String selectedString(ItemSelectable is) {
-	    Object selected[] = is.getSelectedObjects();
-	    return ((selected.length == 0) ? "null" : (String) selected[0]);
-	 }
-	private void createDialogeGroupMessage(){
-		 JDialog jd = new JDialog();
-		 jd.setTitle("Group Message");
-		 jd.setLocation(450,100);
-		 jd.setSize(350,100);
-		 jd.setModal(true);
-		 
-		 JPanel jp = new JPanel();
-		 jp.setLayout(new BoxLayout(jp, BoxLayout.Y_AXIS)); 
-		 
-		 JPanel topPanel = new JPanel();
-		 topPanel.setLayout( new FlowLayout(FlowLayout.LEFT));
-		 JLabel nameOfConversation = new JLabel("Name the Conversation:");
-		 NOCTextField = new JTextField("Conversation name", 13);
-		 topPanel.add(nameOfConversation);
-		 topPanel.add(NOCTextField);
-		 
-//		 JPanel centerPanel = new JPanel();
-//		 centerPanel.setLayout( new FlowLayout(FlowLayout.LEFT));
-//		 JLabel usersAddedToConversation = new JLabel("Users Added:");
-//		 usersAddedTX = new JTextArea("Users Added field", 1, 20);
-//		 usersAddedTX.setEditable(false);
-//		 JScrollPane scrollPaneUsersAdded = new JScrollPane(usersAddedTX,
-//				 	JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-//					JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-//		 centerPanel.add(usersAddedToConversation);
-//		 centerPanel.add(scrollPaneUsersAdded);
-//		 
-		 JPanel bottomPanel = new JPanel();
-		 bottomPanel.setLayout( new FlowLayout(FlowLayout.RIGHT));
-//		 final String options[] = {"User 1", "User 2", "User 3", "User 4"};
-//		 //JLabel chooseUsersLabel = new JLabel("Add+:");
-//		 userSelectedCB = new JComboBox(options);
-//		 userSelectedCB.setSelectedItem(options);
-//		 userSelectedCB.addItemListener(new ItemListener(){
-//	 			public void itemStateChanged(ItemEvent itemEvent){
-//	 				int state = itemEvent.getStateChange();
-//	 		        System.out.println((state == ItemEvent.SELECTED) ? "Selected" : "Deselected");
-//	 		        System.out.println("Item: " + itemEvent.getItem());
-//	 		        ItemSelectable is = itemEvent.getItemSelectable();
-//	 		        String selected = selectedString(is);
-//	 		        System.out.println(", Selected: " + selected);
-//	 				 addUsersToTextField(selected, usersAddedTX);//adds users to TF
-//	 			}
-//	 		});
-//		 userSelectedCB.setForeground(Color.blue);
-//		 userSelectedCB.setBackground(Color.white);
-////		 userSelectedCB.setSelectedItem("User 1");
-//		 addUserButton = new JButton("Add User");
-		 startChatButton = new JButton("Start Chat");
-		 startChatButton.addActionListener(new ActionListener(){
-			// ChatRoomGUI
-			 public void actionPerformed(ActionEvent ae){
-				 //new ChatRoomGUI(NOCTextField);
-			 }
-		 });
-//		 //bottomPanel.add(chooseUsersLabel);
-//		 bottomPanel.add(userSelectedCB);
-//		 bottomPanel.add(addUserButton);
-		 bottomPanel.add(startChatButton);
-
-		 jp.add(topPanel);
-//		 jp.add(centerPanel);
-		 jp.add(bottomPanel);
-		 jd.add(jp);
-		 jd.setVisible(true);
-	}
 	public static void main(String []args){
 		new BuddyList(user);
 	}
