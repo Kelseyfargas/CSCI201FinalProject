@@ -1,4 +1,5 @@
 package serverside;
+import java.awt.Image;
 import java.io.*;
 import java.net.*;
 import java.io.IOException;
@@ -37,6 +38,8 @@ public class ChatMeServer {
 		ServerSocket ss1 = new ServerSocket(7777);
 		ServerSocket ss2 = new ServerSocket(8888);
 		printDbg("Server started...");
+		
+		database = new Database();
 		
 		while(true){
 			userReqSocket = ss1.accept();
@@ -105,25 +108,57 @@ public class ChatMeServer {
 		private void handleCommand(int command) throws IOException, ClassNotFoundException {
 			Scanner scan = new Scanner(System.in);
 			printDbg("SERVER: parsing command...");
-			if(command==LOGIN_REQUEST){
+			if(command == NEW_USER_REQUEST){
+				//SAT: FINISHED
+				printDbg("SERVER: Command recieved on server: New User");
+				String username = (String) threadUserIn.readObject();
+				String password = (String) threadUserIn.readObject();
+				String bio 	    = (String) threadUserIn.readObject();
+				String imgPath 	= (String) threadUserIn.readObject();
+				printDbg("SERVER READS:"
+						+ username + " " + password + " " + bio + " " + imgPath);
+
+				boolean OK = database.verifyUserExists(username);
+				threadUserOut.writeBoolean(OK);
+				if(OK == true){
+					database.createAccount(username, password, bio, imgPath);
+				}
+				
+			}
+			else if(command==LOGIN_REQUEST){
+				
 				printDbg("Command recieved on server: Login\n");
-				printDbg("Reading in: " + threadUserIn.readObject());
-				printDbg("Reading in: " + threadUserIn.readObject());
-				printDbg("Does this look correct? (1) Yes. (2)No.\n");
-				int response = scan.nextInt();
+				String un = (String) threadUserIn.readObject();
+				String pw = (String) threadUserIn.readObject();
+				printDbg("Reading in: " + un);
+				printDbg("Reading in: " + pw);
+				/////////////////verify//////////////////////////
+
+				boolean OK = database.login(un, pw);
+				////////////////////////////////////////////
 				
-				//debug
-				ArrayList<String> strArr = new ArrayList<String>();
-				strArr.add("RyanC");
-				strArr.add("RyanJ");
-				strArr.add("Katrina");
-				strArr.add("Kelsey");
 				
-				if(response == 1){
+				
+				if(OK == true){
+					database.addToOnlineList(un);
 					printDbg("Giving OK to log in.");
+					
+					
 					printDbg("Attempting to send online Users");
+					
 					threadUserOut.writeBoolean(true);
-					threadUserOut.flush();
+					threadUserOut.flush(); //send OK
+					
+					//send bio
+					String bio = database.getBio(un);
+					
+					//send imagepath
+					String imgPath = database.getImagePath(un);
+					
+					
+					//send onlineUsers
+					ArrayList<String> strArr = new ArrayList<String>();
+					strArr = database.getOnlineList();
 					threadUserOut.writeObject(strArr);
 					printDbg("Finished command");
 					
@@ -137,18 +172,12 @@ public class ChatMeServer {
 					printDbg("Finished command");
 				}
 			}
+			
 			if(command == SIGN_OUT_REQUEST){
-				printDbg("Command recieved on server: Sign Out");	
+				printDbg("Command recieved on server: Sign Out");
+				
 			}
-			if(command == NEW_USER_REQUEST){
-				printDbg("SERVER: Command recieved on server: New User");
-				String username = (String) threadUserIn.readObject();
-				String password = (String) threadUserIn.readObject();
-				String bio 	    = (String) threadUserIn.readObject();
-				Icon   img 		= (Icon)   threadUserIn.readObject();
-				printDbg("SERVER READS:"
-						+ username + " " + password + " " + bio + " " + img);
-			}
+			
 			if(command == NEW_MESSAGE_REQUEST){
 				printDbg("Command recieved: New Message");
 				printDbg("Reading message . . .");
@@ -175,8 +204,38 @@ public class ChatMeServer {
 
 
 }
+
 class Database {
 	//super fake
+	public void doAction(int action){
+		
+	}
+	public String getImagePath(String un) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public String getBio(String un) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public ArrayList<String> getOnlineList() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public void addToOnlineList(String un) {
+		// TODO Auto-generated method stub
+		
+	}
+	public boolean login(String un, String pw) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	public boolean verifyUserExists(String name){
+		return true; //FIX THIS
+	}
+	public void createAccount(String username, String password, String bio, String imgPath){
+		
+	}
 }
 class Message implements Serializable {
 	String name;

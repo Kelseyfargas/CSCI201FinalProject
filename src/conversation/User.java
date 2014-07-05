@@ -22,14 +22,15 @@ public class User {
 	private int signal = 1;
 	public  Message messagePackage;
 	private BuddyList buddyList;
-	private CreateAccount createAccountWindow;
+	private CreateAccount accountWindow;
 	private LogIn loginWindow;
 	private JFrame chatWindow; 
 	private String name;
 	private String aboutme;
 	private String password;
 	private String status;
-	private Icon icon;
+	private String imagePath;
+	private Image image;
 	private ArrayList<String> onlineUsers;
 	private ArrayList<GroupConversation> currentConversations;		// change to Conversation 						
 	private ChatMeClient chatClient;
@@ -39,11 +40,11 @@ public class User {
 	}
 
 	public void createAccountWindow() {
-		createAccountWindow =  new CreateAccount(this);
+		accountWindow =  new CreateAccount(this);
 	}
 	
 	public void createLoginWindow() {
-		createAccountWindow.dispose();
+		accountWindow.dispose();
 		loginWindow = new LogIn(this);
 	}
 	
@@ -58,16 +59,28 @@ public class User {
 
 	public void createNewAccount() {
 		this.chatClient.sendCommand(ChatMeServer.NEW_USER_REQUEST);
+		// verify if isn't taken, wait for respose // 
+		
 		createLoginWindow();
 	}
 	
-	public void sendLogInRequest() {
+	public void sendLogInRequest() {	
 		chatClient.sendCommand(ChatMeServer.LOGIN_REQUEST);
+		//update GUI based on online users 
+		//UpdateBuddyList(this);
 	}
 	
 	public void createBuddyList() {
 		buddyList = new BuddyList(this);
 		loginWindow.dispose();
+	}
+	
+	public void nameExistError() {
+		accountWindow.displayError();
+	}
+	
+	public void incorrectInfoError() {
+		
 	}
 	
 	public int getSignal() {
@@ -78,18 +91,7 @@ public class User {
 		signal = command; 
 	}
 
-	public void sendCreateNewAccountRequest() {
-
-	}
-
-	/* Deleted Feature! */
-	public void addFriend(String username, Image img, boolean status) {
-		//buddyList.updateFriendList(username,img,status);
-	}
-	// update design document (notifynewAdd deleted) //
-
-
-	public void startNewMessage(String conversationName) {					//single conversation
+	public void startNewConversation(String conversationName) {					//single conversation
 		//chatWindow.beginConversation(conversationName);
 	}
 
@@ -102,8 +104,15 @@ public class User {
 
 	public void setOnlineUsers(ArrayList<String> onlineUsers) {
 		this.onlineUsers = onlineUsers;
-	}	
+	}
 	
+	public ArrayList<String> getOnlineUsers(){
+		return this.onlineUsers;
+	}
+	
+	public BuddyList getBuddyList() {
+		return this.buddyList;
+	}
 	public void setName(String name)	{
 		this.name = name;
 	}
@@ -127,11 +136,13 @@ public class User {
 		return this.password;
 	}
 
-	public void setImage(Icon icon)		{
-		this.icon = icon;
+	public void setImagePath(String imagePath)		{
+		this.imagePath = imagePath;
+		image = new ImageIcon(this.getClass().getResource(imagePath)).getImage();
 	}
 
-	public Icon getImage()				{
-		return this.icon;
+	public String getImagePath()				{
+		return this.imagePath;
 	}
+	
 }

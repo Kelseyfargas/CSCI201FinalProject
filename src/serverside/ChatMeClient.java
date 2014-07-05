@@ -15,7 +15,12 @@ import conversation.User;
 
 public class ChatMeClient {
 	
-
+	static int NEW_USER_REQUEST = 0;
+	static int LOGIN_REQUEST = 1;
+	static int SIGN_OUT_REQUEST = 2;
+	static int NEW_MESSAGE_REQUEST = 3;
+	static int INVITE_CHAT_REQUEST = 4;
+	static int DISPLAY_BIO = 5;
 	private User user;
 	
 	private Socket userRequestSocket;
@@ -29,6 +34,8 @@ public class ChatMeClient {
 	private ServerInputOutputClass sioclass;
 	
 	private Lock lock = new ReentrantLock();
+	
+
 	
 	public ChatMeClient(String hostname) throws IOException{
 		String ipAddress = "localhost";
@@ -93,12 +100,10 @@ public class ChatMeClient {
 			Scanner scan = new Scanner(System.in); //For Debug Purposes
 			if(command == ChatMeServer.LOGIN_REQUEST){
 				System.out.println("CLIENT: log in request");
-				
 				String un = user.getName();
 				String pw = user.getPassword();
 				userOut.writeObject(un);
 				userOut.writeObject(pw);
-				
 				userOut.flush();
 				
 				System.out.println("waiting . . .");
@@ -111,10 +116,12 @@ public class ChatMeClient {
 					for(int i=0; i< onlineUsers.size();i++){
 						System.out.println("Online: " + onlineUsers.get(i));
 					}
+					user.setOnlineUsers(onlineUsers);
 					user.createBuddyList();
 				}
 				else{
 					System.out.println("Could not log in. Incorrect Credentials");
+					user.incorrectInfoError();
 				}
 			}
 			else if(command == ChatMeServer.NEW_USER_REQUEST){
@@ -122,17 +129,22 @@ public class ChatMeClient {
 				String username = user.getName();
 				String password = user.getPassword();
 				String aboutMe  = user.getAboutme();
-				Icon image	= user.getImage();
+				String imagePath	= user.getImagePath();
 				
 				System.out.println("writing username, password, aboutme, and image");
 				userOut.writeObject(username);
 				userOut.writeObject(password);
 				userOut.writeObject(aboutMe);
-				userOut.writeObject(image);
-				// ^^^ psuedo
-				/* Needs Finishing*/
-				
-				
+				userOut.writeObject(imagePath);
+				userOut.flush();
+				boolean OK = userIn.readBoolean();
+				if(OK == true)	{
+					user.createBuddyList();
+				}
+				else {
+					System.out.println("This user name is already taken!!!");
+					user.nameExistError();
+				}
 			}
 			else if(command == ChatMeServer.NEW_MESSAGE_REQUEST){
 				System.out.println("Enter ChatName: ");
@@ -161,6 +173,7 @@ public class ChatMeClient {
 	public static void main(String [] args){
 		try{
 			User user = new User();
+			System.out.println("The path of the image is :" + user.getImagePath());
 			ChatMeClient cme = new ChatMeClient("localhost");
 			user.addClient(cme);
 			cme.addUser(user);

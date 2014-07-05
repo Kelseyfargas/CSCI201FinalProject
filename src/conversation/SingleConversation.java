@@ -2,15 +2,16 @@ package conversation;
 
 import java.util.ArrayList;
 
-public class SingleConversation extends GroupConversation {
-	private User original_poster;											// User object that started conversation
+public class SingleConversation extends Conversation {
 	private String conversationName;
-	private ArrayList<User> userList = new ArrayList<User>();										// list of user in current conversation
-	private ArrayList<String> message_store = new ArrayList<String>();								// store all the conversation between users
-	 
-	public SingleConversation(User original_poster,User user,String conversationName) {					// conversation with one user			
-		super(original_poster,user,conversationName);
-		this.original_poster = original_poster;
-		this.conversationName = conversationName;
+	private ArrayList<String> userList = new ArrayList<String>();										// list of user in current conversation
+	private String content;	
+	private User moderator; 
+	
+	public SingleConversation(String conversationName, User user) {					// conversation with one user			
+		this.conversationName = conversationName; 
+	}
+	public void addMessage(String message)		{
+		content += message;
 	}
 }
