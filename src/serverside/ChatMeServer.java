@@ -20,7 +20,6 @@ public class ChatMeServer {
 	public static int SIGN_OUT_REQUEST = 2;
 	public static int NEW_MESSAGE_REQUEST = 3;
 	public static int INVITE_CHAT_REQUEST = 4;
-	//public static int 
 
 	Database database;
 
