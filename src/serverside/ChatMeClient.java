@@ -75,7 +75,12 @@ public class ChatMeClient {
 				
 				while(continueRunning){
 					//int readCommandFromServer = userIn.readInt();
-				
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			} catch(IOException | ClassNotFoundException e){
 				e.printStackTrace();
@@ -124,6 +129,8 @@ public class ChatMeClient {
 				userOut.writeObject(password);
 				userOut.writeObject(aboutMe);
 				userOut.writeObject(image);
+				// ^^^ psuedo
+				/* Needs Finishing*/
 				
 				
 			}
