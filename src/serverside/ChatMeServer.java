@@ -26,6 +26,7 @@ public class ChatMeServer {
 	public static int NEW_GROUP_REQUEST = 6;
 
 	Database database;
+	ArrayList<SocketHolder> clients;
 
 	private Socket userReqSocket;
 	private ObjectOutputStream userOut;
@@ -56,6 +57,8 @@ public class ChatMeServer {
 			servOut = new ObjectOutputStream(servReqSocket.getOutputStream());
 			servIn = new ObjectInputStream(servReqSocket.getInputStream());
 			
+			SocketHolder sh = new SocketHolder(userIn, userOut, servIn, servOut);
+			clients.add(sh);
 			UserReqThread ct = new UserReqThread(userIn, userOut);
 			ServReqThread srt = new ServReqThread(servIn, servOut);
 			
@@ -136,7 +139,12 @@ public class ChatMeServer {
 				newMessageRequest();
 			}
 			else if(command == NEW_GROUP_REQUEST){
-				
+				//needs database implementation
+				printDbg("Reading group convo initiation request");
+				String convoName = (String) threadUserIn.readObject();
+				String moderator = (String) threadUserIn.readObject();
+				database.addConversation(convoName, moderator); //<--here
+				srt.addConvoToAll(convoName, moderator);
 			}
 		}
 		
@@ -214,6 +222,7 @@ public class ChatMeServer {
 			//TO DO: UPDATE GUI
 		}
 		private void newMessageRequest() throws IOException, ClassNotFoundException{
+			//DEFINITELY needs looking at
 			printDbg("Command recieved: New Message");
 			printDbg("Reading message . . .");
 			Message msg = (Message) threadUserIn.readObject();
@@ -227,7 +236,7 @@ public class ChatMeServer {
 				String newContent = database.getConvoContent(convoName);
 				//Message newMessage = new Message(newContent, convoName);
 				//UPDATE GUI
-				srt.sendMessage(msg);
+				//srt.sendMessage(msg);
 				
 			}
 			printDbg("Finished command");
@@ -255,9 +264,20 @@ public class ChatMeServer {
 		public void serUserReqThread(UserReqThread ct) {
 			this.ct = ct;
 		}
-		public void sendMessage(Message msg) {
-			
+		public void addConvoToAll(String convoName, String moderator) throws IOException{
+			for(int i=0; i<clients.size();i++){
+				if( ! clients.get(i).getName().equals(null)){
+					ObjectOutputStream oos = clients.get(i).serverOut;
+					oos.writeInt(NEW_GROUP_REQUEST);
+					oos.flush();
+					oos.writeObject(convoName);
+					oos.writeObject(moderator);
+					oos.flush();
+					
+				}
+			}
 		}
+		
 	}
 
 
@@ -266,6 +286,10 @@ public class ChatMeServer {
 class Database {
 	//super fake
 	public void doAction(int action){
+		
+	}
+	public void addConversation(String convoName, String moderator) {
+		// TODO Auto-generated method stub
 		
 	}
 	public String getConvoContent(String convoName) {
