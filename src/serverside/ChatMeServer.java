@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.Scanner;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -24,6 +25,7 @@ public class ChatMeServer {
 	public static int NEW_MESSAGE_REQUEST = 3;
 	public static int INVITE_CHAT_REQUEST = 4;
 	public static int NEW_GROUP_REQUEST = 6;
+	public static int END_GROUP_REQUEST = 7;
 
 	Database database;
 	ArrayList<SocketHolder> clients;
@@ -43,6 +45,7 @@ public class ChatMeServer {
 		ServerSocket ss2 = new ServerSocket(8888);
 		printDbg("Server started...");
 		
+		clients = new ArrayList<SocketHolder> ();
 		database = new Database();
 		
 		while(true){
@@ -57,16 +60,23 @@ public class ChatMeServer {
 			servOut = new ObjectOutputStream(servReqSocket.getOutputStream());
 			servIn = new ObjectInputStream(servReqSocket.getInputStream());
 			
+		
 			SocketHolder sh = new SocketHolder(userIn, userOut, servIn, servOut);
+			printDbg(" ~ line 63 problem line.");
 			clients.add(sh);
 			UserReqThread ct = new UserReqThread(userIn, userOut);
 			ServReqThread srt = new ServReqThread(servIn, servOut);
 			
 			ct.setServReqThread(srt);
-			srt.serUserReqThread(ct);
+			srt.setUserReqThread(ct);
+			
+			ct.setSocketHolder(sh);
+			srt.setSocketHolder(sh);
 			
 			ct.start();
 			srt.start();
+			
+
 		}		
 	}
 	
@@ -79,16 +89,20 @@ public class ChatMeServer {
 	}
 
 	class UserReqThread extends Thread {
-
+		
 		private ObjectOutputStream threadUserOut;
 		private ObjectInputStream threadUserIn;
 		private ServReqThread srt;
+		private SocketHolder sh;
 		
 		public UserReqThread(ObjectInputStream in, ObjectOutputStream out) throws IOException{
 			threadUserIn = in;
 			threadUserOut = out;
 		}
 		
+		public void setSocketHolder(SocketHolder sh){
+			this.sh = sh;
+		}
 		public void setServReqThread(ServReqThread srt) {
 			this.srt = srt;
 		}
@@ -102,7 +116,9 @@ public class ChatMeServer {
 				e1.printStackTrace();
 			}
 		}
-		
+		/* * * * * * * * * * * * * * * * * * *
+		 * 	 Thread LISTEN for SERVER block  *
+		 * * * * * * * * * * * * * * * * * * */
 		public void run(){	
 				
 			//1. Send Welcome Message
@@ -123,6 +139,9 @@ public class ChatMeServer {
 				}
 			}
 		}
+		/* * * * * * * * * * * * * * * * * * *
+		 * Thread DO action from USER block  *
+		 * * * * * * * * * * * * * * * * * * */
 		private void handleCommand(int command) throws IOException, ClassNotFoundException {
 			
 			printDbg("SERVER: parsing command...");
@@ -139,12 +158,14 @@ public class ChatMeServer {
 				newMessageRequest();
 			}
 			else if(command == NEW_GROUP_REQUEST){
-				//needs database implementation
-				printDbg("Reading group convo initiation request");
+				newGroupRequest();
+			}
+			else if(command == END_GROUP_REQUEST){
+				printDbg("Reading group convo deletion request");
 				String convoName = (String) threadUserIn.readObject();
 				String moderator = (String) threadUserIn.readObject();
-				database.addConversation(convoName, moderator); //<--here
-				srt.addConvoToAll(convoName, moderator);
+				database.removeConversation(convoName, moderator); //<--here
+				srt.removeConvoFromAll(convoName, moderator);
 			}
 		}
 		
@@ -197,11 +218,20 @@ public class ChatMeServer {
 				
 				
 				//send onlineUsers
+				
+				//debug
 				ArrayList<String> strArr = new ArrayList<String>();
 				strArr = database.getOnlineList();
 				threadUserOut.writeObject(strArr);
 				printDbg("Finished command");
 				
+				/*Iterator it = clients.iterator();
+				System.out.println("Clients has " + clients.size() + " elemnts in it...");
+				while(it.hasNext()){
+					if(this.sh == it.next()){
+						System.out.println("GOOOOOOd");
+					}
+				}*/
 				
 				return;
 			}
@@ -241,19 +271,30 @@ public class ChatMeServer {
 			}
 			printDbg("Finished command");
 		}
-		
-		
-	} //UserReqThread end
+		private void newGroupRequest() throws ClassNotFoundException, IOException{
+			//needs database implementation
+			printDbg("Reading group convo initiation request");
+			String convoName = (String) threadUserIn.readObject();
+			String moderator = (String) threadUserIn.readObject();
+			database.addConversation(convoName, moderator); //<--here
+			srt.addConvoToAll(convoName, moderator);
+		}
+		/* * * * * * * * * * * * * *
+		 * end USER request Thread *
+		 * * * * * * * * * * * * * */
+	}
 	class ServReqThread extends Thread{
 		
 		ObjectOutputStream servOut;
 		ObjectInputStream  servIn;
 		private UserReqThread ct;
+		private SocketHolder sh;
 		
 		public ServReqThread(ObjectInputStream servIn, ObjectOutputStream servOut){
 			this.servOut = servOut;
 			this.servIn  = servIn;
 		}
+		
 		public void run(){
 			//Listen for Commands from database
 			while (true) {
@@ -261,7 +302,10 @@ public class ChatMeServer {
 			}
 			
 		}
-		public void serUserReqThread(UserReqThread ct) {
+		public void setSocketHolder(SocketHolder sh){
+			this.sh = sh;
+		}
+		public void setUserReqThread(UserReqThread ct) {
 			this.ct = ct;
 		}
 		public void addConvoToAll(String convoName, String moderator) throws IOException{
@@ -277,6 +321,20 @@ public class ChatMeServer {
 				}
 			}
 		}
+		public void removeConvoFromAll(String convoName, String moderator) throws IOException {
+			for(int i=0; i<clients.size();i++){
+				if( ! clients.get(i).getName().equals(null)){
+					ObjectOutputStream oos = clients.get(i).serverOut;
+					oos.writeInt(END_GROUP_REQUEST);
+					oos.flush();
+					oos.writeObject(convoName);
+					oos.writeObject(moderator);
+					oos.flush();
+					
+				}
+			}
+			
+		}
 		
 	}
 
@@ -286,6 +344,10 @@ public class ChatMeServer {
 class Database {
 	//super fake
 	public void doAction(int action){
+		
+	}
+	public void removeConversation(String convoName, String moderator) {
+		// TODO Auto-generated method stub
 		
 	}
 	public void addConversation(String convoName, String moderator) {

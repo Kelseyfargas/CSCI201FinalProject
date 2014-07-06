@@ -15,7 +15,7 @@ public class GroupConversation extends Conversation {
 		this.conversationName = conversationName;	
 		moderator = user; 
 	}
-	
+
 	public void addMessage(String message) {
 		content += message; 
 	}
