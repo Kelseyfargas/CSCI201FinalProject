@@ -6,7 +6,7 @@ public abstract class Conversation {
 	private String conversationName;
 	private ArrayList<String> userList;										
 	private String content;	
-	private User moderator;
+	//private User moderator;
 	public abstract void addMessage(String message);
 	
 	public String getName(){
@@ -15,7 +15,5 @@ public abstract class Conversation {
 	public String getContent(){
 		return content;
 	}
-	public String getModeratorName(){
-		return moderator.getName();
-	}
+
 }

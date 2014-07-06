@@ -5,7 +5,7 @@ import java.io.ObjectOutputStream;
 
 public class SocketHolder {
 	
-	private String name;
+	private String name = "";
 	public ObjectInputStream userIn;
 	public ObjectOutputStream userOut;
 	
@@ -23,5 +23,8 @@ public class SocketHolder {
 	}
 	public String getName(){
 		return name;
+	}
+	public void setName(String name){
+		this.name = name;
 	}
 }

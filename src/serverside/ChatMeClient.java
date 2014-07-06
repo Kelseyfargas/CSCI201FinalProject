@@ -65,7 +65,7 @@ public class ChatMeClient {
 			e.printStackTrace();
 		}
 	}
-	public void sendCommand(int command, Conversation convo){
+	public void sendCommand(int command, GroupConversation convo){
 		try{
 			uioclass.sendCommandAndObject(command, convo);
 		} catch( Exception e){
@@ -159,13 +159,12 @@ public class ChatMeClient {
 				user.setOnlineUsers(onlineUsers);
 				user.createBuddyList();
 				
-				try {
-					Thread.sleep(1000);
+				
+					//Thread.sleep(1000);
 					System.out.println("TESTING NEW CONVO CODE");
+					System.out.println("user name is: " + user.getName());
 					sendCommand(ChatMeServer.NEW_GROUP_REQUEST, new GroupConversation("Butt", user));
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+				
 			}
 			else{
 				System.out.println("Could not log in. Incorrect Credentials");
@@ -196,17 +195,17 @@ public class ChatMeClient {
 			}
 		}
 		public void signOutRequest() throws IOException{
-			//unfinished
+			//unfinished, see comment
 			userOut.writeObject(user.getName());
 			userOut.flush();
-			user.signOut(); // write this
-			System.out.println(user.getName() + " has signed out...");
+			//user.signOut(); // write this
+			System.out.println(user.getName() + " has signed out...Write Code!");
 		}
 		
 		
 		/* Command does need arguments */
 		//Takes Conversation as parameter
-		public void sendCommandAndObject(int command, Conversation convo) throws IOException{
+		public void sendCommandAndObject(int command, GroupConversation convo) throws IOException{
 			lock.lock();
 			userOut.writeInt(command);
 			if(command == ChatMeServer.NEW_GROUP_REQUEST){
@@ -217,7 +216,7 @@ public class ChatMeClient {
 			}
 			lock.unlock();
 		}
-		public void newGroupRequest(Conversation convo) throws IOException{
+		public void newGroupRequest(GroupConversation convo) throws IOException{
 			//unfinished: , GUI Implementations, 
 			String convoName = convo.getName();
 			String moderator = convo.getModeratorName();
@@ -230,15 +229,15 @@ public class ChatMeClient {
 			boolean OK = userIn.readBoolean();
 			if(OK == true){
 				//start new group conversation window
-				System.out.println("Clinet, somehow this ok is true........");
-				user.buddyList.addGroupConvo(convoName, moderator);// <-- needs to be written
+				System.out.println("User will then add convo to buddy list. Write Code!");
+				//user.buddyList.addGroupConvo(convoName, moderator);// <-- needs to be written
 			}
 			else if(OK == false){
 				//display error message I guess....
-				System.out.println("Can't start new group convo");
+				System.out.println("Can't start new group convo!!!");
 			}
 		}
-		public void endGroupRequest(Conversation convo){
+		public void endGroupRequest(GroupConversation convo) throws IOException{
 			//unfinished, needs GUI implementation
 			String convoName = convo.getName();
 			String moderator = convo.getModeratorName();
@@ -251,8 +250,10 @@ public class ChatMeClient {
 			//Precaution: Recieve OK
 			boolean OK = userIn.readBoolean();
 			if(OK == true){
-				//remove new group conversation window
-				user.removeGroupConvo(convoName, moderator);// <-- needs to be written
+				//unfinished, GUI --> remove new group conversation window
+				//rewrite line below here
+				System.out.println("ending group convo. write code!");
+				//user.removeGroupConvo(convoName, moderator);// <-- needs to be written
 			}
 			else if(OK == false){
 				//display error message I guess....
@@ -308,11 +309,14 @@ public class ChatMeClient {
 		 * 	 Thread DO action from SERVER block  *
 		 * * * * * * * * * * * * * * * * * * * * */
 		public void handleCommand(int command) throws ClassNotFoundException, IOException{
-			//do something
+			
 			if(command == ChatMeServer.NEW_MESSAGE_REQUEST){
 				//getting a new-message-request here means the gui needs to update
+				
+				//unfinished, see comment
 				Message msg = (Message) servIn.readObject();
-				user.incomingMessageUpdate(msg);
+				System.out.println("You have the message now do something with it. Write COoooOoOde");
+				//user.incomingMessageUpdate(msg);
 			}
 			else if(command == ChatMeServer.NEW_GROUP_REQUEST){
 				//getting a new-group-request here means the gui needs to add a new convo
@@ -323,17 +327,19 @@ public class ChatMeClient {
 				endGroupRequest();
 			}
 		}
-		public void newGroupRequest(){
+		public void newGroupRequest() throws ClassNotFoundException, IOException{
+			//unfinished see comment
 			String convoName = (String) servIn.readObject();
 			String moderator = (String) servIn.readObject();
-			System.out.println("here?");
-			user.addConvo(convoName, moderator);
+			System.out.println("user.addConvo;i;ijjij WRITE");
+			//user.addConvo(convoName, moderator);
 		}
-		public void endGroupRequest(){
+		public void endGroupRequest() throws ClassNotFoundException, IOException{
+			//unfinished, see comment
 			String convoName = (String) servIn.readObject();
 			String moderator = (String) servIn.readObject();
-			
-			user.buddyList.removeConvo(convoName, moderator);
+			System.out.println("user.removeConvo boiaeijf. write!!!111!!");
+			//user.removeConvo(convoName, moderator);
 
 		}
 		

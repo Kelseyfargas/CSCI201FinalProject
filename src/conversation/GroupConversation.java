@@ -19,5 +19,8 @@ public class GroupConversation extends Conversation {
 	public void addMessage(String message) {
 		content += message; 
 	}
+	public String getModeratorName(){
+		return moderator.getName();
+	}
 }
 

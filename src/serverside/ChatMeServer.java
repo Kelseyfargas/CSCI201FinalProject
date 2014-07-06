@@ -225,13 +225,13 @@ public class ChatMeServer {
 				threadUserOut.writeObject(strArr);
 				printDbg("Finished command");
 				
-				/*Iterator it = clients.iterator();
+				Iterator it = clients.iterator();
 				System.out.println("Clients has " + clients.size() + " elemnts in it...");
 				while(it.hasNext()){
 					if(this.sh == it.next()){
-						System.out.println("GOOOOOOd");
+						sh.setName(un);
 					}
-				}*/
+				}
 				
 				return;
 			}
@@ -276,6 +276,9 @@ public class ChatMeServer {
 			printDbg("Reading group convo initiation request");
 			String convoName = (String) threadUserIn.readObject();
 			String moderator = (String) threadUserIn.readObject();
+			boolean OK = true;
+			threadUserOut.writeBoolean(OK);
+			threadUserOut.flush();
 			database.addConversation(convoName, moderator); //<--here
 			srt.addConvoToAll(convoName, moderator);
 		}
@@ -310,7 +313,7 @@ public class ChatMeServer {
 		}
 		public void addConvoToAll(String convoName, String moderator) throws IOException{
 			for(int i=0; i<clients.size();i++){
-				if( ! clients.get(i).getName().equals(null)){
+				if( ! clients.get(i).getName().isEmpty()){
 					ObjectOutputStream oos = clients.get(i).serverOut;
 					oos.writeInt(NEW_GROUP_REQUEST);
 					oos.flush();
