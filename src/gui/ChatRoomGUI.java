@@ -10,97 +10,117 @@ import java.awt.Font;
 import java.awt.ItemSelectable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
 
 
 public class ChatRoomGUI extends JFrame {
 	
 	private  JButton addUserButton;
-	private JTextField NOCTextField;
-	private JTextArea usersAddedTX;
-	private JButton startChatButton;
-	private JComboBox userSelectedCB;
 	
 	public ChatRoomGUI(String user){
 		super(user);
 		
-//		final JTextField searchField = new JTextField("Search",10); 
-//		searchField.setForeground(Color.GRAY);
-//		final String searchField_username = searchField.getSelectedText();
-//		jp.add(searchField); 
-//		
-		JPanel topPanel = new JPanel();
-		topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-		JTextArea toUsernameField = new JTextArea("To: " + user);
-		JScrollPane scrollPaneUsersAdded = new JScrollPane(toUsernameField,
-				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		scrollPaneUsersAdded.setViewportView(toUsernameField);
-		toUsernameField.setPreferredSize(new Dimension(450,20));
-		toUsernameField.setEditable(false); 
-		toUsernameField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-		//toUsernameField.setBorder(BorderFactory.createMatteBorder(1,1,1,1, Color.GRAY));
-	
-		JButton AddMoreUsersButton = new JButton("+");
+		//Menu bar
+		JMenuBar jmb = new JMenuBar();
+		JMenu fileMenu = new JMenu("File");
+		JMenuItem saveConversationMI = new JMenuItem("Save Conversation");
+		fileMenu.add(saveConversationMI);
+		jmb.add(fileMenu);
+		add(jmb);
 		
-		topPanel.add(scrollPaneUsersAdded); 
-		topPanel.add(AddMoreUsersButton); 
-		add(topPanel, BorderLayout.NORTH); 
-		 
-//		JPanel WestPanel = new JPanel();
-//		WestPanel.setLayout(new BoxLayout(WestPanel, BoxLayout.Y_AXIS));
-//		Font f = new Font("Serif", Font.BOLD, 12);
-//		for(int i = 0; i < 6; i++){
-//			JButton FriendConversationArea_1 = new JButton( "           Friend" + (i+1)+ "          ");
-//			FriendConversationArea_1.setAlignmentX(Component.RIGHT_ALIGNMENT);
-//			FriendConversationArea_1.setFont(f);
-//			FriendConversationArea_1.setForeground(Color.GRAY);
-//			FriendConversationArea_1.setPreferredSize(new Dimension(150,100));
-//			WestPanel.add(FriendConversationArea_1);
-//			add(WestPanel, BorderLayout.WEST);
-//		}
-//		
+		
 		JPanel CenterPanel = new JPanel();
-		CenterPanel.setLayout(new BoxLayout(CenterPanel, BoxLayout.Y_AXIS));
-
+		CenterPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		Font textfont = new Font("SansSerif", Font.BOLD, 12);
 		JTextArea areap = new JTextArea();
 	
 		areap.setText("Katrina: I hope we get an A in the class!" + 
 				"\n"+ "Kelsey: Me also!");
-		areap.setPreferredSize(new Dimension(300,300));
+		areap.setPreferredSize(new Dimension(590,280));
 		areap.setEditable(false); 
 		areap.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		areap.setBorder(BorderFactory.createMatteBorder(1,1,1,1, Color.GRAY));
 		
+		JPanel choicesPanel = new JPanel();
+		choicesPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+		//font choices
+		Object fontArray[] = {"SansSerif", "Courier New","Arial", "Times New Roman"};
+ 		JComboBox fontCB = new JComboBox(fontArray);
+ 		fontCB.addItemListener(new ItemListener(){
+ 			public void itemStateChanged(ItemEvent ie){
+ 				//setcenteredTextFieldFont();
+ 			}
+ 		});
+
+		//font color
+		Object colorArray[] = {"Black","Brown","Grey","Green","Magenta","Blue"};
+		JComboBox colorCB = new JComboBox(colorArray);
+		colorCB.setSelectedItem("Black");
+		colorCB.addItemListener(new ItemListener() {
+			
+ 			public void itemStateChanged(ItemEvent ie){
+ 				//setcenteredTextFieldFont();
+ 			}
+ 		});
+		
+ 		//font size
+		Object sizeArray[] = {"8","10","12","16","20"};
+		JComboBox sizeCB = new JComboBox(sizeArray);
+		sizeCB.setSelectedItem("12");
+		sizeCB.addItemListener(new ItemListener() {
+			
+ 			public void itemStateChanged(ItemEvent ie){
+ 				//setcenteredTextFieldFont();
+ 			}
+ 		});
+		
+		//emoji's
+		ImageIcon emojiList[] = {
+				new ImageIcon("Emoji/Happy.png")};
+        JComboBox emojiCB = new JComboBox(emojiList);
+        emojiCB.setMaximumRowCount(3);
+
+ 		choicesPanel.add(fontCB);
+		choicesPanel.add(colorCB);
+		choicesPanel.add(sizeCB);
+		choicesPanel.add(emojiCB);
+		
 		JPanel messageBottomPanel = new JPanel();
 		messageBottomPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-		JTextField outputTextField = new JTextField("New Message",35);
-		outputTextField.setForeground(Color.GRAY);
-		outputTextField.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-		});
+		JTextArea outputTextArea = new JTextArea();
+		outputTextArea.setText("New Message");
+		outputTextArea.setForeground(Color.GRAY);
+		outputTextArea.setPreferredSize(new Dimension(510,20));
+		outputTextArea.setEditable(false); 
+		outputTextArea.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+		outputTextArea.setBorder(BorderFactory.createMatteBorder(1,1,1,1, Color.GRAY));
 		JButton sendButton = new JButton("Send");
-		messageBottomPanel.add(outputTextField);
+		messageBottomPanel.add(outputTextArea);
 		messageBottomPanel.add(sendButton);
 		
 		
 		CenterPanel.add(areap);
+
+		CenterPanel.add(choicesPanel);
+ 		
 		CenterPanel.add(messageBottomPanel); 
 		add(CenterPanel, BorderLayout.CENTER);
 		
@@ -145,72 +165,7 @@ public class ChatRoomGUI extends JFrame {
 	    Object selected[] = is.getSelectedObjects();
 	    return ((selected.length == 0) ? "null" : (String) selected[0]);
 	 }
-	public void createDialogeGroupMessage(){
-		 JDialog jd = new JDialog();
-		 jd.setTitle("Group Message");
-		 jd.setLocation(450,100);
-		 jd.setSize(350,100);
-		 jd.setModal(true);
-		 
-		 JPanel jp = new JPanel();
-		 jp.setLayout(new BoxLayout(jp, BoxLayout.Y_AXIS)); 
-		 
-		 JPanel topPanel = new JPanel();
-		 topPanel.setLayout( new FlowLayout(FlowLayout.LEFT));
-		 JLabel nameOfConversation = new JLabel("Name the Conversation:");
-		 NOCTextField = new JTextField("Conversation name", 13);
-		 topPanel.add(nameOfConversation);
-		 topPanel.add(NOCTextField);
-		 
-//		 JPanel centerPanel = new JPanel();
-//		 centerPanel.setLayout( new FlowLayout(FlowLayout.LEFT));
-//		 JLabel usersAddedToConversation = new JLabel("Users Added:");
-//		 usersAddedTX = new JTextArea("Users Added field", 1, 20);
-//		 usersAddedTX.setEditable(false);
-//		 JScrollPane scrollPaneUsersAdded = new JScrollPane(usersAddedTX,
-//				 	JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-//					JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-//		 centerPanel.add(usersAddedToConversation);
-//		 centerPanel.add(scrollPaneUsersAdded);
-//		 
-		 JPanel bottomPanel = new JPanel();
-		 bottomPanel.setLayout( new FlowLayout(FlowLayout.RIGHT));
-//		 final String options[] = {"User 1", "User 2", "User 3", "User 4"};
-//		 //JLabel chooseUsersLabel = new JLabel("Add+:");
-//		 userSelectedCB = new JComboBox(options);
-//		 userSelectedCB.setSelectedItem(options);
-//		 userSelectedCB.addItemListener(new ItemListener(){
-//	 			public void itemStateChanged(ItemEvent itemEvent){
-//	 				int state = itemEvent.getStateChange();
-//	 		        System.out.println((state == ItemEvent.SELECTED) ? "Selected" : "Deselected");
-//	 		        System.out.println("Item: " + itemEvent.getItem());
-//	 		        ItemSelectable is = itemEvent.getItemSelectable();
-//	 		        String selected = selectedString(is);
-//	 		        System.out.println(", Selected: " + selected);
-//	 				 addUsersToTextField(selected, usersAddedTX);//adds users to TF
-//	 			}
-//	 		});
-//		 userSelectedCB.setForeground(Color.blue);
-//		 userSelectedCB.setBackground(Color.white);
-////		 userSelectedCB.setSelectedItem("User 1");
-//		 addUserButton = new JButton("Add User");
-		 startChatButton = new JButton("Start Chat");
-		 startChatButton.addActionListener(new ActionListener(){
-			 public void actionPerformed(ActionEvent ae){
-				 new ChatRoomGUI(NOCTextField.getText());
-			 }
-		 });
-//		 //bottomPanel.add(chooseUsersLabel);
-//		 bottomPanel.add(userSelectedCB);
-//		 bottomPanel.add(addUserButton);
-		 bottomPanel.add(startChatButton);
 
-		 jp.add(topPanel);
-//		 jp.add(centerPanel);
-		 jp.add(bottomPanel);
-		 jd.add(jp);
-		 jd.setVisible(true);
-	}
 	public static void main(String []args){
 		//new LogIn("Login");
 	}
