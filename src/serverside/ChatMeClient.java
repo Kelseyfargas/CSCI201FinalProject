@@ -11,6 +11,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
+import conversation.Message;
 import conversation.User;
 
 public class ChatMeClient {
@@ -150,19 +151,25 @@ public class ChatMeClient {
 			else if(command == ChatMeServer.SIGN_OUT_REQUEST){
 				userOut.writeObject(user.getName());
 				userOut.flush();
-				user.signOut(); // write this
+				//user.signOut(); // write this
 				System.out.println(user.getName() + " has signed out...");
 			}
 			else if(command == ChatMeServer.NEW_MESSAGE_REQUEST){
-				System.out.println("Enter ChatName: ");
-				String chatName = scan.nextLine();
+				System.out.println("Client: NEW_MESSAGE_REQUEST");
+				//Message msg = user.getMessagePacket();
+			//	userOut.writeObject(msg);
+				userOut.flush();
+				
+				//our gui will be updated later on
+				
+				/*String chatName = scan.nextLine();
 				//String chatName = user.loginWindow.getUsername();
 				System.out.println("Enter Content: ");
 				String content = scan.nextLine();
 				//String content = user.loginWindow.getPassword();
-				Message msg = new Message(chatName, content);
+				Message msg = new Message(content, chatName);
 				System.out.println("\nSending Message Packet...");
-				userOut.writeObject(msg);
+				userOut.writeObject(msg);*/
 				System.out.println("Finished.");
 			}
 			lock.unlock();
@@ -173,10 +180,23 @@ public class ChatMeClient {
 		
 		public void run(){
 			
+			while(true){
+				try {
+					int command = servIn.readInt();
+					handleCommand(command);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
 		}
 		
 		public void handleCommand(int command){
-			
+			//do something
+			if(command == NEW_MESSAGE_REQUEST){
+				
+			}
 		}
 	}
 	public static void main(String [] args){
