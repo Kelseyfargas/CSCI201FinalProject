@@ -56,7 +56,13 @@ public class ChatMeServer {
 			servIn = new ObjectInputStream(servReqSocket.getInputStream());
 			
 			UserReqThread ct = new UserReqThread(userIn, userOut);
+			ServReqThread srt = new ServReqThread(servIn, servOut);
+			
+			ct.setServReqThread(srt);
+			srt.serUserReqThread(ct);
+			
 			ct.start();
+			srt.start();
 		}		
 	}
 	
@@ -72,10 +78,15 @@ public class ChatMeServer {
 
 		private ObjectOutputStream threadUserOut;
 		private ObjectInputStream threadUserIn;
+		private ServReqThread srt;
 		
 		public UserReqThread(ObjectInputStream in, ObjectOutputStream out) throws IOException{
 			threadUserIn = in;
 			threadUserOut = out;
+		}
+		
+		public void setServReqThread(ServReqThread srt) {
+			this.srt = srt;
 		}
 		
 		public void run(){	
@@ -182,6 +193,8 @@ public class ChatMeServer {
 				String un = (String) threadUserIn.readObject();
 				printDbg("Reading in: " + un);
 				database.signOut(un);
+				
+				//TO DO: UPDATE GUI
 			}
 			
 			if(command == NEW_MESSAGE_REQUEST){
@@ -189,6 +202,18 @@ public class ChatMeServer {
 				printDbg("Reading message . . .");
 				Message msg = (Message) threadUserIn.readObject();
 				msg.print();
+				String convoName = null; //this is super fake
+				//String convoName = msg.getConversationName();
+				String content = msg.getContent();
+				boolean ok = database.verifyConvoNameExists(convoName);
+				if (ok == true) {
+					database.updateConvoContent(convoName, content);
+					String newContent = database.getConvoContent(convoName);
+					//Message newMessage = new Message(newContent, convoName);
+					//UPDATE GUI
+					srt.sendMessage(msg);
+					
+				}
 				printDbg("Finished command");
 			}
 		}
@@ -197,13 +222,23 @@ public class ChatMeServer {
 		
 		ObjectOutputStream servOut;
 		ObjectInputStream  servIn;
+		private UserReqThread ct;
 		
-		public ServReqThread(ObjectOutputStream servOut, ObjectInputStream userIn){
+		public ServReqThread(ObjectInputStream userIn, ObjectOutputStream servOut){
 			this.servOut = servOut;
 			this.servIn  = servIn;
 		}
 		public void run(){
 			//Listen for Commands from database
+			while (true) {
+				
+			}
+			
+		}
+		public void serUserReqThread(UserReqThread ct) {
+			this.ct = ct;
+		}
+		public void sendMessage(Message msg) {
 			
 		}
 	}
@@ -215,6 +250,18 @@ class Database {
 	//super fake
 	public void doAction(int action){
 		
+	}
+	public String getConvoContent(String convoName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public void updateConvoContent(String convoName, String content) {
+		// TODO Auto-generated method stub
+		
+	}
+	public boolean verifyConvoNameExists(String convoName) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	public String getImagePath(String un) {
 		// TODO Auto-generated method stub
