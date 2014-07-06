@@ -88,10 +88,7 @@ public class ChatMeServer {
 		public void setServReqThread(ServReqThread srt) {
 			this.srt = srt;
 		}
-		
-		public void run(){	
-				
-			//1. Send Welcome Message
+		public void sendWelcomeMessage(){
 			String message = "Welcome. Please Enter a Command.";
 			try {
 				printDbg("Welcome message Sent\n");
@@ -100,131 +97,150 @@ public class ChatMeServer {
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
+		}
+		public void listenForCommand(){
+			try {
+				int command = threadUserIn.readInt();
+				handleCommand(command);
+				
+			} catch (IOException | ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				threadUserOut = null;
+				threadUserIn = null;
+			}
+		}
+		
+		public void run(){	
+				
+			//1. Send Welcome Message
+			sendWelcomeMessage();
 			
 			//2. Listen for Signal
 			printDbg("SERVER: Listening for command");
 			while(true){
-				try {
-					/* */
-					int command = threadUserIn.readInt();
-					handleCommand(command);
-					
-				} catch (IOException | ClassNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					threadUserOut = null;
-					threadUserIn = null;
-				}
-				
+				listenForCommand();
 			}
 		}
+		
 		private void handleCommand(int command) throws IOException, ClassNotFoundException {
-			Scanner scan = new Scanner(System.in);
+			
 			printDbg("SERVER: parsing command...");
 			if(command == NEW_USER_REQUEST){
-				//SAT: FINISHED
-				printDbg("SERVER: Command recieved on server: New User");
-				String username = (String) threadUserIn.readObject();
-				String password = (String) threadUserIn.readObject();
-				String bio 	    = (String) threadUserIn.readObject();
-				String imgPath 	= (String) threadUserIn.readObject();
-				printDbg("SERVER READS:"
-						+ username + " " + password + " " + bio + " " + imgPath);
-
-				boolean OK = database.verifyUserExists(username);
-				threadUserOut.writeBoolean(OK);
-				threadUserOut.flush();
-				if(OK == true){
-					database.createAccount(username, password, bio, imgPath);
-				}
-				
+				newUserRequest();
 			}
 			else if(command==LOGIN_REQUEST){
-				//SAT: FINISHED
-				printDbg("Command recieved on server: Login\n");
-				String un = (String) threadUserIn.readObject();
-				String pw = (String) threadUserIn.readObject();
-				printDbg("Reading in: " + un);
-				printDbg("Reading in: " + pw);
-				/////////////////verify//////////////////////////
+				loginRequest();
+			}
+			else if(command == SIGN_OUT_REQUEST){
+				signOutRequest();
+			}
+			else if(command == NEW_MESSAGE_REQUEST){
+				newMessageRequest();
+			}
+		}
+		private void newUserRequest() throws IOException, ClassNotFoundException{
+			//SAT: FINISHED
+			printDbg("SERVER: Command recieved on server: New User");
+			String username = (String) threadUserIn.readObject();
+			String password = (String) threadUserIn.readObject();
+			String bio 	    = (String) threadUserIn.readObject();
+			String imgPath 	= (String) threadUserIn.readObject();
+			printDbg("SERVER READS:"
+					+ username + " " + password + " " + bio + " " + imgPath);
 
-				boolean OK = database.login(un, pw);
-				////////////////////////////////////////////
-				
-				
-				
-				if(OK == true){
-					database.addToOnlineList(un);
-					printDbg("Giving OK to log in.");
-					
-					
-					printDbg("Attempting to send online Users");
-					
-					threadUserOut.writeBoolean(true);
-					threadUserOut.flush(); //send OK
-					
-					//send bio
-					String bio = database.getBio(un);
-					
-					//send imagepath
-					String imgPath = database.getImagePath(un);
-					
-					
-					//send onlineUsers
-					ArrayList<String> strArr = new ArrayList<String>();
-					strArr = database.getOnlineList();
-					threadUserOut.writeObject(strArr);
-					printDbg("Finished command");
-					
-					
-					return;
-				}
-				else{
-					printDbg("Denying user.");
-					threadUserOut.writeBoolean(false);
-					threadUserOut.flush();
-					printDbg("Finished command");
-				}
+			boolean OK = database.verifyUserExists(username);
+			threadUserOut.writeBoolean(OK);
+			threadUserOut.flush();
+			if(OK == true){
+				database.createAccount(username, password, bio, imgPath);
 			}
+		}
+		private void loginRequest() throws IOException, ClassNotFoundException{
+			//SAT: FINISHED
+			printDbg("Command recieved on server: Login\n");
+			String un = (String) threadUserIn.readObject();
+			String pw = (String) threadUserIn.readObject();
+			printDbg("Reading in: " + un);
+			printDbg("Reading in: " + pw);
+			/////////////////verify//////////////////////////
+
+			boolean OK = database.login(un, pw);
+			////////////////////////////////////////////
 			
-			if(command == SIGN_OUT_REQUEST){
-				//SAT: FINISHED
-				printDbg("Command recieved on server: Sign Out");
-				String un = (String) threadUserIn.readObject();
-				printDbg("Reading in: " + un);
-				database.signOut(un);
+			
+			
+			if(OK == true){
+				database.addToOnlineList(un);
+				printDbg("Giving OK to log in.");
 				
-				//TO DO: UPDATE GUI
+				
+				printDbg("Attempting to send online Users");
+				
+				threadUserOut.writeBoolean(true);
+				threadUserOut.flush(); //send OK
+				
+				//send bio
+				String bio = database.getBio(un);
+				
+				//send imagepath
+				String imgPath = database.getImagePath(un);
+				
+				
+				//send onlineUsers
+				ArrayList<String> strArr = new ArrayList<String>();
+				strArr = database.getOnlineList();
+				threadUserOut.writeObject(strArr);
+				printDbg("Finished command");
+				
+				
+				return;
 			}
-			
-			if(command == NEW_MESSAGE_REQUEST){
-				printDbg("Command recieved: New Message");
-				printDbg("Reading message . . .");
-				Message msg = (Message) threadUserIn.readObject();
-				msg.print();
-				String convoName = null; //this is super fake
-				//String convoName = msg.getConversationName();
-				String content = msg.getContent();
-				boolean ok = database.verifyConvoNameExists(convoName);
-				if (ok == true) {
-					database.updateConvoContent(convoName, content);
-					String newContent = database.getConvoContent(convoName);
-					//Message newMessage = new Message(newContent, convoName);
-					//UPDATE GUI
-					srt.sendMessage(msg);
-					
-				}
+			else{
+				printDbg("Denying user.");
+				threadUserOut.writeBoolean(false);
+				threadUserOut.flush();
 				printDbg("Finished command");
 			}
 		}
-	}
+		private void signOutRequest()throws IOException, ClassNotFoundException{
+			//SAT: FINISHED
+			printDbg("Command recieved on server: Sign Out");
+			String un = (String) threadUserIn.readObject();
+			printDbg("Reading in: " + un);
+			database.signOut(un);
+			
+			//TO DO: UPDATE GUI
+		}
+		private void newMessageRequest() throws IOException, ClassNotFoundException{
+			printDbg("Command recieved: New Message");
+			printDbg("Reading message . . .");
+			Message msg = (Message) threadUserIn.readObject();
+			msg.print();
+			String convoName = null; //this is super fake
+			//String convoName = msg.getConversationName();
+			String content = msg.getContent();
+			boolean ok = database.verifyConvoNameExists(convoName);
+			if (ok == true) {
+				database.updateConvoContent(convoName, content);
+				String newContent = database.getConvoContent(convoName);
+				//Message newMessage = new Message(newContent, convoName);
+				//UPDATE GUI
+				srt.sendMessage(msg);
+				
+			}
+			printDbg("Finished command");
+		}
+		
+		
+	} //UserReqThread end
 	class ServReqThread extends Thread{
 		
 		ObjectOutputStream servOut;
 		ObjectInputStream  servIn;
 		private UserReqThread ct;
 		
-		public ServReqThread(ObjectInputStream userIn, ObjectOutputStream servOut){
+		public ServReqThread(ObjectInputStream servIn, ObjectOutputStream servOut){
 			this.servOut = servOut;
 			this.servIn  = servIn;
 		}
@@ -272,8 +288,12 @@ class Database {
 		return null;
 	}
 	public ArrayList<String> getOnlineList() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<String> pretendList = new ArrayList<String>();
+		pretendList.add("FakeDude1");
+		pretendList.add("FakeDude2");
+		pretendList.add("FakeDude3");
+		pretendList.add("FakeDude4");
+		return pretendList;
 	}
 	public void addToOnlineList(String un) {
 		// TODO Auto-generated method stub
@@ -281,7 +301,7 @@ class Database {
 	}
 	public boolean login(String un, String pw) {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 	public boolean verifyUserExists(String name){
 		return true; //FIX THIS

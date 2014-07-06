@@ -157,7 +157,7 @@ public class ChatMeClient {
 			else if(command == ChatMeServer.NEW_MESSAGE_REQUEST){
 				System.out.println("Client: NEW_MESSAGE_REQUEST");
 				//Message msg = user.getMessagePacket();
-			//	userOut.writeObject(msg);
+				//userOut.writeObject(msg);
 				userOut.flush();
 				
 				//our gui will be updated later on
