@@ -14,6 +14,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import javax.swing.Icon;
 
+import conversation.Message;
+
 public class ChatMeServer {
 	
 	public static int NEW_USER_REQUEST = 0;
@@ -120,13 +122,14 @@ public class ChatMeServer {
 
 				boolean OK = database.verifyUserExists(username);
 				threadUserOut.writeBoolean(OK);
+				threadUserOut.flush();
 				if(OK == true){
 					database.createAccount(username, password, bio, imgPath);
 				}
 				
 			}
 			else if(command==LOGIN_REQUEST){
-				
+				//SAT: FINISHED
 				printDbg("Command recieved on server: Login\n");
 				String un = (String) threadUserIn.readObject();
 				String pw = (String) threadUserIn.readObject();
@@ -174,8 +177,11 @@ public class ChatMeServer {
 			}
 			
 			if(command == SIGN_OUT_REQUEST){
+				//SAT: FINISHED
 				printDbg("Command recieved on server: Sign Out");
-				
+				String un = (String) threadUserIn.readObject();
+				printDbg("Reading in: " + un);
+				database.signOut(un);
 			}
 			
 			if(command == NEW_MESSAGE_REQUEST){
@@ -236,20 +242,11 @@ class Database {
 	public void createAccount(String username, String password, String bio, String imgPath){
 		
 	}
-}
-class Message implements Serializable {
-	String name;
-	String content;
-	String time;
-	public Message (String name, String content){
-		this.name = name;
-		this.content = content;
-		this.time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());	
-	}
-	public void print(){
-		System.out.println("(" + time + ") " + name);
-		System.out.println(content);
-	}
 	
+	//sign out request
+	public void signOut(String username) {
+		
+	}
 }
+
 
