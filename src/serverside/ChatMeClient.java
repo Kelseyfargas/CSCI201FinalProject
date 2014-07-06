@@ -139,12 +139,19 @@ public class ChatMeClient {
 				userOut.flush();
 				boolean OK = userIn.readBoolean();
 				if(OK == true)	{
+					System.out.println("CLIENT: Creating buddy list");
 					user.createBuddyList();
 				}
 				else {
 					System.out.println("This user name is already taken!!!");
 					user.nameExistError();
 				}
+			}
+			else if(command == ChatMeServer.SIGN_OUT_REQUEST){
+				userOut.writeObject(user.getName());
+				userOut.flush();
+				user.signOut(); // write this
+				System.out.println(user.getName() + " has signed out...");
 			}
 			else if(command == ChatMeServer.NEW_MESSAGE_REQUEST){
 				System.out.println("Enter ChatName: ");

@@ -23,4 +23,8 @@ public class Message {
 	public String getconversationName() {
 		return this.conversationName;
 	}
+	
+	public void print(){
+		
+	}
 }
