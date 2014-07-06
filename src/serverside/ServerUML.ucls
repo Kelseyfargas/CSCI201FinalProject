@@ -46,16 +46,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="6" language="java" name="serverside.Message" project="ChatMe" 
-    file="/ChatMe/src/serverside/ChatMeServer.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="153" width="137" x="249" y="13"/>    
-    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
-      visibility="true">      
-      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
-    </display>  
-  </class>  
-  <class id="7" language="java" name="serverside.ChatMeServer.UserReqThread" project="ChatMe" 
+  <class id="6" language="java" name="serverside.ChatMeServer.UserReqThread" project="ChatMe" 
     file="/ChatMe/src/serverside/ChatMeServer.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="153" width="298" x="796" y="458"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -64,7 +55,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="8" language="java" name="serverside.ChatMeClient" project="ChatMe" 
+  <class id="7" language="java" name="serverside.ChatMeClient" project="ChatMe" 
     file="/ChatMe/src/serverside/ChatMeClient.java" binary="false" corner="BOTTOM_RIGHT">    
     <position height="405" width="174" x="1234" y="13"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
@@ -73,42 +64,42 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <nesting id="9">    
+  <nesting id="8">    
     <end type="SOURCE" refId="4"/>    
-    <end type="TARGET" refId="7"/>  
+    <end type="TARGET" refId="6"/>  
   </nesting>  
-  <association id="10">    
-    <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="11" name="sioclass"/>      
-      <multiplicity id="12" minimum="0" maximum="1"/>    
+  <association id="9">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="10" name="sioclass"/>      
+      <multiplicity id="11" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <nesting id="13">    
+  <nesting id="12">    
     <end type="SOURCE" refId="4"/>    
     <end type="TARGET" refId="2"/>  
   </nesting>  
-  <nesting id="14">    
-    <end type="SOURCE" refId="8"/>    
+  <nesting id="13">    
+    <end type="SOURCE" refId="7"/>    
     <end type="TARGET" refId="1"/>  
   </nesting>  
-  <nesting id="15">    
-    <end type="SOURCE" refId="8"/>    
+  <nesting id="14">    
+    <end type="SOURCE" refId="7"/>    
     <end type="TARGET" refId="3"/>  
   </nesting>  
-  <association id="16">    
-    <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="17" name="uioclass"/>      
-      <multiplicity id="18" minimum="0" maximum="1"/>    
+  <association id="15">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="16" name="uioclass"/>      
+      <multiplicity id="17" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="19">    
+  <association id="18">    
     <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="20" name="database"/>      
-      <multiplicity id="21" minimum="0" maximum="1"/>    
+      <attribute id="19" name="database"/>      
+      <multiplicity id="20" minimum="0" maximum="1"/>    
     </end>    
     <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  

@@ -23,6 +23,7 @@ public class ChatMeServer {
 	public static int SIGN_OUT_REQUEST = 2;
 	public static int NEW_MESSAGE_REQUEST = 3;
 	public static int INVITE_CHAT_REQUEST = 4;
+	public static int NEW_GROUP_REQUEST = 6;
 
 	Database database;
 
@@ -98,18 +99,6 @@ public class ChatMeServer {
 				e1.printStackTrace();
 			}
 		}
-		public void listenForCommand(){
-			try {
-				int command = threadUserIn.readInt();
-				handleCommand(command);
-				
-			} catch (IOException | ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				threadUserOut = null;
-				threadUserIn = null;
-			}
-		}
 		
 		public void run(){	
 				
@@ -118,11 +107,19 @@ public class ChatMeServer {
 			
 			//2. Listen for Signal
 			printDbg("SERVER: Listening for command");
-			while(true){
-				listenForCommand();
+			while(true)
+			{	
+				try {
+					int command = threadUserIn.readInt(); //Read in whatever command is sent from across socket
+					handleCommand(command);
+					
+				} catch (IOException | ClassNotFoundException e) {
+					e.printStackTrace();
+					threadUserOut = null;
+					threadUserIn = null;
+				}
 			}
 		}
-		
 		private void handleCommand(int command) throws IOException, ClassNotFoundException {
 			
 			printDbg("SERVER: parsing command...");
@@ -138,7 +135,11 @@ public class ChatMeServer {
 			else if(command == NEW_MESSAGE_REQUEST){
 				newMessageRequest();
 			}
+			else if(command == NEW_GROUP_REQUEST){
+				
+			}
 		}
+		
 		private void newUserRequest() throws IOException, ClassNotFoundException{
 			//SAT: FINISHED
 			printDbg("SERVER: Command recieved on server: New User");
