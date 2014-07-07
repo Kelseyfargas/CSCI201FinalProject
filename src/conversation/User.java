@@ -130,7 +130,7 @@ public class User {
 
 	public void setOnlineUsers(ArrayList<String> onlineUsers) {
 		this.onlineUsers = onlineUsers;
-	    this.onlineUsers.remove(this);
+	    this.onlineUsers.remove(this.getName());
 	    buddyList.updateActiveConversations();
 	}
 
@@ -163,9 +163,11 @@ public class User {
 	public String getPassword() 		{
 		return this.password;
 	}
+	
 	public ArrayList<GroupConversation> getConversations() {
 		return this.currentConversations;
 	}
+	
 	public void setImagePath(String imagePath)		{
 		this.imagePath = imagePath;
 		image = new ImageIcon((imagePath)).getImage();
