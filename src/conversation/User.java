@@ -62,7 +62,7 @@ public class User {
 	public void addGroupConvo(String convoName, String moderator)		{
 		GroupConversation newConversation = new GroupConversation(convoName, this);
 		currentConversations.add(newConversation);                                           
-		chatRoomGUI.updateActiveConversations();
+		buddyList.updateActiveConversations();
 	}
 
 	public void removeGroupConvo(String convoName, String moderator)		{
@@ -70,7 +70,7 @@ public class User {
 		for(GroupConversation element : currentConversations)		{						// remove from currentConversations list 
 			if(element.getName() == convoName)	{
 				currentConversations.remove(i);
-				chatRoomGUI.updateActiveConversations();
+				buddyList.updateActiveConversations();
 			}
 			i++;
 		}
