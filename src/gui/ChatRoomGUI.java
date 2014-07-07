@@ -35,8 +35,8 @@ public class ChatRoomGUI extends JFrame {
 	
 	private  JButton addUserButton;
 	
-	public ChatRoomGUI(String user){
-		super(user);
+	public ChatRoomGUI(String convoName){
+		super(convoName);
 		
 		//Menu bar
 		JMenuBar jmb = new JMenuBar();
