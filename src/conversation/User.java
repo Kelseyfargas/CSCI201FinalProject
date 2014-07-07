@@ -23,66 +23,87 @@ public class User {
 	public  Message messagePackage;
 	private BuddyList buddyList;
 	private CreateAccount accountWindow;
+	private ChatRoomGUI chatRoomGUI;
 	public LogIn loginWindow;
 	private JFrame chatWindow; 
 	private String name;
 	private String aboutme;
 	private String password;
-	private String status;
 	private String imagePath;
 	private Image image;
 	private ArrayList<String> onlineUsers;
-	private ArrayList<GroupConversation> currentConversations;		// change to Conversation 						
+	private ArrayList<GroupConversation> currentConversations;	// change to Conversation 						
 	private ChatMeClient chatClient;
+	
 	/* Constructor */
 	public User() {
 		createAccountWindow();
+		currentConversations = new ArrayList<GroupConversation>();
 	}
 
 	public void createAccountWindow() {
 		accountWindow =  new CreateAccount(this);
 	}
-	
+
 	public void createLoginWindow() {
 		accountWindow.dispose();
 		loginWindow = new LogIn(this);
 	}
-	
-	public LogIn getLoginWindow(){
+
+	public LogIn getLoginWindow()     {
 		return loginWindow;
 	}
-	
+
 	public void addClient(ChatMeClient client){
 		this.chatClient = client;
 		System.out.println("adding client");
 	}
 
+	public void addGroupConvo(String convoName, String moderator)		{
+		GroupConversation newConversation = new GroupConversation(convoName, this);
+		currentConversations.add(newConversation);
+		chatRoomGUI = new ChatRoomGUI(convoName);										// display GUI
+	}
+
+	public void removeGroupConvo(String convoName, String moderator)		{
+		int i = 0;
+		for(GroupConversation element : currentConversations)		{						// remove from currentConversations list 
+			if(element.getName() == convoName)	{
+				currentConversations.remove(i);
+				// update GUI // 
+			}
+			i++;
+		}
+	}
+
+	public void displayConvoError() {
+		//call gui for error message 
+	}
 	public void createNewAccount() {
 		this.chatClient.sendCommand(ChatMeServer.NEW_USER_REQUEST);
 		// verify if isn't taken, wait for respose // 
-		
 		createLoginWindow();
 	}
-	
+
 	public void sendLogInRequest() {	
 		chatClient.sendCommand(ChatMeServer.LOGIN_REQUEST);
 		//update GUI based on online users 
 		//UpdateBuddyList(this);
 	}
-	
+
 	public void createBuddyList() {
 		buddyList = new BuddyList(this);
 		loginWindow.dispose();
 	}
-	
+
 	public void nameExistError() {
 		accountWindow.displayError();
 	}
-	
+
 	public void incorrectInfoError() {
-		
+
 	}
-	
+
 	public int getSignal() {
 		return signal;
 	}
@@ -105,11 +126,11 @@ public class User {
 	public void setOnlineUsers(ArrayList<String> onlineUsers) {
 		this.onlineUsers = onlineUsers;
 	}
-	
+
 	public ArrayList<String> getOnlineUsers(){
 		return this.onlineUsers;
 	}
-	
+
 	public BuddyList getBuddyList() {
 		return this.buddyList;
 	}
@@ -144,5 +165,5 @@ public class User {
 	public String getImagePath()				{
 		return this.imagePath;
 	}
-	
+
 }
