@@ -106,12 +106,12 @@ public class BuddyList extends JFrame{
 			onlineusersPanel.add(OUButton);
 		}
 		//end of forloop
-//		JScrollPane onlineUsersSP = new JScrollPane(onlineusersPanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-//												JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-//		onlineUsersSP.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-//		onlineUsersSP.setPreferredSize(new Dimension(210,250));
-//
-//		centerPanel.add(onlineUsersSP);
+		JScrollPane onlineUsersSP = new JScrollPane(onlineusersPanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+												JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		onlineUsersSP.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+		onlineUsersSP.setPreferredSize(new Dimension(210,250));
+
+		centerPanel.add(onlineUsersSP);
 
 		
 	}
