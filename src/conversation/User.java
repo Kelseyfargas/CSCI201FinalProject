@@ -38,6 +38,7 @@ public class User {
 	/* Constructor */
 	public User() {
 		createAccountWindow();
+		onlineUsers = new ArrayList<String>();
 		currentConversations = new ArrayList<GroupConversation>();
 	}
 
