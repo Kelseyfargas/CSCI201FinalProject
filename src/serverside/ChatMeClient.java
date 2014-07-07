@@ -58,6 +58,7 @@ public class ChatMeClient {
 	public void addUser(User user){
 		this.user = user;
 	}
+	
 	public void sendCommand(int command){
 		try{
 			uioclass.sendCommandAndListen(command);
@@ -234,7 +235,7 @@ public class ChatMeClient {
 			if(OK == true){
 				//start new group conversation window
 				System.out.println("User will then add convo to buddy list. Write Code!");
-				user.addGroupConvo(convoName, moderator);// <-- needs to be written
+///////////////////user.addGroupConvo(convoName, moderator);// <-- needs to be written
 			}
 			else if(OK == false){
 				//display error message I guess....
@@ -257,7 +258,7 @@ public class ChatMeClient {
 				//unfinished, GUI --> remove new group conversation window
 				//rewrite line below here
 				System.out.println("ending group convo. write code!");
-				user.removeGroupConvo(convoName, moderator);
+////////////////user.removeGroupConvo(convoName, moderator);
 			}
 			else if(OK == false){
 				//display error message I guess....
@@ -336,14 +337,14 @@ public class ChatMeClient {
 			String convoName = (String) servIn.readObject();
 			String moderator = (String) servIn.readObject();
 			System.out.println("user.addConvo;i;ijjij WRITE");
-			user.addGroupConvo(convoName, moderator);
+/////////////user.addGroupConvo(convoName, moderator);
 		}
 		public void endGroupRequest() throws ClassNotFoundException, IOException{
 			//unfinished, see comment
 			String convoName = (String) servIn.readObject();
 			String moderator = (String) servIn.readObject();
 			System.out.println("user.removeConvo boiaeijf. write!!!111!!");
-			user.removeGroupConvo(convoName, moderator);
+/////////////user.removeGroupConvo(convoName, moderator);
 
 		}
 		
