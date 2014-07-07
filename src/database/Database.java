@@ -7,18 +7,18 @@ import java.util.Scanner;
 
 public class Database {
 	// JDBC driver name and database URL
-	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-	static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/ChatMeDB";
+	  final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+	  final String DB_URL = "jdbc:mysql://127.0.0.1:3306/ChatMeDB";
 
 	// Database credentials
-	static final String USER = "root";
-	static final String PASS = "";
+	  final String USER = "root";
+	  final String PASS = "";
 
-	public static Connection conn = null;
-	public static Statement stmt = null;
-	public static String sql;
+	public   Connection conn = null;
+	public   Statement stmt = null;
+	public   String sql;
 
-	public static void doAction() {
+	public   void doAction() {
 
 		try {
 			// STEP 2: Register JDBC driver
@@ -175,13 +175,13 @@ public class Database {
 		System.out.println("Goodbye!");
 	}// end
 
-	/*public static void main(String[] args) {
+	/*public   void main(String[] args) {
 		doAction();
 	}// end main*/
 	
 	
 	// ///////////////////////CREATE ACCOUNT//////////////////////////
-	public static void createAccount(String username, String password,
+	public   void createAccount(String username, String password,
 			String bio, String image) {
 		try {
 			stmt = conn.createStatement();
@@ -201,7 +201,7 @@ public class Database {
 		}
 	}
 
-	public static boolean verifyUserExists(String username) throws SQLException {
+	public   boolean verifyUserExists(String username) throws SQLException {
 		stmt = conn.createStatement();
 		final String queryCheck = "SELECT count(*) from UserInfo WHERE username = ?";
 		final PreparedStatement ps = conn.prepareStatement(queryCheck);
@@ -218,7 +218,7 @@ public class Database {
 	}
 
 	// ///////////////////////LOGIN//////////////////////////
-	public static boolean login(String username, String password) {
+	public   boolean login(String username, String password) {
 		try {
 			stmt = conn.createStatement();
 		} catch (SQLException e1) {
@@ -256,7 +256,7 @@ public class Database {
 	}
 	
 	// ///////////////////////ONLINE LIST//////////////////////////
-	public static void addToOnlineList(String username) throws SQLException {
+	public   void addToOnlineList(String username) throws SQLException {
 		stmt = conn.createStatement();
 		// add user to OnlineStatus table in database
 		sql = "insert into OnlineUsers(username) values('__USER__');";
@@ -264,7 +264,7 @@ public class Database {
 		stmt.execute(sql);
 	}
 
-	public static ArrayList<String> getOnlineList() {
+	public   ArrayList<String> getOnlineList() {
 		try {
 			stmt = conn.createStatement();
 		} catch (SQLException e1) {
@@ -289,7 +289,7 @@ public class Database {
 	}
 	
 	// ///////////////////////USER INFO//////////////////////////
-	public static String getBio(String username) {
+	public   String getBio(String username) {
 		try {
 			stmt = conn.createStatement();
 		} catch (SQLException e1) {
@@ -323,7 +323,7 @@ public class Database {
 		return r_bio;
 	}
 
-	public static String getImagePath(String username) {
+	public   String getImagePath(String username) {
 		try {
 			stmt = conn.createStatement();
 		} catch (SQLException e1) {
@@ -358,7 +358,7 @@ public class Database {
 	}
 	
 	// ///////////////////////CONVOS//////////////////////////
-	public static void createConversation(String convoName, String moderator, String content) {
+	public   void createConversation(String convoName, String moderator, String content) {
 		try {
 			stmt = conn.createStatement();
 		} catch (SQLException e1) {
@@ -381,7 +381,7 @@ public class Database {
 		}
 	}
 	
-	public static boolean verifyConvoNameExists(String convoName) {
+	public   boolean verifyConvoNameExists(String convoName) {
 		try {
 			stmt = conn.createStatement();
 		} catch (SQLException e1) {
@@ -406,7 +406,7 @@ public class Database {
 		return false;
 	}
 	
-	public static void updateConvoContent(String convoName, String newContent) {
+	public   void updateConvoContent(String convoName, String newContent) {
 		try {
 			stmt = conn.createStatement();
 		} catch (SQLException e1) {
@@ -432,7 +432,7 @@ public class Database {
 		}
 	}
 	
-	public static String getConvoContent(String convoName) {
+	public   String getConvoContent(String convoName) {
 		try {
 			stmt = conn.createStatement();
 		} catch (SQLException e1) {
@@ -464,7 +464,7 @@ public class Database {
 		return content;
 	}
 	
-	public static String getConvoModerator(String convoName) {
+	public   String getConvoModerator(String convoName) {
 		try {
 			stmt = conn.createStatement();
 		} catch (SQLException e1) {
@@ -496,7 +496,7 @@ public class Database {
 		return moderator;
 	}
 	
-	public static void endConvo(String convoName) {
+	public   void endConvo(String convoName) {
 		try {
 			stmt = conn.createStatement();
 		} catch (SQLException e1) {
@@ -514,7 +514,7 @@ public class Database {
 	}
 	
 /////////////////////////SIGN OUT//////////////////////////
-	public static void signOut(String username) {
+	public  void signOut(String username) {
 		try {
 			stmt = conn.createStatement();
 		} catch (SQLException e1) {
