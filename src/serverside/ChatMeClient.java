@@ -188,7 +188,7 @@ public class ChatMeClient {
 			userOut.writeObject(imagePath);
 			userOut.flush();
 			boolean OK = userIn.readBoolean();
-			if(OK == true)	{
+			if(OK == false)	{
 				System.out.println("CLIENT: Username is not taken :D ");
 			}
 			else {
