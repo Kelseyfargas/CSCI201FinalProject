@@ -382,13 +382,7 @@ public class BuddyList extends JFrame{
 		ConversationJTA.setBackground(Color.LIGHT_GRAY);
 		ConversationJTA.setFont(new Font("Courier", Font.BOLD, 22));
 		centerPanel.add(ConversationJTA);
-		
-//
 
-		ArrayList<String> us = new ArrayList<String>(Users.length);//adding users to the list
-		for(int u = 0; u < Users.length; u++){//that will call a funciton that will display
-			us.add(Users[u]);//the names of the users
-		}
 		updateOnlineUser();
 		updateActiveConversations();
 			
