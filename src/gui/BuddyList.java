@@ -54,64 +54,66 @@ public class BuddyList extends JFrame{
 			"Ryan J.jpg",
 			"Harvey.jpg",
 			"Mike.jpg"};
-	
-	public void setOnlineUsers(ArrayList<String> online){//update the online users given the strings
+	public void updateActiveConversations(){
+		
+	}
+	public void updateOnlineUser(){//update the online users given the strings
 		//create void updateOnlineUser and void updateActiveConversations
 		
 		//make sure that you dont create a chat with yourself
 		//add online users to a display list
 		final ArrayList<String> OnlineUsers;
-		OnlineUsers = online;
+		//OnlineUsers = online;
 		
 		JPanel onlineusersPanel = new JPanel();
 		onlineusersPanel.setLayout(new BoxLayout(onlineusersPanel, BoxLayout.Y_AXIS));
 		
-		for(int i = 0; i < online.size(); i++){
-//			if(OnlineUsers.equals(user.getName())){//if equal to current user
-//				OnlineUsers.remove(i);
-//			}
-//			else{
-				final String UserForConvo =OnlineUsers.get(i).substring(0,(OnlineUsers.get(i).lastIndexOf(".")));//takes off the jpg
-				JButton OUButton = new JButton(UserForConvo);
-				OUButton.setEnabled(true);
-				OUButton.setBorderPainted(false);
-				OUButton.addMouseListener(new MouseAdapter(){
-				    @Override
-				    public void mouseClicked(MouseEvent e){
-				    	
-				        if(e.getClickCount()==2){//double clicked
-				        //create a message w/ that user
-				         new ChatRoomGUI(UserForConvo);
-				        }
-				        else if(e.getModifiers() == MouseEvent.BUTTON3_MASK){
-				         System.out.println("You right clicked, so It'll show the about me");
-				       	 JDialog jd = new JDialog();
-						 jd.setLocation(450,300);
-						 jd.setSize(200, 200);
-						 jd.setModal(true);
-						 JPanel jp = new JPanel();
-						 BoxLayout bl = new BoxLayout(jp, BoxLayout.Y_AXIS);
-						 jp.setLayout(bl);
-						 JLabel jl = new JLabel("About Me");
-						 JLabel jl1 = new JLabel("This is my about me");
-						 jp.add(jl);
-						 jp.add(jl1);
-						 jd.add(jp);
-						 jd.setVisible(true);
-				        }
-				    }
-				});
-				onlineusersPanel.add(OUButton);
-//			}
-		}//end of forloop
-		JScrollPane onlineUsersSP = new JScrollPane(onlineusersPanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-												JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		onlineUsersSP.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-		onlineUsersSP.setPreferredSize(new Dimension(210,250));
-
-		centerPanel.add(onlineUsersSP);
-
-		
+//		//for(int i = 0; i < online.size(); i++){
+////			if(OnlineUsers.equals(user.getName())){//if equal to current user
+////				OnlineUsers.remove(i);
+////			}
+////			else{
+//				final String UserForConvo =OnlineUsers.get(i).substring(0,(OnlineUsers.get(i).lastIndexOf(".")));//takes off the jpg
+//				JButton OUButton = new JButton(UserForConvo);
+//				OUButton.setEnabled(true);
+//				OUButton.setBorderPainted(false);
+//				OUButton.addMouseListener(new MouseAdapter(){
+//				    @Override
+//				    public void mouseClicked(MouseEvent e){
+//				    	
+//				        if(e.getClickCount()==2){//double clicked
+//				        //create a message w/ that user
+//				         new ChatRoomGUI(UserForConvo);
+//				        }
+//				        else if(e.getModifiers() == MouseEvent.BUTTON3_MASK){
+//				         System.out.println("You right clicked, so It'll show the about me");
+//				       	 JDialog jd = new JDialog();
+//						 jd.setLocation(450,300);
+//						 jd.setSize(200, 200);
+//						 jd.setModal(true);
+//						 JPanel jp = new JPanel();
+//						 BoxLayout bl = new BoxLayout(jp, BoxLayout.Y_AXIS);
+//						 jp.setLayout(bl);
+//						 JLabel jl = new JLabel("About Me");
+//						 JLabel jl1 = new JLabel("This is my about me");
+//						 jp.add(jl);
+//						 jp.add(jl1);
+//						 jd.add(jp);
+//						 jd.setVisible(true);
+//				        }
+//				    }
+//				});
+//				onlineusersPanel.add(OUButton);
+////			}
+//		}//end of forloop
+//		JScrollPane onlineUsersSP = new JScrollPane(onlineusersPanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+//												JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+//		onlineUsersSP.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+//		onlineUsersSP.setPreferredSize(new Dimension(210,250));
+//
+//		centerPanel.add(onlineUsersSP);
+//
+//		
 	}
 	public void createDialogeGroupMessage(){
 		 JDialog jd = new JDialog();
@@ -330,7 +332,7 @@ public class BuddyList extends JFrame{
 		for(int u = 0; u < Users.length; u++){//that will call a funciton that will display
 			us.add(Users[u]);//the names of the users
 		}
-		setOnlineUsers(us);
+		updateOnlineUser();
 			
 		add(westPanel, BorderLayout.WEST);
 		add(centerPanel, BorderLayout.CENTER);
