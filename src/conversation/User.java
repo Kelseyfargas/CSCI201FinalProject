@@ -34,12 +34,14 @@ public class User {
 	private ArrayList<String> onlineUsers;
 	private ArrayList<GroupConversation> currentConversations;	// change to Conversation 						
 	private ChatMeClient chatClient;
+	private ArrayList<ChatRoomGUI> messageWindow;
 	
 	/* Constructor */
 	public User() {
 		createAccountWindow();
 		onlineUsers = new ArrayList<String>();
 		currentConversations = new ArrayList<GroupConversation>();
+		messageWindow = new ArrayList<ChatRoomGUI>();
 	}
 
 	public void createAccountWindow() {
@@ -76,6 +78,7 @@ public class User {
 			i++;
 		}
 	}
+	
 
 	public void displayConvoError() {						//called when addGroupConvo failed 
 		//call gui for error message 
@@ -127,6 +130,8 @@ public class User {
 
 	public void setOnlineUsers(ArrayList<String> onlineUsers) {
 		this.onlineUsers = onlineUsers;
+	    this.onlineUsers.remove(this);
+	    buddyList.updateActiveConversations();
 	}
 
 	public ArrayList<String> getOnlineUsers(){
@@ -158,7 +163,9 @@ public class User {
 	public String getPassword() 		{
 		return this.password;
 	}
-
+	public ArrayList<GroupConversation> getConversations() {
+		return this.currentConversations;
+	}
 	public void setImagePath(String imagePath)		{
 		this.imagePath = imagePath;
 		image = new ImageIcon((imagePath)).getImage();
