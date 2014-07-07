@@ -57,6 +57,14 @@ public class BuddyList extends JFrame{
 			"Mike.jpg"};
 	public void updateActiveConversations(){
 		
+		JTextArea ConversationJTA = new JTextArea("Online Conversations", 1, 16); // online users section of code
+		ConversationJTA.setEditable(false);
+		ConversationJTA.setLineWrap(true);
+		ConversationJTA.setWrapStyleWord(true);
+		ConversationJTA.setForeground(Color.DARK_GRAY);
+		ConversationJTA.setBackground(Color.LIGHT_GRAY);
+		ConversationJTA.setFont(new Font("Courier", Font.BOLD, 22));
+		centerPanel.add(ConversationJTA);
 		JPanel onlineusersPanel = new JPanel();
 		onlineusersPanel.setLayout(new BoxLayout(onlineusersPanel, BoxLayout.Y_AXIS));
 		
@@ -111,6 +119,14 @@ public class BuddyList extends JFrame{
 		//make sure that you dont create a chat with yourself
 		//add online users to a display list
 		//OnlineUsers = online;
+		JTextArea jtaNote = new JTextArea("Online Users", 1, 16); // online users section of code
+		jtaNote.setEditable(false);
+		jtaNote.setLineWrap(true);
+		jtaNote.setWrapStyleWord(true);
+		jtaNote.setForeground(Color.DARK_GRAY);
+		jtaNote.setBackground(Color.LIGHT_GRAY);
+		jtaNote.setFont(new Font("Courier", Font.BOLD, 22));
+		centerPanel.add(jtaNote);
 		
 		JPanel onlineusersPanel = new JPanel();
 		onlineusersPanel.setLayout(new BoxLayout(onlineusersPanel, BoxLayout.Y_AXIS));
@@ -365,26 +381,9 @@ public class BuddyList extends JFrame{
 		
 		centerPanel.add(topPanel);
 		
-		JTextArea jtaNote = new JTextArea("Online Users", 1, 16); // online users section of code
-		jtaNote.setEditable(false);
-		jtaNote.setLineWrap(true);
-		jtaNote.setWrapStyleWord(true);
-		jtaNote.setForeground(Color.DARK_GRAY);
-		jtaNote.setBackground(Color.LIGHT_GRAY);
-		jtaNote.setFont(new Font("Courier", Font.BOLD, 22));
-		centerPanel.add(jtaNote);
-		
-		JTextArea ConversationJTA = new JTextArea("Online Conversations", 1, 16); // online users section of code
-		ConversationJTA.setEditable(false);
-		ConversationJTA.setLineWrap(true);
-		ConversationJTA.setWrapStyleWord(true);
-		ConversationJTA.setForeground(Color.DARK_GRAY);
-		ConversationJTA.setBackground(Color.LIGHT_GRAY);
-		ConversationJTA.setFont(new Font("Courier", Font.BOLD, 22));
-		centerPanel.add(ConversationJTA);
 
-		updateOnlineUser();
-		updateActiveConversations();
+//		updateOnlineUser();
+//		updateActiveConversations();
 			
 		add(westPanel, BorderLayout.WEST);
 		add(centerPanel, BorderLayout.CENTER);
