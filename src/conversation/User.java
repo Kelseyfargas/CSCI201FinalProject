@@ -61,8 +61,8 @@ public class User {
 
 	public void addGroupConvo(String convoName, String moderator)		{
 		GroupConversation newConversation = new GroupConversation(convoName, this);
-		currentConversations.add(newConversation);
-		chatRoomGUI = new ChatRoomGUI(convoName);										// display GUI
+		currentConversations.add(newConversation);                                           
+		chatRoomGUI.updateActiveConversations();
 	}
 
 	public void removeGroupConvo(String convoName, String moderator)		{
@@ -70,15 +70,16 @@ public class User {
 		for(GroupConversation element : currentConversations)		{						// remove from currentConversations list 
 			if(element.getName() == convoName)	{
 				currentConversations.remove(i);
-				// update GUI // 
+				chatRoomGUI.updateActiveConversations();
 			}
 			i++;
 		}
 	}
 
-	public void displayConvoError() {
+	public void displayConvoError() {						//called when addGroupConvo failed 
 		//call gui for error message 
 	}
+	
 	public void createNewAccount() {
 		this.chatClient.sendCommand(ChatMeServer.NEW_USER_REQUEST);
 		// verify if isn't taken, wait for respose // 
