@@ -35,7 +35,7 @@ public class ChatMeClient {
 
 	
 	public ChatMeClient(String hostname) throws IOException{
-		String ipAddress = "localhost";
+		String ipAddress = "10.122.194.44";
 		
 		System.out.println("Connecting...");
 		userRequestSocket = new Socket(ipAddress, 7777);
