@@ -131,7 +131,7 @@ public class User {
 	public void setOnlineUsers(ArrayList<String> onlineUsers) {
 		this.onlineUsers = onlineUsers;
 	    this.onlineUsers.remove(this.getName());
-	    buddyList.updateActiveConversations();
+	    buddyList.updateOnlineUser();
 	}
 
 	public ArrayList<String> getOnlineUsers(){
