@@ -57,6 +57,53 @@ public class BuddyList extends JFrame{
 			"Mike.jpg"};
 	public void updateActiveConversations(){
 		
+		JPanel onlineusersPanel = new JPanel();
+		onlineusersPanel.setLayout(new BoxLayout(onlineusersPanel, BoxLayout.Y_AXIS));
+		
+		class mouseClass extends MouseAdapter{
+			String name;
+			mouseClass(String name){
+				name = name;
+			}
+			public void mouseClicked(MouseEvent e){
+		    	
+		        if(e.getClickCount()==2){//double clicked
+		        //create a message w/ that user
+		         new ChatRoomGUI(name);
+		        }
+		        else if(e.getModifiers() == MouseEvent.BUTTON3_MASK){
+		         System.out.println("You right clicked, so It'll show the about me");
+		       	 JDialog jd = new JDialog();
+				 jd.setLocation(450,300);
+				 jd.setSize(200, 200);
+				 jd.setModal(true);
+				 JPanel jp = new JPanel();
+				 BoxLayout bl = new BoxLayout(jp, BoxLayout.Y_AXIS);
+				 jp.setLayout(bl);
+				 JLabel jl = new JLabel("About Me");
+				 JLabel jl1 = new JLabel("This is my about me");
+				 jp.add(jl);
+				 jp.add(jl1);
+				 jd.add(jp);
+				 jd.setVisible(true);
+		        }
+		    }
+			
+		}
+		for(int i = 0; i < user.getConversations().size(); i++){
+			JButton OUButton = new JButton(user.getConversations().get(i).getName());
+			OUButton.setEnabled(true);
+			OUButton.setBorderPainted(false);
+			OUButton.addMouseListener(new mouseClass(user.getConversations().get(i).getName()));
+			onlineusersPanel.add(OUButton);
+		}
+		//end of forloop
+		JScrollPane onlineconvoSP = new JScrollPane(onlineusersPanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+												JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		onlineconvoSP.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+		onlineconvoSP.setPreferredSize(new Dimension(210,250));
+
+		centerPanel.add(onlineconvoSP);
 	}
 	public void updateOnlineUser(){//update the online users given the strings
 		//create void updateOnlineUser and void updateActiveConversations
@@ -326,6 +373,16 @@ public class BuddyList extends JFrame{
 		jtaNote.setBackground(Color.LIGHT_GRAY);
 		jtaNote.setFont(new Font("Courier", Font.BOLD, 22));
 		centerPanel.add(jtaNote);
+		
+		JTextArea ConversationJTA = new JTextArea("Online Conversations", 1, 16); // online users section of code
+		ConversationJTA.setEditable(false);
+		ConversationJTA.setLineWrap(true);
+		ConversationJTA.setWrapStyleWord(true);
+		ConversationJTA.setForeground(Color.DARK_GRAY);
+		ConversationJTA.setBackground(Color.LIGHT_GRAY);
+		ConversationJTA.setFont(new Font("Courier", Font.BOLD, 22));
+		centerPanel.add(ConversationJTA);
+		
 //
 
 		ArrayList<String> us = new ArrayList<String>(Users.length);//adding users to the list
@@ -333,6 +390,7 @@ public class BuddyList extends JFrame{
 			us.add(Users[u]);//the names of the users
 		}
 		updateOnlineUser();
+		updateActiveConversations();
 			
 		add(westPanel, BorderLayout.WEST);
 		add(centerPanel, BorderLayout.CENTER);
