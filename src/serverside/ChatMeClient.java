@@ -154,11 +154,6 @@ public class ChatMeClient {
 			{
 				System.out.println("you have been cleared to log in.");
 				
-				ArrayList<String> onlineUsers = (ArrayList<String>) userIn.readObject();
-				for(int i=0; i< onlineUsers.size();i++){
-					System.out.println("Online: " + onlineUsers.get(i));
-				}
-				user.setOnlineUsers(onlineUsers);
 				user.createBuddyList();
 				
 				
@@ -330,6 +325,11 @@ public class ChatMeClient {
 			else if(command == ChatMeServer.END_GROUP_REQUEST){
 				//gui needs to take off a convo (it's been deleted)
 				endGroupRequest();
+			}
+			else if(command == ChatMeServer.UPDATE_ONLINE_USERS_REQUEST){
+				System.out.println("Reading global update online user request...");
+				ArrayList<String> onlineUsers = (ArrayList<String>)servIn.readObject();
+				user.setOnlineUsers(onlineUsers);
 			}
 		}
 		public void newGroupRequest() throws ClassNotFoundException, IOException{
