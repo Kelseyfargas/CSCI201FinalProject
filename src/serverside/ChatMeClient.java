@@ -153,15 +153,7 @@ public class ChatMeClient {
 			if(OK == true)
 			{
 				System.out.println("you have been cleared to log in.");
-				
 				user.createBuddyList();
-				
-				
-					//Thread.sleep(1000);
-					System.out.println("TESTING NEW CONVO CODE");
-					System.out.println("user name is: " + user.getName());
-					sendCommand(ChatMeServer.NEW_GROUP_REQUEST, new GroupConversation("Butt", user));
-				
 			}
 			else{
 				System.out.println("Could not log in. Incorrect Credentials");
