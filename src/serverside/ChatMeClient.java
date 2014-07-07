@@ -139,6 +139,7 @@ public class ChatMeClient {
 		}
 		public void loginRequest() throws IOException, ClassNotFoundException{
 			//finished but needs database and GUI implementations
+			//Also, remove section: "TESTING NEW CONVO CODE"
 			System.out.println("CLIENT: log in request");
 			String un = user.getName();
 			String pw = user.getPassword();
@@ -214,6 +215,9 @@ public class ChatMeClient {
 			else if(command == ChatMeServer.END_GROUP_REQUEST){
 				endGroupRequest(convo);
 			}
+			else if(command == ChatMeServer.NEW_MESSAGE_REQUEST){
+				//Figure this out
+			}
 			lock.unlock();
 		}
 		public void newGroupRequest(GroupConversation convo) throws IOException{
@@ -230,7 +234,7 @@ public class ChatMeClient {
 			if(OK == true){
 				//start new group conversation window
 				System.out.println("User will then add convo to buddy list. Write Code!");
-				//user.buddyList.addGroupConvo(convoName, moderator);// <-- needs to be written
+				user.addGroupConvo(convoName, moderator);// <-- needs to be written
 			}
 			else if(OK == false){
 				//display error message I guess....
@@ -253,7 +257,7 @@ public class ChatMeClient {
 				//unfinished, GUI --> remove new group conversation window
 				//rewrite line below here
 				System.out.println("ending group convo. write code!");
-				//user.removeGroupConvo(convoName, moderator);// <-- needs to be written
+				user.removeGroupConvo(convoName, moderator);
 			}
 			else if(OK == false){
 				//display error message I guess....
@@ -332,14 +336,14 @@ public class ChatMeClient {
 			String convoName = (String) servIn.readObject();
 			String moderator = (String) servIn.readObject();
 			System.out.println("user.addConvo;i;ijjij WRITE");
-			//user.addConvo(convoName, moderator);
+			user.addGroupConvo(convoName, moderator);
 		}
 		public void endGroupRequest() throws ClassNotFoundException, IOException{
 			//unfinished, see comment
 			String convoName = (String) servIn.readObject();
 			String moderator = (String) servIn.readObject();
 			System.out.println("user.removeConvo boiaeijf. write!!!111!!");
-			//user.removeConvo(convoName, moderator);
+			user.removeGroupConvo(convoName, moderator);
 
 		}
 		
@@ -360,12 +364,6 @@ public class ChatMeClient {
 //			Scanner scan = new Scanner(System.in);
 //			String response = scan.nextLine();
 			
-			
-			/*while(! response.equals("0")){
-				response = scan.nextLine();
-				int command = Integer.parseInt(response);
-				cme.sendCommand(command);
-			}*/
 			
 			//client.sendCommand(NEW_USER_REQUEST)
 		} catch (IOException e) {

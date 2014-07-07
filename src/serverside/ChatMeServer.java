@@ -26,6 +26,7 @@ public class ChatMeServer {
 	public static int INVITE_CHAT_REQUEST = 4;
 	public static int NEW_GROUP_REQUEST = 6;
 	public static int END_GROUP_REQUEST = 7;
+	public static int NEW_GROUP_MESSAGE_REQUEST = 8;
 
 	Database database;
 	ArrayList<SocketHolder> clients;
@@ -253,7 +254,10 @@ public class ChatMeServer {
 		}
 		private void newMessageRequest() throws IOException, ClassNotFoundException{
 			//DEFINITELY needs looking at
-			printDbg("Command recieved: New Message");
+			
+			
+			
+			/*printDbg("Command recieved: New Message");
 			printDbg("Reading message . . .");
 			Message msg = (Message) threadUserIn.readObject();
 			msg.print();
@@ -269,7 +273,7 @@ public class ChatMeServer {
 				//srt.sendMessage(msg);
 				
 			}
-			printDbg("Finished command");
+			printDbg("Finished command");*/
 		}
 		private void newGroupRequest() throws ClassNotFoundException, IOException{
 			//needs database implementation
