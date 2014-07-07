@@ -164,6 +164,7 @@ public class BuddyList extends JFrame{
 		 startChatButton.addActionListener(new ActionListener(){
 			 public void actionPerformed(ActionEvent ae){
 				 new ChatRoomGUI(NOCTextField.getText());
+				 user.addGroupConvo(NOCTextField.getText(), this);
 			 }
 		 });
 //		 //bottomPanel.add(chooseUsersLabel);
