@@ -283,7 +283,7 @@ public class ChatMeServer {
 			String convoName = (String) threadUserIn.readObject();
 			String moderator = (String) threadUserIn.readObject();
 			boolean OK = true;
-			threadUserOut.writeBoolean(OK);
+			threadUserOut.writeBoolean(OK); //Change this later when we want to put limitations on when a new group conversation can be created
 			threadUserOut.flush();
 			database.createConversation(convoName, moderator, ""); 
 			srt.addConvoToAll(convoName, moderator);
