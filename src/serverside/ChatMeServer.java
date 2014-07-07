@@ -28,6 +28,7 @@ public class ChatMeServer {
 	public static int NEW_GROUP_REQUEST = 6;
 	public static int END_GROUP_REQUEST = 7;
 	public static int NEW_GROUP_MESSAGE_REQUEST = 8;
+	public static int UPDATE_ONLINE_USERS_REQUEST = 9;
 
 	Database database;
 	ArrayList<SocketHolder> clients;
@@ -170,6 +171,10 @@ public class ChatMeServer {
 					database.endConvo(convoName); 
 					srt.removeConvoFromAll(convoName, moderator);
 				}
+				else if(command == UPDATE_ONLINE_USERS_REQUEST){
+					ArrayList<String> strArr = database.getOnlineList();
+					srt.updateAllOnlineUsers(strArr);
+				}
 			} catch (SQLException s){
 				s.printStackTrace();
 			}
@@ -184,11 +189,12 @@ public class ChatMeServer {
 			String imgPath 	= (String) threadUserIn.readObject();
 			printDbg("SERVER READS:"
 					+ username + " " + password + " " + bio + " " + imgPath);
-
+			
 			boolean OK = database.verifyUserExists(username); //database compatible
+			
 			threadUserOut.writeBoolean(OK);
 			threadUserOut.flush();
-			if(OK == true){
+			if(OK == false){
 				database.createAccount(username, password, bio, imgPath);
 			}
 		}
@@ -222,19 +228,13 @@ public class ChatMeServer {
 				
 				//send onlineUsers
 				
-				//debug
-				ArrayList<String> strArr = new ArrayList<String>();
-				strArr = database.getOnlineList();
-				threadUserOut.writeObject(strArr);
+				
 				printDbg("Finished command");
 				
-				Iterator it = clients.iterator();
-				System.out.println("Clients has " + clients.size() + " elemnts in it...");
-				while(it.hasNext()){
-					if(this.sh == it.next()){
-						sh.setName(un);
-					}
-				}
+				registerSocket(un); //<-- SUPER IMPORTANT
+				this.handleCommand(UPDATE_ONLINE_USERS_REQUEST);
+				
+				
 				
 				return;
 			}
@@ -288,9 +288,21 @@ public class ChatMeServer {
 			database.createConversation(convoName, moderator, ""); 
 			srt.addConvoToAll(convoName, moderator);
 		}
+		
+		/* call this method upon logging in  */
+		public void registerSocket(String name){
+			Iterator<SocketHolder> it = clients.iterator();
+			System.out.println("Clients has " + clients.size() + " elemnts in it...");
+			while(it.hasNext()){
+				if(this.sh == it.next()){
+					sh.setName(name);
+				}
+			}
+		}
 		/* * * * * * * * * * * * * *
 		 * end USER request Thread *
 		 * * * * * * * * * * * * * */
+		
 	}
 	class ServReqThread extends Thread{
 		
@@ -316,6 +328,17 @@ public class ChatMeServer {
 		}
 		public void setUserReqThread(UserReqThread ct) {
 			this.ct = ct;
+		}
+		public void updateAllOnlineUsers(ArrayList<String> onlineUsers) throws IOException{
+			for(int i=0; i<clients.size();i++){
+				if( ! clients.get(i).getName().isEmpty() ){
+					ObjectOutputStream oos = clients.get(i).serverOut;
+					oos.writeInt(UPDATE_ONLINE_USERS_REQUEST);
+					oos.flush();
+					oos.writeObject(onlineUsers);
+					oos.flush();
+				}
+			}
 		}
 		public void addConvoToAll(String convoName, String moderator) throws IOException{
 			for(int i=0; i<clients.size();i++){
