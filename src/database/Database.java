@@ -338,6 +338,32 @@ public class Database {
 		}
 		return r_bio;
 	}
+	
+	public void updateBio(String username, String newBio) {
+		try {
+			stmt = conn.createStatement();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		String bio = getBio(username);
+		try {
+			if (!bio.equals(null)) {
+				//update bio
+				bio = bio + "\n" + newBio;
+				System.out.println("New Bio: " + bio);
+				
+				//store bio
+				sql = "UPDATE UserInfo SET bio = '__BIO__' WHERE username = '__USERNAME__';";
+				sql = sql.replace("__BIO__", bio);
+				sql = sql.replace("__USERNAME__", username);
+				stmt.execute(sql);
+			} 
+
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+	}
 
 	public String getImagePath(String username) {
 		try {
