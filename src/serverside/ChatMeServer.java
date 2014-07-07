@@ -5,6 +5,7 @@ import java.net.*;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -16,7 +17,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import javax.swing.Icon;
 
 import conversation.Message;
-
+import database.Database;
 public class ChatMeServer {
 	
 	public static int NEW_USER_REQUEST = 0;
@@ -146,31 +147,35 @@ public class ChatMeServer {
 		private void handleCommand(int command) throws IOException, ClassNotFoundException {
 			
 			printDbg("SERVER: parsing command...");
-			if(command == NEW_USER_REQUEST){
-				newUserRequest();
-			}
-			else if(command==LOGIN_REQUEST){
-				loginRequest();
-			}
-			else if(command == SIGN_OUT_REQUEST){
-				signOutRequest();
-			}
-			else if(command == NEW_MESSAGE_REQUEST){
-				newMessageRequest();
-			}
-			else if(command == NEW_GROUP_REQUEST){
-				newGroupRequest();
-			}
-			else if(command == END_GROUP_REQUEST){
-				printDbg("Reading group convo deletion request");
-				String convoName = (String) threadUserIn.readObject();
-				String moderator = (String) threadUserIn.readObject();
-				database.removeConversation(convoName, moderator); //<--here
-				srt.removeConvoFromAll(convoName, moderator);
+			try{
+				if(command == NEW_USER_REQUEST){
+					newUserRequest();
+				}
+				else if(command==LOGIN_REQUEST){
+					loginRequest();
+				}
+				else if(command == SIGN_OUT_REQUEST){
+					signOutRequest();
+				}
+				else if(command == NEW_MESSAGE_REQUEST){
+					newMessageRequest();
+				}
+				else if(command == NEW_GROUP_REQUEST){
+					newGroupRequest();
+				}
+				else if(command == END_GROUP_REQUEST){
+					printDbg("Reading group convo deletion request");
+					String convoName = (String) threadUserIn.readObject();
+					String moderator = (String) threadUserIn.readObject();
+					database.endConvo(convoName); 
+					srt.removeConvoFromAll(convoName, moderator);
+				}
+			} catch (SQLException s){
+				s.printStackTrace();
 			}
 		}
 		
-		private void newUserRequest() throws IOException, ClassNotFoundException{
+		private void newUserRequest() throws IOException, ClassNotFoundException, SQLException{
 			//SAT: FINISHED
 			printDbg("SERVER: Command recieved on server: New User");
 			String username = (String) threadUserIn.readObject();
@@ -180,14 +185,14 @@ public class ChatMeServer {
 			printDbg("SERVER READS:"
 					+ username + " " + password + " " + bio + " " + imgPath);
 
-			boolean OK = database.verifyUserExists(username);
+			boolean OK = database.verifyUserExists(username); //database compatible
 			threadUserOut.writeBoolean(OK);
 			threadUserOut.flush();
 			if(OK == true){
 				database.createAccount(username, password, bio, imgPath);
 			}
 		}
-		private void loginRequest() throws IOException, ClassNotFoundException{
+		private void loginRequest() throws IOException, ClassNotFoundException, SQLException{
 			//SAT: FINISHED
 			printDbg("Command recieved on server: Login\n");
 			String un = (String) threadUserIn.readObject();
@@ -198,9 +203,6 @@ public class ChatMeServer {
 
 			boolean OK = database.login(un, pw);
 			////////////////////////////////////////////
-			
-			
-			
 			if(OK == true){
 				database.addToOnlineList(un);
 				printDbg("Giving OK to log in.");
@@ -283,7 +285,7 @@ public class ChatMeServer {
 			boolean OK = true;
 			threadUserOut.writeBoolean(OK);
 			threadUserOut.flush();
-			database.addConversation(convoName, moderator); //<--here
+			database.createConversation(convoName, moderator, ""); 
 			srt.addConvoToAll(convoName, moderator);
 		}
 		/* * * * * * * * * * * * * *
@@ -342,70 +344,6 @@ public class ChatMeServer {
 			}
 			
 		}
-		
-	}
-
-
-}
-
-class Database {
-	//super fake
-	public void doAction(int action){
-		
-	}
-	public void removeConversation(String convoName, String moderator) {
-		// TODO Auto-generated method stub
-		
-	}
-	public void addConversation(String convoName, String moderator) {
-		// TODO Auto-generated method stub
-		
-	}
-	public String getConvoContent(String convoName) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	public void updateConvoContent(String convoName, String content) {
-		// TODO Auto-generated method stub
-		
-	}
-	public boolean verifyConvoNameExists(String convoName) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	public String getImagePath(String un) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	public String getBio(String un) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	public ArrayList<String> getOnlineList() {
-		ArrayList<String> pretendList = new ArrayList<String>();
-		pretendList.add("FakeDude1");
-		pretendList.add("FakeDude2");
-		pretendList.add("FakeDude3");
-		pretendList.add("FakeDude4");
-		return pretendList;
-	}
-	public void addToOnlineList(String un) {
-		// TODO Auto-generated method stub
-		
-	}
-	public boolean login(String un, String pw) {
-		// TODO Auto-generated method stub
-		return true;
-	}
-	public boolean verifyUserExists(String name){
-		return true; //FIX THIS
-	}
-	public void createAccount(String username, String password, String bio, String imgPath){
-		
-	}
-	
-	//sign out request
-	public void signOut(String username) {
 		
 	}
 }
