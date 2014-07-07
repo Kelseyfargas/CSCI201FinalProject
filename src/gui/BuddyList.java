@@ -56,6 +56,8 @@ public class BuddyList extends JFrame{
 			"Mike.jpg"};
 	
 	public void setOnlineUsers(ArrayList<String> online){//update the online users given the strings
+		//create void updateOnlineUser and void updateActiveConversations
+		
 		//make sure that you dont create a chat with yourself
 		//add online users to a display list
 		final ArrayList<String> OnlineUsers;
@@ -164,7 +166,7 @@ public class BuddyList extends JFrame{
 		 startChatButton.addActionListener(new ActionListener(){
 			 public void actionPerformed(ActionEvent ae){
 				 new ChatRoomGUI(NOCTextField.getText());
-				 user.addGroupConvo(NOCTextField.getText(), this);
+				 //user.addGroupConvo(NOCTextField, user.getName());
 			 }
 		 });
 //		 //bottomPanel.add(chooseUsersLabel);
