@@ -184,11 +184,12 @@ public class ChatMeServer {
 			String imgPath 	= (String) threadUserIn.readObject();
 			printDbg("SERVER READS:"
 					+ username + " " + password + " " + bio + " " + imgPath);
-
+			
 			boolean OK = database.verifyUserExists(username); //database compatible
+			
 			threadUserOut.writeBoolean(OK);
 			threadUserOut.flush();
-			if(OK == true){
+			if(OK == false){
 				database.createAccount(username, password, bio, imgPath);
 			}
 		}
