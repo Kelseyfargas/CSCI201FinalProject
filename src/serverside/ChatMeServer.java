@@ -162,6 +162,9 @@ public class ChatMeServer {
 				else if(command == SIGN_OUT_REQUEST){
 					signOutRequest();
 				}
+				else if(command == UPDATE_GROUP_REQUEST){
+					
+				}
 				else if(command == NEW_GROUP_REQUEST){
 					newGroupRequest();
 				}
@@ -256,11 +259,14 @@ public class ChatMeServer {
 			//needs database implementation
 			printDbg("Reading group convo initiation request");
 			String convoName = (String) threadUserIn.readObject();
-			boolean OK = true;
-			threadUserOut.writeBoolean(OK); //Change this later when we want to put limitations on when a new group conversation can be created
+			boolean convoExists = database.verifyConvoNameExists(convoName);
+			threadUserOut.writeBoolean( ! convoExists ); //Change this later when we want to put limitations on when a new group conversation can be created
 			threadUserOut.flush();
-			database.createConversation(convoName, "");
-			updateCurrentConversations();
+			if( ! convoExists){
+				database.createConversation(convoName, "");				
+				updateCurrentConversations();
+			}
+
 		}
 		private void endGroupRequest() throws ClassNotFoundException, IOException {
 			// unfinished ??? client might have to write code for this

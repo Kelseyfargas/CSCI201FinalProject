@@ -190,17 +190,19 @@ public class ChatMeClient {
 				throws IOException {
 			lock.lock();
 			userOut.writeInt(command);
-			if (command == ChatMeServer.UPDATE_GROUP_REQUEST) {
+			if (command == ChatMeServer.NEW_GROUP_REQUEST) {
 				newGroupRequest(convo);
+			}
+			if (command == ChatMeServer.END_GROUP_REQUEST){
+				endGroupRequest(convo);
 			}
 			lock.unlock();
 		}
 
 		public void newGroupRequest(String convoName) throws IOException {
-			// unfinished: , GUI Implementations,
+			//bugs
 			userOut.writeObject(convoName);
 			userOut.flush();
-
 			// Precaution: Recieve OK
 			boolean userExists = userIn.readBoolean();
 			if (userExists == false) {
