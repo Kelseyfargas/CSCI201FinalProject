@@ -66,8 +66,6 @@ public class LogIn extends JFrame {
 			}
 		}
 		logInButton.addActionListener(new LogInListener(user));
-		
-		
 
 		flowPanel.add(logInButton);
 //		flowPanel.add(createAccount);
@@ -84,21 +82,6 @@ public class LogIn extends JFrame {
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 	}
-//    public void pullThePlug() {
-//        WindowEvent wev = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
-//        Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(wev);
-//    }
-   
-	/*public static void main(String []args){
-		final LogIn l = new LogIn("Login");
-		l.logInButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				new BuddyList(l.usernameTF.getText() +"'s Buddy List");
-				l.pullThePlug();
-			}
-		}); 
-
-	}*/
 
 	public String getPassword(){
 		return passwordTF.getText();
@@ -107,9 +90,5 @@ public class LogIn extends JFrame {
 		return usernameTF.getText();
 	}
 	
-    public void pullThePlug() {
-        WindowEvent wev = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
-        Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(wev);
-    }
 
 }
