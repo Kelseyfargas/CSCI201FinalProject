@@ -62,8 +62,8 @@ public class BuddyList extends JFrame{
 		JMenuItem startGroupMessageMI = new JMenuItem("Start Group Message");
 		JMenu helpMenu = new JMenu("Help");
 		JMenuItem aboutMenuItem = new JMenuItem("About");
-		startMessageMenuItem.addActionListener(new StartPrivateMessage(this.user,PRIVATE_CHAT ));
-		startGroupMessageMI.addActionListener(new StartGroupMessage(this.user,GROUP_CHAT));
+		startMessageMenuItem.addActionListener(new StartPrivateMessage(getUser(),PRIVATE_CHAT ));
+		startGroupMessageMI.addActionListener(new StartGroupMessage(getUser(),GROUP_CHAT));
 		aboutMenuItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
 				 JDialog jd = new JDialog();
@@ -111,7 +111,7 @@ public class BuddyList extends JFrame{
 		messageButton.setSize(30,30);
 		messageButton.setLocation(10,10);
 		messageButton.setBorderPainted(false);
-		messageButton.addActionListener(new StartPrivateMessage(this.user, PRIVATE_CHAT));
+		messageButton.addActionListener(new StartPrivateMessage(getUser(), PRIVATE_CHAT));
 		topPanel.add(messageButton);
 		
 		ImageIcon groupChatIcon = new ImageIcon("Pictures/GroupChat.png");
@@ -120,7 +120,7 @@ public class BuddyList extends JFrame{
 		groupChatButton.setSize(30,30);
 		groupChatButton.setLocation(10,10);
 		groupChatButton.setBorderPainted(false);
-		groupChatButton.addActionListener(new StartGroupMessage(this.user, GROUP_CHAT));//share action listener with group chat
+		groupChatButton.addActionListener(new StartGroupMessage(getUser(), GROUP_CHAT));//share action listener with group chat
 		topPanel.add(groupChatButton);
 		
 		buddyListPanel.add(topPanel);
@@ -229,6 +229,10 @@ public class BuddyList extends JFrame{
 		
 		public void actionPerformed(ActionEvent ae){
 			Object[] onlinelist = user.getOnlineUsers().toArray();
+			
+			for(int o = 0; o < onlinelist.length; o++){
+				System.out.println("Online user: " + onlinelist[o]);
+			}
 			String people = (String)JOptionPane.showInputDialog(BuddyList.this, 
 			"Choose User to Start Chat!", 
 			"Start Message", 
@@ -286,6 +290,9 @@ public class BuddyList extends JFrame{
 /*******FUNCTIONS FOR THE BUDDY LIST************/
 /***********************************************/
 /***********************************************/
+	private User getUser(){
+		return this.user;
+	}
 	private void aboutMeAction(){
         System.out.println("You right clicked, so It'll show the about me.");
       	 JDialog jd = new JDialog();
@@ -367,6 +374,7 @@ public class BuddyList extends JFrame{
 	}
 	
 	public void updateOnlineUser(){
+		
 		System.out.println("In update user");
 		JButton Test = new JButton("Testing");
 		inneronlineusersPanel.add(Test);
