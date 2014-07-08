@@ -139,7 +139,7 @@ public class MessageWindow extends JFrame {
 		add(CenterPanel, BorderLayout.CENTER);
 		
 		if(messageType == GROUP_CHAT){
-			user.addGroupConvo(convoName, moderator);
+			user.sendGroupConvoRequest(convoName);
 		}
 		//necessities
 		this.setSize(600,400);
