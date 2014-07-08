@@ -13,6 +13,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -177,6 +180,7 @@ public class MessageWindow extends JFrame {
 		outputTextField.setBorder(BorderFactory.createMatteBorder(1,1,1,1, Color.GRAY));
 		JButton sendButton = new JButton("Send");
 		sendButton.addActionListener(new sendButtonAction(outputTextField, messageType));
+		getRootPane().setDefaultButton(sendButton);//sets the ENTER key
 		messageBottomPanel.add(outputTextField);
 		messageBottomPanel.add(sendButton);
 		
@@ -192,6 +196,7 @@ public class MessageWindow extends JFrame {
 //			user.initiateGroupConvoRequest(convoName);
 //		}
 		//necessities
+		addWindowListener(new windowClosedAction(convoName));
 		this.setSize(600,420);
 		this.setLocation(350,200);
 		this.setVisible(true);
@@ -276,6 +281,35 @@ public class MessageWindow extends JFrame {
 				outputTextField.setText(outputTextField.getText()+copieditem);
 			}
 		}
+		
+	}
+	
+	private class windowClosedAction implements WindowListener{
+		String convoName;
+		windowClosedAction(String convoName){
+			this.convoName = convoName;
+		}
+
+		public void windowClosing(WindowEvent e) {
+			System.out.println("WINDOW CLOSING");
+			System.out.println("REMOVING: " + convoName );
+			user.removeGroupConvoRequest(convoName);
+			
+		}
+		//UGGHH UNNCESSEARY
+		public void windowClosed(WindowEvent e) {
+		}
+		public void windowIconified(WindowEvent e) {
+		}
+		public void windowDeiconified(WindowEvent e) {
+		}
+		public void windowActivated(WindowEvent e) {
+		}
+		public void windowDeactivated(WindowEvent e) {
+		}
+		public void windowOpened(WindowEvent e) {
+		}
+
 		
 	}
 /*******FUNCTION FOR THE ChatRoomGUI************/
