@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -28,6 +29,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.ListCellRenderer;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
@@ -74,9 +76,15 @@ public class MessageWindow extends JFrame {
 		JMenuItem cutMenuItem = new JMenuItem("Cut");
 		JMenuItem pasteMenuItem = new JMenuItem("Paste");
 		
-		copyMenuItem.addActionListener(new CutCopyPasteAction(copyMenuItem));
-		cutMenuItem.addActionListener(new CutCopyPasteAction(cutMenuItem));
-		pasteMenuItem.addActionListener(new CutCopyPasteAction(cutMenuItem));
+		copyMenuItem.addActionListener(new CutCopyPasteAction(copyMenuItem.getText()));
+		cutMenuItem.addActionListener(new CutCopyPasteAction(cutMenuItem.getText()));
+		pasteMenuItem.addActionListener(new CutCopyPasteAction(pasteMenuItem.getText()));
+		copyMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, 
+				ActionEvent.CTRL_MASK));
+		cutMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, 
+				ActionEvent.CTRL_MASK));
+		pasteMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, 
+				ActionEvent.CTRL_MASK));
 		
 		JMenuItem saveConversationMenuItem = new JMenuItem("Save Conversation");
 		fileMenu.add(copyMenuItem);
@@ -174,9 +182,9 @@ public class MessageWindow extends JFrame {
 		CenterPanel.add(messageBottomPanel); 
 		add(CenterPanel, BorderLayout.CENTER);
 		
-		if(messageType == GROUP_CHAT){
-			user.initiateGroupConvoRequest(convoName);
-		}
+//		if(messageType == GROUP_CHAT){
+//			user.initiateGroupConvoRequest(convoName);
+//		}
 		//necessities
 		this.setSize(600,420);
 		this.setLocation(350,200);
@@ -239,8 +247,8 @@ public class MessageWindow extends JFrame {
 	private class CutCopyPasteAction implements ActionListener{
 		
 		private String actionword;
-		private CutCopyPasteAction(JMenuItem action){
-			this.actionword = action.getText();
+		private CutCopyPasteAction(String action){
+			this.actionword = action;
 		}
 		public void actionPerformed(ActionEvent e) {
 			
@@ -250,6 +258,7 @@ public class MessageWindow extends JFrame {
 		    outputTextField.setHighlighter(hilit);
 			if(actionword.equals("Cut")){
 				copieditem = outputTextField.getText();
+				System.out.println("cut item is : " + copieditem);
 				outputTextField.setText("");
 				
 			}
