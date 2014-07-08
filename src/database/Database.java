@@ -269,12 +269,10 @@ public class Database {
 	// ///////////////////////CONVOS//////////////////////////
 	/*
 	 * Method that adds a new conversation into the Conversations table in the DB
-	 * Takes in the conversation name, the moderator, and the content
-	 * If it is a private conversation, the moderator will be null
+	 * Takes in the conversation name and the content
 	 * Makes sure that the chosen conversation name does not already exist in the DB
 	 */
-	public void createConversation(String convoName, String moderator,
-			String content) {
+	public void createConversation(String convoName, String content) {
 		try {
 			stmt = conn.createStatement();
 		} catch (SQLException e1) {
@@ -282,9 +280,8 @@ public class Database {
 		}
 		boolean convoNameExists = verifyConvoNameExists(convoName);
 		if (!convoNameExists) {
-			sql = "insert into Conversations(convoName, moderator, content) values('__CONVONAME__','__MODERATOR__', '__CONTENT__');";
+			sql = "insert into Conversations(convoName, content) values('__CONVONAME__', '__CONTENT__');";
 			sql = sql.replace("__CONVONAME__", convoName);
-			sql = sql.replace("__MODERATOR__", moderator);
 			sql = sql.replace("__CONTENT__", content);
 			System.out.println(sql);
 			try {
@@ -316,8 +313,7 @@ public class Database {
 			if (resultSet.next()) {
 				final int count = resultSet.getInt(1);
 				if (count != 0) {
-					System.out
-							.println("Conversation name is taken. Please try again.");
+					System.out.println("Conversation name is taken. Please try again.");
 					return true;
 				}
 			}
@@ -394,46 +390,8 @@ public class Database {
 	}
 
 	/*
-	 * Method that retrieves the moderator of the conversation
-	 * Takes the conversation name
-	 * Returns the username of the moderator of the conversation
-	 */
-	public String getConvoModerator(String convoName) {
-		try {
-			stmt = conn.createStatement();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-		String moderator = null;
-		sql = "select * from Conversations where moderator = '__MODERATOR__';";
-		sql = sql.replace("__MODERATOR__", moderator);
-		System.out.println(sql);
-		ResultSet rs = null;
-		try {
-			rs = stmt.executeQuery(sql);
-			//verify if user is in database
-			if (!rs.next()) {
-				System.out.println("The conversation is not in database.");
-			} else {
-				//Extract data from result set
-				//Retrieve by column name
-				moderator = rs.getString("moderator");
-
-				//Display values
-				System.out.println("The moderator of " + convoName + " is: "
-						+ moderator);
-			}
-			rs.close();
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
-		return moderator;
-	}
-
-	/*
 	 * Method that deletes a conversation from the Conversations table in DB
 	 * Takes in the conversation name
-	 * A conversation can only be killed by the moderator of that conversation
 	 */
 	public void endConvo(String convoName) {
 		try {
