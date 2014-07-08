@@ -122,7 +122,8 @@ public class ChatMeClient {
 		// Each Helper function should contain a comment saying finished, or
 		// unfinished, then specifying what needs to be done
 		/* Command doesn't need arguments */
-		private void sendCommandAndListen(int command) throws IOException, ClassNotFoundException {
+		private void sendCommandAndListen(int command) throws IOException,
+				ClassNotFoundException {
 			lock.lock();
 			userOut.writeInt(command);
 			userOut.flush();
@@ -132,15 +133,7 @@ public class ChatMeClient {
 				newUserRequest();
 			} else if (command == ChatMeServer.SIGN_OUT_REQUEST) {
 				signOutRequest();
-			} else if (command == ChatMeServer.NEW_GROUP_REQUEST) {
-				newGroupMessageRequest();			// need to pass in GroupConversation object
-				System.out
-						.println("CLIENT ERROR: THIS SHOULD HAVE GONE TO 'sendCommandAndObject'");
-			} else if (command == ChatMeServer.NEW_MESSAGE_REQUEST) {
-				newMessageRequest();
-				System.out
-						.println("CLIENT ERROR: THIS SHOULD HAVE GONE TO 'sendCommandAndObject'");
-			}
+			} 
 			lock.unlock();
 		}
 
@@ -170,16 +163,16 @@ public class ChatMeClient {
 			}
 		}
 
-		public void newGroupMessageRequest() throws IOException, ClassNotFoundException {
+		public void newGroupRequest() throws IOException,
+				ClassNotFoundException {
 			System.out.println("CLIENT:  new message request");
 			boolean OK = userIn.readBoolean();
-			if(OK == true)	{
+			if (OK == true) {
 				String content = (String) userIn.readObject();
 				String conversationName = (String) userIn.readObject();
 				user.sendNewMessage(content, conversationName);
-			}
-			else {
-				
+			} else {
+
 			}
 		}
 
@@ -228,9 +221,7 @@ public class ChatMeClient {
 				newGroupRequest(convo);
 			} else if (command == ChatMeServer.END_GROUP_REQUEST) {
 				endGroupRequest(convo);
-			} else if (command == ChatMeServer.NEW_GROUP_MESSAGE_REQUEST) {
-				newGroupMessageRequest();
-			}
+			} 
 			lock.unlock();
 		}
 
@@ -287,8 +278,8 @@ public class ChatMeClient {
 		public void sendCommandAndObject(int command, Message msg)
 				throws IOException {
 			lock.lock();
-			if (command == ChatMeServer.NEW_MESSAGE_REQUEST) {
-				newMessageRequest(msg);
+			if (command == ChatMeServer.NEW_GROUP_MESSAGE_REQUEST) {
+				newGroupMessageRequest(msg);
 			}
 			lock.unlock();
 		}
@@ -359,7 +350,14 @@ public class ChatMeClient {
 				ArrayList<String> onlineUsers = (ArrayList<String>) servIn
 						.readObject();
 				user.setOnlineUsers(onlineUsers);
+			} else if(command == ChatMeServer.NEW_GROUP_MESSAGE_REQUEST)  {
+					Message msg = (Message) servIn.readObject();
+					user.getGroupMessage(msg);
+				
+				
 			}
+			
+			
 
 		}
 
