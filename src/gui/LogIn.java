@@ -77,7 +77,7 @@ public class LogIn extends JFrame {
 		
 	
 		this.setSize(400,130);
-		this.setLocation(100,100);
+		this.setLocation(400,250);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 

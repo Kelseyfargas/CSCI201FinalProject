@@ -59,7 +59,9 @@ public class BuddyList extends JFrame{
 		JMenu fileMenu = new JMenu("File");
 		JMenuItem startMessageMenuItem = new JMenuItem("Start Message");
 		JMenuItem startGroupMessageMI = new JMenuItem("Start Group Message");
-		JMenuItem exitMenuItem = new JMenuItem("Exit Program");
+		JMenuItem logOutMenuItem = new JMenuItem("Log Out");
+		logOutMenuItem.addActionListener(new logoutAction(user));
+		
 		JMenu helpMenu = new JMenu("Help");
 		JMenuItem aboutMenuItem = new JMenuItem("About");
 		startMessageMenuItem.addActionListener(new StartPrivateMessage(getUser(),PRIVATE_CHAT ));
@@ -78,15 +80,11 @@ public class BuddyList extends JFrame{
 		helpMenu.add(aboutMenuItem);
 		fileMenu.add(startMessageMenuItem);
 		fileMenu.add(startGroupMessageMI);
-		fileMenu.add(exitMenuItem);
+		fileMenu.add(logOutMenuItem);
 		jmb.add(fileMenu);
 		jmb.add(helpMenu);
 		setJMenuBar(jmb);
 
-		//center panel
-//		buddyListPanel = new JPanel();
-//		buddyListPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
-//		
 		JPanel topPanel = new JPanel();
 		topPanel.setLayout(new FlowLayout()); 
 		
@@ -197,7 +195,7 @@ public class BuddyList extends JFrame{
 	        			"About", "Are you sure you want to know their 'About Me'?", JOptionPane.YES_NO_OPTION);
 	        	if(selection == 0){// yes
 	        		System.out.println("Yes option");
-	        		aboutMeAction();
+	        		aboutMeAction(u);
 	        	}
 	        	else{//no option
 	        		System.out.println("No option");
@@ -250,7 +248,6 @@ public class BuddyList extends JFrame{
 	}
 
 	class StartGroupMessage implements ActionListener{
-		
 		private User u;
 		private int messageType;
 		StartGroupMessage(User user, int messageType){
@@ -261,7 +258,6 @@ public class BuddyList extends JFrame{
 			 String convoname = createDialogeGroupMessage();
 			 u.sendGroupConvoRequest(convoname);
 		}
-	
 	}
 
 	class iconButtonClass implements ActionListener{
@@ -270,14 +266,31 @@ public class BuddyList extends JFrame{
 			this.us = u;
 		}
 		public void actionPerformed(ActionEvent e) {
-			JOptionPane.showMessageDialog(null, 
-					us.getBio(), 
-					"About: " + us.getName(), 
-					JOptionPane.PLAIN_MESSAGE);
+			aboutMeAction(us);
 		}
 	}
-
-
+	
+	class logoutAction implements ActionListener{
+		User us;
+		public logoutAction(User user){
+			this.us = user;
+		}
+	
+		public void actionPerformed(ActionEvent ae){
+			int selection = JOptionPane.showConfirmDialog(null, 
+					"Please confirm.", "Confirmation", 
+					JOptionPane.YES_NO_OPTION);
+			switch (selection) {
+				case JOptionPane.YES_OPTION: // case JOptionPane.OK_OPTION is the same
+					System.out.println("Yes");
+					us.signOut();
+					break;
+				case JOptionPane.NO_OPTION:
+					System.out.println("No");
+					break;
+			}
+		}
+	}
 
 /*******FUNCTIONS FOR THE BUDDY LIST************/
 /***********************************************/
@@ -285,24 +298,18 @@ public class BuddyList extends JFrame{
 	private void setUser(User user){
 		this.user = user;
 	}
+	
 	private User getUser(){
 		return this.user;
 	}
-	private void aboutMeAction(){
+	
+	private void aboutMeAction(User onlineuser){
         System.out.println("You right clicked, so It'll show the about me.");
-      	 JDialog jd = new JDialog();
-		 jd.setLocation(450,300);
-		 jd.setSize(200, 200);
-		 jd.setModal(true);
-		 JPanel jp = new JPanel();
-		 BoxLayout bl = new BoxLayout(jp, BoxLayout.Y_AXIS);
-		 jp.setLayout(bl);
-		 JLabel jl = new JLabel("About Me");
-		 JLabel jl1 = new JLabel("This is my about me");
-		 jp.add(jl);
-		 jp.add(jl1);
-		 jd.add(jp);
-		 jd.setVisible(true);
+		ImageIcon userIcon = new ImageIcon(onlineuser.getImagePath());
+		JOptionPane.showMessageDialog(null, 
+				onlineuser.getBio(), 
+				"About: " + onlineuser.getName(), 
+				JOptionPane.INFORMATION_MESSAGE, userIcon);
 	}
 	
 	public String createDialogeGroupMessage(){
@@ -314,8 +321,8 @@ public class BuddyList extends JFrame{
 		 user.addToOnlineConversations(mw);
 		 return value;
 	}
+	
 	public void updateOnlineUser(){
-		
 		inneronlineusersPanel.removeAll();
 		for(int i = 0; i < user.getOnlineUsers().size(); i++){
 			JButton OUButton = new JButton(user.getOnlineUsers().get(i));
@@ -324,11 +331,10 @@ public class BuddyList extends JFrame{
 			OUButton.addMouseListener(new mouseClass(user.getOnlineUsers().get(i), user,2));
 			inneronlineusersPanel.add(OUButton);
 		}
-		
+		repaint();
 	}
 	
 	public void updateActiveConversations(){
-		
 		innerConvoPanel.removeAll();
 		for(int i = 0; i < user.getConversations().size(); i++){
 			JButton OUButton = new JButton(user.getConversations().get(i));
@@ -337,7 +343,7 @@ public class BuddyList extends JFrame{
 			OUButton.addMouseListener(new mouseClass(user.getConversations().get(i), user,1));
 			innerConvoPanel.add(OUButton);
 		}
-
+		repaint();
 	}
 }
 	
