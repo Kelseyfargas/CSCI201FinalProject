@@ -299,7 +299,7 @@ public class Database {
 	 * Returns true the conversation name was found in the DB
 	 * Returns false if the conversation name does not exists in the DB
 	 */
-	public boolean verifyConvoNameExists(String convoName) {
+	public synchronized boolean verifyConvoNameExists(String convoName) {
 		try {
 			stmt = conn.createStatement();
 		} catch (SQLException e1) {
