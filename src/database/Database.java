@@ -17,188 +17,29 @@ public class Database {
 	public static Connection conn = null;
 	public static Statement stmt = null;
 	public static String sql;
-	
+
 	public Database() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			// STEP 3: Open a connection
+			//open a connection
 			System.out.println("Connecting to database...");
 			conn = DriverManager.getConnection(DB_URL, USER, PASS);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			System.out.println(e.getMessage());
 		}
 	}
 
-	public void doAction() {
-
-		try {
-			// STEP 2: Register JDBC driver
-			Class.forName("com.mysql.jdbc.Driver");
-
-			// STEP 3: Open a connection
-			System.out.println("Connecting to database...");
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-
-			Scanner scan1 = new Scanner(System.in);
-			Scanner scan2 = new Scanner(System.in);
-			while (true) {
-				System.out
-						.print("(1)Sign Up, \n(2)Login, \n(3)Create Conversation, "
-								+ "\n(4)Update Convo, \n(5)End Convo, "
-								+ "\n(6)Logout");
-				int action = scan1.nextInt();
-				if (action == 1) {
-					// SETTING UP ACCOUNT
-					// STEP 4: Execute a query
-					stmt = conn.createStatement();
-					System.out.println("Enter in desired username: ");
-					String username = scan2.nextLine();
-					System.out.println("Enter in password: ");
-					String password = scan2.nextLine();
-					System.out.println("Enter in a bio: ");
-					String bio = scan2.nextLine();
-					System.out.println("Enter in an image path: ");
-					String image = scan2.nextLine();
-					createAccount(username, password, bio, image);
-
-				}
-
-				else if (action == 2) {
-					// LOGGING IN TO EXISTING ACCOUNT
-					stmt = conn.createStatement();
-					System.out.println("Username: ");
-					String username = scan2.next();
-					System.out.println("Password: ");
-					String password = scan2.next();
-					Boolean ok = login(username, password);
-					if (ok) {
-						System.out.println("User is in system!");
-						addToOnlineList(username);
-						getBio(username);
-						getImagePath(username);
-					}
-				}
-
-				else if (action == 3) {
-					// CREATE Conversation
-					stmt = conn.createStatement();
-					System.out.println("Enter the name of the Conversation: ");
-					String convoName = scan2.nextLine();
-					System.out.println("Enter the username of the moderator of the Conversation: ");
-					String moderator = scan2.nextLine();
-					System.out.println("Enter in content: ");
-					String content = scan2.nextLine();
-					createConversation(convoName, moderator, content);
-				}
-
-				else if (action == 4) {
-					//UPDATING CONVO
-					stmt = conn.createStatement();
-					System.out
-							.println("Enter the name of the Conversation that you wish to update the content of: ");
-					String convoName = scan2.nextLine();
-					System.out
-							.println("Enter in the new message: ");
-					String content = scan2.nextLine();
-					updateConvoContent(convoName, content);
-				}
-
-				else if (action == 5) {
-					// END CONVO
-					stmt = conn.createStatement();
-					System.out.println("Enter the name of the Conversation that you would like to end: ");
-					String convoName = scan2.nextLine();
-					endConvo(convoName);
-
-				}
-
-				else if (action == 6) {
-					// LOGOUT
-					stmt = conn.createStatement();
-					System.out
-							.println("Enter the username that is logging off: ");
-					String username = scan2.next();
-					signOut(username);
-					
-				}
-
-				else if (action == 7) {
-					// LEAVING CONVO
-					stmt = conn.createStatement();
-					System.out
-							.println("Enter the name of the conversation that you would like to leave: ");
-					String convoName = scan2.next() + "Convo";
-					System.out.println("Enter your username: ");
-					String username = scan2.next();
-					sql = "DELETE FROM __CONVONAME__ WHERE user='__USERNAME__';";
-					sql = sql.replace("__CONVONAME__", convoName);
-					sql = sql.replace("__USERNAME__", username);
-					System.out.println(sql);
-					stmt.execute(sql);
-					System.out.println(username + " has left " + convoName);
-				}
-
-				else if (action == 8) {
-					// LOGGING OUT
-					stmt = conn.createStatement();
-					System.out
-							.println("Enter the username of user that is logging out: ");
-					String username = scan2.next();
-					sql = "DELETE FROM OnlineUsers WHERE username='__USERNAME__';";
-					sql = sql.replace("__USERNAME__", username);
-					System.out.println(sql);
-					stmt.execute(sql);
-					System.out.println(username + " has signed off");
-				}
-
-				System.out.println("Do you wish to exit the program? ");
-				String response = scan2.next();
-				if (response.equals("y")) {
-					break;
-				}
-			}
-			scan1.close();
-			scan2.close();
-
-			// STEP 6: Clean-up environment
-			stmt.close();
-			conn.close();
-		} catch (SQLException se) {
-			// Handle errors for JDBC
-			se.printStackTrace();
-		} catch (Exception e) {
-			// Handle errors for Class.forName
-			e.printStackTrace();
-		} finally {
-			// finally block used to close resources
-			try {
-				if (stmt != null)
-					stmt.close();
-			} catch (SQLException se2) {
-			}// nothing we can do
-			try {
-				if (conn != null)
-					conn.close();
-			} catch (SQLException se) {
-				se.printStackTrace();
-			}// end finally try
-		}// end try
-		System.out.println("Goodbye!");
-	}// end
-
-	/*public void main(String[] args) {
-		doAction();
-	}// end main*/
-	
-	
 	// ///////////////////////CREATE ACCOUNT//////////////////////////
-	public void createAccount(String username, String password,
-			String bio, String image) {
+	/*
+	 * Method that creates account for user and addes them to UserInfo table in the DB
+	 * Takes in the username, password, bio, and image path
+	 * Does not allow a user to create an account if their username already exists in the DB
+	 */
+	public void createAccount(String username, String password, String bio,
+			String image) {
 		try {
 			stmt = conn.createStatement();
 			boolean userExists = verifyUserExists(username);
@@ -216,9 +57,12 @@ public class Database {
 			System.out.println(e.getMessage());
 		}
 	}
-
+	
+	/*
+	 * Method that checks to see if the desired username is already in the DB
+	 * Returns true if the username is taken, or false if the username does not exist yet
+	 */
 	public boolean verifyUserExists(String username) throws SQLException {
-		//stmt = conn.createStatement();
 		final String queryCheck = "SELECT count(*) from UserInfo WHERE username = ?";
 		final PreparedStatement ps = conn.prepareStatement(queryCheck);
 		ps.setString(1, username);
@@ -234,11 +78,16 @@ public class Database {
 	}
 
 	// ///////////////////////LOGIN//////////////////////////
+	/*
+	 * Method that checks the credentials entered in the GUI
+	 * Takes in the username and password
+	 * If username and password are correct, returns true 
+	 * If the credentials do not match what is in the DB, returns false
+	 */
 	public boolean login(String username, String password) {
 		try {
 			stmt = conn.createStatement();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		sql = "select * from UserInfo where username = '__NAME__' and password = password('__PW__');";
@@ -248,13 +97,13 @@ public class Database {
 		ResultSet rs = null;
 		try {
 			rs = stmt.executeQuery(sql);
-			// verify if user is in database
+			//verify if user is in database
 			if (!rs.next()) {
 				System.out.println("User not in database.");
 				return false;
 			} else {
-				// STEP 5: Extract data from result set
-				// Retrieve by column name
+				//Extract data from result set
+				//Retrieve by column name
 				String r_username = rs.getString("username");
 				String r_bio = rs.getString("bio");
 				String r_img = rs.getString("img");
@@ -270,25 +119,33 @@ public class Database {
 		}
 		return true;
 	}
-	
+
 	// ///////////////////////ONLINE LIST//////////////////////////
+	/*
+	 * Method that adds the user to the online list in the DB
+	 * Takes in the username
+	 * Will be called after a user successfully logins (if login method returns true)
+	 */
 	public void addToOnlineList(String username) throws SQLException {
 		stmt = conn.createStatement();
-		// add user to OnlineStatus table in database
+		//add user to OnlineStatus table in database
 		sql = "insert into OnlineUsers(username) values('__USER__');";
 		sql = sql.replace("__USER__", username);
 		stmt.execute(sql);
 	}
 
+	/*
+	 * Returns an arraylist of online users from the DB
+	 * Will be called after a user either logs in or logs off in order to update the GUI
+	 */
 	public ArrayList<String> getOnlineList() {
 		try {
 			stmt = conn.createStatement();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		ArrayList<String> onlineUsers = new ArrayList<String>();
-		// GET ALL THE USERS IN THE ONLINE LIST IN DB
+		//get all the users in the online list in the DB
 		sql = "select * from OnlineUsers";
 		System.out.println(sql);
 		ResultSet rs = null;
@@ -303,13 +160,17 @@ public class Database {
 		}
 		return onlineUsers;
 	}
-	
+
 	// ///////////////////////USER INFO//////////////////////////
+	/*
+	 * Method that returns the user's current bio (whether updated or the inital bio) 
+	 * Retrives information from the UserInfo table in the DB
+	 * Takes the in the username
+	 */
 	public String getBio(String username) {
 		try {
 			stmt = conn.createStatement();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		String r_bio = null;
@@ -319,11 +180,11 @@ public class Database {
 		ResultSet rs = null;
 		try {
 			rs = stmt.executeQuery(sql);
-			// verify if user is in database
+			//verify if user is in database
 			if (!rs.next()) {
 				System.out.println("User not in database.");
 			} else {
-				// STEP 5: Extract data from result set
+				//extract data from result set
 				// Retrieve by column name
 				String r_username = rs.getString("username");
 				r_bio = rs.getString("bio");
@@ -338,38 +199,44 @@ public class Database {
 		}
 		return r_bio;
 	}
-	
+
+	/*
+	 * Method that updates a user's bio in the DB if they choose to edit it from what the originally had
+	 * Takes in the username and the new bio
+	 */
 	public void updateBio(String username, String newBio) {
 		try {
 			stmt = conn.createStatement();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		String bio = getBio(username);
 		try {
 			if (!bio.equals(null)) {
 				//update bio
-				bio = bio + "\n" + newBio;
+				bio = newBio;
 				System.out.println("New Bio: " + bio);
-				
+
 				//store bio
 				sql = "UPDATE UserInfo SET bio = '__BIO__' WHERE username = '__USERNAME__';";
 				sql = sql.replace("__BIO__", bio);
 				sql = sql.replace("__USERNAME__", username);
 				stmt.execute(sql);
-			} 
+			}
 
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
 	}
 
+	/*
+	 * Method that gets the image path of the icon of a user from the UserInfo table in the DB
+	 * Takes in the username
+	 */
 	public String getImagePath(String username) {
 		try {
 			stmt = conn.createStatement();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		String r_img = null;
@@ -379,16 +246,16 @@ public class Database {
 		ResultSet rs = null;
 		try {
 			rs = stmt.executeQuery(sql);
-			// verify if user is in database
+			//verify if user is in database
 			if (!rs.next()) {
 				System.out.println("User not in database.");
 			} else {
-				// STEP 5: Extract data from result set
-				// Retrieve by column name
+				//Extract data from result set
+				//Retrieve by column name
 				String r_username = rs.getString("username");
 				r_img = rs.getString("img");
 
-				// Display values
+				//Display values
 				System.out.println("Username: " + r_username);
 				System.out.println("Image Path: " + r_img);
 			}
@@ -398,17 +265,23 @@ public class Database {
 		}
 		return r_img;
 	}
-	
+
 	// ///////////////////////CONVOS//////////////////////////
-	public void createConversation(String convoName, String moderator, String content) {
+	/*
+	 * Method that adds a new conversation into the Conversations table in the DB
+	 * Takes in the conversation name, the moderator, and the content
+	 * If it is a private conversation, the moderator will be null
+	 * Makes sure that the chosen conversation name does not already exist in the DB
+	 */
+	public void createConversation(String convoName, String moderator,
+			String content) {
 		try {
 			stmt = conn.createStatement();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		boolean convoNameExists = verifyConvoNameExists(convoName);
-		if(!convoNameExists) {
+		if (!convoNameExists) {
 			sql = "insert into Conversations(convoName, moderator, content) values('__CONVONAME__','__MODERATOR__', '__CONTENT__');";
 			sql = sql.replace("__CONVONAME__", convoName);
 			sql = sql.replace("__MODERATOR__", moderator);
@@ -422,12 +295,17 @@ public class Database {
 			System.out.println("You have successfully created an account");
 		}
 	}
-	
+
+	/*
+	 * Method that checks to see if the chosen conversation name already exists in the DB
+	 * Takes in conversation name
+	 * Returns true the conversation name was found in the DB
+	 * Returns false if the conversation name does not exists in the DB
+	 */
 	public boolean verifyConvoNameExists(String convoName) {
 		try {
 			stmt = conn.createStatement();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		final String queryCheck = "SELECT count(*) from Conversations WHERE convoName = ?";
@@ -438,7 +316,8 @@ public class Database {
 			if (resultSet.next()) {
 				final int count = resultSet.getInt(1);
 				if (count != 0) {
-					System.out.println("Conversation name is taken. Please try again.");
+					System.out
+							.println("Conversation name is taken. Please try again.");
 					return true;
 				}
 			}
@@ -448,11 +327,15 @@ public class Database {
 		return false;
 	}
 	
+	/*
+	 * Method that updates a conversations content with the new message sent
+	 * Takes in the conversation name and the new message
+	 * Retrieves the current content of the conversation, updates the content, and stores the updated content in the DB
+	 */
 	public void updateConvoContent(String convoName, String newContent) {
 		try {
 			stmt = conn.createStatement();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		String content = getConvoContent(convoName);
@@ -461,24 +344,28 @@ public class Database {
 				//update content
 				content = content + "\n" + newContent;
 				System.out.println("New Content: " + content);
-				
+
 				//store content
 				sql = "UPDATE Conversations SET content = '__CONTENT__' WHERE convoName = '__CONVONAME__';";
 				sql = sql.replace("__CONTENT__", content);
 				sql = sql.replace("__CONVONAME__", convoName);
 				stmt.execute(sql);
-			} 
+			}
 
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
 	}
 	
+	/*
+	 * Method that retrieves the content of a conversation and returns the entire content of the conversation
+	 * Will be called after the content is updated
+	 * Takes in the name of the conversation
+	 */
 	public String getConvoContent(String convoName) {
 		try {
 			stmt = conn.createStatement();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		String content = null;
@@ -488,15 +375,15 @@ public class Database {
 		ResultSet rs = null;
 		try {
 			rs = stmt.executeQuery(sql);
-			// verify if user is in database
+			//verify if user is in database
 			if (!rs.next()) {
 				System.out.println("The conversation is not in database.");
 			} else {
-				// STEP 5: Extract data from result set
-				// Retrieve by column name
+				//Extract data from result set
+				//Retrieve by column name
 				content = rs.getString("content");
 
-				// Display values
+				//Display values
 				System.out.println("Content: " + content);
 			}
 			rs.close();
@@ -505,12 +392,16 @@ public class Database {
 		}
 		return content;
 	}
-	
+
+	/*
+	 * Method that retrieves the moderator of the conversation
+	 * Takes the conversation name
+	 * Returns the username of the moderator of the conversation
+	 */
 	public String getConvoModerator(String convoName) {
 		try {
 			stmt = conn.createStatement();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		String moderator = null;
@@ -520,16 +411,17 @@ public class Database {
 		ResultSet rs = null;
 		try {
 			rs = stmt.executeQuery(sql);
-			// verify if user is in database
+			//verify if user is in database
 			if (!rs.next()) {
 				System.out.println("The conversation is not in database.");
 			} else {
-				// STEP 5: Extract data from result set
-				// Retrieve by column name
+				//Extract data from result set
+				//Retrieve by column name
 				moderator = rs.getString("moderator");
 
-				// Display values
-				System.out.println("The moderator of " + convoName + " is: " + moderator);
+				//Display values
+				System.out.println("The moderator of " + convoName + " is: "
+						+ moderator);
 			}
 			rs.close();
 		} catch (SQLException e) {
@@ -537,12 +429,16 @@ public class Database {
 		}
 		return moderator;
 	}
-	
+
+	/*
+	 * Method that deletes a conversation from the Conversations table in DB
+	 * Takes in the conversation name
+	 * A conversation can only be killed by the moderator of that conversation
+	 */
 	public void endConvo(String convoName) {
 		try {
 			stmt = conn.createStatement();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		sql = "DELETE FROM Conversations WHERE convoName='__CONVONAME__';";
@@ -554,13 +450,17 @@ public class Database {
 			e.printStackTrace();
 		}
 	}
-	
-/////////////////////////SIGN OUT//////////////////////////
+
+	// ///////////////////////SIGN OUT//////////////////////////
+	/*
+	 * Method that removes a user from the OnlineUsers table in the DB
+	 * Takes in the username
+	 * getOnlinList() should be called after this method in order for the GUI buddy list to be updated
+	 */
 	public void signOut(String username) {
 		try {
 			stmt = conn.createStatement();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		sql = "DELETE FROM OnlineUsers WHERE username='__USERNAME__';";
@@ -569,11 +469,9 @@ public class Database {
 		try {
 			stmt.execute(sql);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		System.out.println(username + " has signed off");
 	}
 }// end AccountInformation
-
 
