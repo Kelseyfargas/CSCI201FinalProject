@@ -195,11 +195,9 @@ public class ChatMeClient {
 				throws IOException {
 			lock.lock();
 			userOut.writeInt(command);
-			if (command == ChatMeServer.NEW_GROUP_REQUEST) {
+			if (command == ChatMeServer.UPDATE_GROUP_REQUEST) {
 				newGroupRequest(convo);
-			} else if (command == ChatMeServer.END_GROUP_REQUEST) {
-				endGroupRequest(convo);
-			} 
+			}
 			lock.unlock();
 		}
 
@@ -209,14 +207,10 @@ public class ChatMeClient {
 			userOut.flush();
 
 			// Precaution: Recieve OK
-
-			boolean OK = userIn.readBoolean();
-			if (OK == true) {
-				//user.createGroupConversationWindow(convoName); 
-				// start new group conversation window
+			boolean userExists = userIn.readBoolean();
+			if (userExists == false) {
 				System.out.println("User will then add convo to buddy list. Write Code!");
-				user.addGroupConvo(convoName);
-			} else if (OK == false) {
+			} else if (userExists == true) {
 				user.displayConvoError();
 				System.out.println("Can't start new group convo!!!");
 			}
@@ -235,7 +229,7 @@ public class ChatMeClient {
 			// Precaution: Recieve OK
 			boolean OK = userIn.readBoolean();
 			if (OK == true) {
-				user.removeGroupConvo(convoName);
+				
 				System.out.println("ending group convo. write code!");
 			} else if (OK == false) {
 				user.displayConvoError();
@@ -263,8 +257,8 @@ public class ChatMeClient {
 		}
 
 		/* * * * * * * * * * * * * * * * *
-		 * END of USER Request Thread * * * * * * * * * * * * * * * *
-		 */
+		 * END of USER Request Thread 	 * 
+		 * * * * * * * * * * * * * * * * */
 	}
 
 	class ServerInputOutputClass extends Thread {
@@ -273,9 +267,8 @@ public class ChatMeClient {
 		 * BEGINNING of SERVER Request Thread    * 
 		 * * * * * * * * * * * * * * * * * * * * */
 
-		/* * * * * * * * * * * * * * * * * * *
-		 * Thread LISTEN for SERVER block    *
-		 * * * * * * * * * * * * * * * * * * */
+
+		/* Thread LISTEN for SERVER block    */
 		public void run() {
 
 			while (true) {
@@ -292,62 +285,47 @@ public class ChatMeClient {
 
 		/* * * * * * * * * * * * * * * * * * * * *
 		 * Thread DO action from SERVER block    *
-		 *  * * * * * * * * * * * * * * * *
-		 * * * *
-		 */
+		 * * * * * * * * * * * * * * * * * * * * */
+		
 		public void handleCommand(int command) throws ClassNotFoundException,
 				IOException {
 
 			if (command == ChatMeServer.NEW_GROUP_MESSAGE_REQUEST) {
-				// getting a new-message-request here means the gui needs to
-				// update
-				// unfinished, see comment
-				Message msg = (Message) servIn.readObject();
-				System.out
-						.println("You have the message now do something with it. Write COoooOoOde");
-				user.getGroupMessage(msg);
-			} else if (command == ChatMeServer.NEW_GROUP_REQUEST) {
-				// getting a new-group-request here means the gui needs to add a
-				// new convo
-				newGroupRequest();
-			} else if (command == ChatMeServer.END_GROUP_REQUEST) {
-				// gui needs to take off a convo (it's been deleted)
-				endGroupRequest();
-			} else if (command == ChatMeServer.UPDATE_ONLINE_USERS_REQUEST) {
-				System.out.println("Reading global update online user request...");
-				ArrayList<String> onlineUsers = (ArrayList<String>) servIn.readObject();
-/*				System.out.println("Online users: ");
-				for(int i=0;i<onlineUsers.size();i++){
-					System.out.println("user: " + onlineUsers.get(i));
-				}*/
-				lock.lock();
-				user.setOnlineUsers(onlineUsers);
-				lock.unlock();
-			} else if(command == ChatMeServer.NEW_GROUP_MESSAGE_REQUEST)  {
-					Message msg = (Message) servIn.readObject();
-					user.getGroupMessage(msg);
+				newGroupMessageRequest();
+			} 
+			else if(command == ChatMeServer.UPDATE_GROUP_REQUEST){
+				updateGroupRequest();
+			}
+			else if (command == ChatMeServer.UPDATE_ONLINE_USERS_REQUEST) {
+				updateOnlineUsersRequest();
 			}
 		}
-		public void newGroupRequest() throws ClassNotFoundException,
-				IOException {
-			// unfinished see comment
+		
+		public void newGroupMessageRequest() throws ClassNotFoundException, IOException{
+			// getting a new-message-request here means the gui needs to update
+			// unfinished, see comment
+			Message msg = (Message) servIn.readObject();
+			System.out.println("You have the message now do something with it. Write COoooOoOde");
+			user.getGroupMessage(msg);
+		}
+		public void updateGroupRequest() throws ClassNotFoundException, IOException {
 			System.out.println("in new grouprequest");
-			String convoName = (String) servIn.readObject();
-			user.addGroupConvo(convoName);
+			ArrayList<String> convos = (ArrayList<String>) servIn.readObject();
+			user.setCurrentConversations(convos);
+		}
+		public void updateOnlineUsersRequest() throws ClassNotFoundException, IOException{
+			System.out.println("Reading global update online user request...");
+			ArrayList<String> onlineUsers = (ArrayList<String>) servIn.readObject();
+
+			lock.lock();
+			user.setOnlineUsers(onlineUsers);
+			lock.unlock();
 		}
 
-		public void endGroupRequest() throws ClassNotFoundException,
-				IOException {
-			String convoName = (String) servIn.readObject();
-			String moderator = (String) servIn.readObject();
-			System.out.println("user.removeConvo boiaeijf. write!!!111!!");
-			user.removeGroupConvo(convoName);
-
-		}
 
 		/* * * * * * * * * * * * * * * * * * *
-		 * end of SERVER request Thread * * * * * * * * * * * * * * * * * *
-		 */
+		 * end of SERVER request Thread 	 * 
+		 * * * * * * * * * * * * * * * * * * */
 	}
 
 	public static void main(String[] args) {
