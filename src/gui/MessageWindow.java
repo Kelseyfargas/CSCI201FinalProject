@@ -276,13 +276,13 @@ public class MessageWindow extends JFrame {
 /***********************************************/
 /***********************************************/
 	public void updateContent(String messageinput){
-		String text = outputTextField.getText();
+		String text = chatBoxTextArea.getText();
 		System.out.println(user.getName() + ": " + text);
 		if (text == null || text.length() == 0) {
-			outputTextField.setText(messageinput);
+			chatBoxTextArea.setText(messageinput);
 		}
 		else {
-			outputTextField.setText(outputTextField.getText() + "\n" + messageinput);
+			chatBoxTextArea.setText(chatBoxTextArea.getText() + "\n" + messageinput);
 		}
 	}
 	
