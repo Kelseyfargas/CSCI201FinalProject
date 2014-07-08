@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -45,7 +46,6 @@ public class BuddyList extends JFrame{
 	private JButton startChatButton;
 	private JPanel innerConvoPanel;
 	private JPanel inneronlineusersPanel;
-	private JDialog jd;
 	
 	//CONSTRUCTOR FOR THE BUDDY LIST
 	public BuddyList(User user){
@@ -225,9 +225,18 @@ public class BuddyList extends JFrame{
 		public void actionPerformed(ActionEvent ae){
 			Object[] onlinelist = user.getOnlineUsers().toArray();
 			
+			if(onlinelist == null){//if nobody is online and pushes message, then do JOptionPane
+				System.out.println("NOBODY IS ONLINE NOOB");
+				JOptionPane.showMessageDialog(null, 
+						"ERROR", 
+						"Nobody is online, can not chat.", 
+						JOptionPane.ERROR_MESSAGE);
+
+			}
 			for(int o = 0; o < onlinelist.length; o++){
 				System.out.println("Online user: " + onlinelist[o]);
 			}
+
 			String people = (String)JOptionPane.showInputDialog(BuddyList.this, 
 			"Choose User to Start Chat!", 
 			"Start Message", 
@@ -255,7 +264,6 @@ public class BuddyList extends JFrame{
 		}
 		public void actionPerformed(ActionEvent ae){
 			 createDialogeGroupMessage();
-			 jd.dispose();
 		}
 	
 	}
@@ -266,7 +274,7 @@ public class BuddyList extends JFrame{
 			this.us = u;
 		}
 		public void actionPerformed(ActionEvent e) {
-			 jd = new JDialog();
+			 JDialog jd = new JDialog();
 	//		 jd.setTitle("About");
 			 jd.setLocation(450,300);
 			 jd.setSize(200, 200);
@@ -351,14 +359,25 @@ public class BuddyList extends JFrame{
 	
 	public void updateOnlineUser(){
 		
+//		ArrayList<JButton> arrayofButtons = new ArrayList<JButton>();
+//		
+//		//if(arrayofButtons != null){//if there are items in the arraylist
+//			for(int k = 0; k < arrayofButtons.size(); k++){
+//				System.out.println("REMOVING THE USER: " + arrayofButtons.get(k));
+//				inneronlineusersPanel.remove(arrayofButtons.get(k));
+//			}
+//		//}
+//		
+		inneronlineusersPanel.removeAll();
 		for(int i = 0; i < user.getOnlineUsers().size(); i++){
 			JButton OUButton = new JButton(user.getOnlineUsers().get(i));
 			OUButton.setEnabled(true);
 			OUButton.setBorderPainted(false);
 			OUButton.addMouseListener(new mouseClass(user.getOnlineUsers().get(i), user,2));
 			inneronlineusersPanel.add(OUButton);
+			//arrayofButtons.add(OUButton);
 		}
-
+		
 	}
 	
 	public void updateActiveConversations(){
