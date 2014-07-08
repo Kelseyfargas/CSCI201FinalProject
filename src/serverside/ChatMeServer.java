@@ -34,11 +34,7 @@ public class ChatMeServer {
 	ArrayList<SocketHolder> clients;
 
 	private Socket userReqSocket;
-	private ObjectOutputStream userOut;
-	private ObjectInputStream userIn;
 	private Socket servReqSocket;
-	private ObjectOutputStream servOut;
-	private ObjectInputStream servIn;
 	
 	private Lock clientLock = new ReentrantLock();
 	
@@ -57,11 +53,11 @@ public class ChatMeServer {
 			
 			printDbg("Connection from: " + userReqSocket.getInetAddress());
 			
-			userOut = new ObjectOutputStream(userReqSocket.getOutputStream());
-			userIn = new ObjectInputStream(userReqSocket.getInputStream());
+			ObjectOutputStream userOut = new ObjectOutputStream(userReqSocket.getOutputStream());
+			ObjectInputStream  userIn = new  ObjectInputStream(userReqSocket.getInputStream());
 			
-			servOut = new ObjectOutputStream(servReqSocket.getOutputStream());
-			servIn = new ObjectInputStream(servReqSocket.getInputStream());
+			ObjectOutputStream servOut = new ObjectOutputStream(servReqSocket.getOutputStream());
+			ObjectInputStream  servIn = new ObjectInputStream(servReqSocket.getInputStream());
 			
 		
 			SocketHolder sh = new SocketHolder(userIn, userOut, servIn, servOut);
