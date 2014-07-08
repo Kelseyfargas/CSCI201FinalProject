@@ -278,19 +278,17 @@ public class Database {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		boolean convoNameExists = verifyConvoNameExists(convoName);
-		if (!convoNameExists) {
-			sql = "insert into Conversations(convoName, content) values('__CONVONAME__', '__CONTENT__');";
-			sql = sql.replace("__CONVONAME__", convoName);
-			sql = sql.replace("__CONTENT__", content);
-			System.out.println(sql);
-			try {
-				stmt.execute(sql);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			System.out.println("You have successfully created a new conversation");
+
+		sql = "insert into Conversations(convoName, content) values('__CONVONAME__', '__CONTENT__');";
+		sql = sql.replace("__CONVONAME__", convoName);
+		sql = sql.replace("__CONTENT__", content);
+		System.out.println(sql);
+		try {
+			stmt.execute(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
+		System.out.println("You have successfully created a new conversation");
 	}
 
 	/*
@@ -299,7 +297,7 @@ public class Database {
 	 * Returns true the conversation name was found in the DB
 	 * Returns false if the conversation name does not exists in the DB
 	 */
-	public synchronized boolean verifyConvoNameExists(String convoName) {
+	public boolean verifyConvoNameExists(String convoName) {
 		try {
 			stmt = conn.createStatement();
 		} catch (SQLException e1) {
@@ -313,7 +311,7 @@ public class Database {
 			if (resultSet.next()) {
 				final int count = resultSet.getInt(1);
 				if (count != 0) {
-					//System.out.println("Conversation name is taken. Please try again.");
+					System.out.println("Conversation name is taken. Please try again.");
 					return true;
 				}
 			}
