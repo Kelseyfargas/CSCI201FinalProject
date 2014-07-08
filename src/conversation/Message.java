@@ -14,6 +14,7 @@ public class Message {
 		this.time = time;
 		this.conversationName = conversationName;
 	}
+	
 	public Message( String content, String conversationName){
 		this.content = content;
 		this.conversationName = conversationName;
