@@ -269,8 +269,9 @@ public class BuddyList extends JFrame{
 		}
 	
 		public void actionPerformed(ActionEvent ae){
+			ImageIcon message = new ImageIcon("Pictures/Message_Icon.png");
 			int selection = JOptionPane.showConfirmDialog(null, 
-					"Please confirm.", "Confirmation", 
+					"Are you sure you want to Log Out?", "Log Out", 
 					JOptionPane.YES_NO_OPTION);
 			switch (selection) {
 				case JOptionPane.YES_OPTION: // case JOptionPane.OK_OPTION is the same
