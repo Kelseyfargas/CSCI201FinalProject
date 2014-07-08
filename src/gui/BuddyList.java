@@ -180,7 +180,9 @@ public class BuddyList extends JFrame{
 	    	
 	        if(e.getClickCount()==2){//double clicked
 	        	//create a message w/ that user
-	        	new MessageWindow(name, u, messageType);
+	        	MessageWindow mw = new MessageWindow(name, u, messageType);
+	        	u.addToOnlineConversations(mw);
+	        	
 	        }
 	        else if(e.getModifiers() == MouseEvent.BUTTON3_MASK){
 	        	//if right click, then the about me should displayed
