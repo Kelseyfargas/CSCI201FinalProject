@@ -166,10 +166,10 @@ public class MessageWindow extends JFrame {
 		this.setVisible(true);
 		//this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-	/*******CLASSES FOR THE ChatRoomGUI************/
-	/***********************************************/
-	/***********************************************/
-	class addUserToChatClass implements ActionListener{
+/*******CLASSES FOR THE ChatRoomGUI************/
+/***********************************************/
+/***********************************************/
+	private class addUserToChatClass implements ActionListener{
 		private String cn;
 		private JTextArea tx;	
 		addUserToChatClass(String selected, JTextArea tx){
@@ -188,7 +188,7 @@ public class MessageWindow extends JFrame {
 
 
 	}
-	class startChatClass implements ActionListener{
+	private class startChatClass implements ActionListener{
 		startChatClass(JTextField NOCTextField){
 			
 		}
@@ -197,7 +197,7 @@ public class MessageWindow extends JFrame {
 		}
 	}
 	
-	class sendButtonAction implements ActionListener{
+	private class sendButtonAction implements ActionListener{
 		String messageinput;
 		int messageType;
 		sendButtonAction(JTextField outputTextField, int messageType){
@@ -219,9 +219,9 @@ public class MessageWindow extends JFrame {
 			//updateContent(messageinput);
 		}
 	}
-	/*******FUNCTION FOR THE ChatRoomGUI************/
-	/***********************************************/
-	/***********************************************/
+/*******FUNCTION FOR THE ChatRoomGUI************/
+/***********************************************/
+/***********************************************/
 	public void updateContent(String messageinput){
 		String text = outputTextField.getText();
 		System.out.println(user.getName() + ": " + text);

@@ -167,7 +167,7 @@ public class BuddyList extends JFrame{
 /*******classes for action listeners************/
 /*******       						************/
 /*******							************/
-	class mouseClass extends MouseAdapter{
+	private class mouseClass extends MouseAdapter{
 		private String name;
 		private User u;
 		private int messageType;
@@ -199,7 +199,7 @@ public class BuddyList extends JFrame{
 	
 	}
 
-	class StartPrivateMessage implements ActionListener{
+	private class StartPrivateMessage implements ActionListener{
 		
 		private User u;
 		private int messageType;
@@ -238,7 +238,7 @@ public class BuddyList extends JFrame{
 		}
 	}
 
-	class StartGroupMessage implements ActionListener{
+	private class StartGroupMessage implements ActionListener{
 		private User u;
 		private int messageType;
 		StartGroupMessage(User user, int messageType){
@@ -252,7 +252,7 @@ public class BuddyList extends JFrame{
 		}
 	}
 
-	class iconButtonClass implements ActionListener{
+	private class iconButtonClass implements ActionListener{
 		User us;
 		public iconButtonClass(User u){
 			this.us = u;
@@ -262,7 +262,7 @@ public class BuddyList extends JFrame{
 		}
 	}
 	
-	class logoutAction implements ActionListener{
+	private class logoutAction implements ActionListener{
 		User us;
 		public logoutAction(User user){
 			this.us = user;

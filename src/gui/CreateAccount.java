@@ -15,6 +15,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -32,16 +35,26 @@ public class CreateAccount extends JFrame{
 	private JTextField passwordField;
 	private JTextArea Bio;
 	
-	public void displayError(){
-		JOptionPane.showMessageDialog(CreateAccount.this, 
-				"User Exists","User already exists. Create a new username.",
-				JOptionPane.INFORMATION_MESSAGE);
-	}
 	public CreateAccount(User user){
 		super("Create Account");
 		this.user = user;
 		setLayout(new GridBagLayout()); 
 		GridBagConstraints gbc = new GridBagConstraints(); 
+		
+		
+		JMenuBar jmb = new JMenuBar();
+		JMenu fileMenu = new JMenu("File");
+		JMenuItem exitMenuItem = new JMenuItem("Exit");
+		exitMenuItem.addActionListener(new ActionListener(){
+
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+			
+		});
+		fileMenu.add(exitMenuItem);
+		jmb.add(fileMenu);
+		setJMenuBar(jmb);
 
 		Font inputfont = new Font("sansserif", Font.ITALIC, 12);
 		usernameField = new JTextField(15); //user can type in
@@ -107,7 +120,9 @@ public class CreateAccount extends JFrame{
 		gbc.gridy = 6;
 		gbc.gridwidth = 5;
 		add(SecBottomPanel, gbc);
-		//create class for Icon
+/*******INNER CLASSES for CREATE ACCOUNT*********/
+/***********************************************/
+/***********************************************/
 		class setImageAction implements ActionListener{
 			User us;
 			JButton imageButton;
@@ -205,8 +220,14 @@ public class CreateAccount extends JFrame{
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
-
-	
+/*******FUNCTION FOR THE ChatRoomGUI************/
+/***********************************************/
+/***********************************************/
+	public void displayError(){
+		JOptionPane.showMessageDialog(CreateAccount.this, 
+				"User Exists","User already exists. Create a new username.",
+				JOptionPane.INFORMATION_MESSAGE);
+	}
 	public String getUserNameField(){
 		return 	usernameField.getText();
 	}

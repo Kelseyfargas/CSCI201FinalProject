@@ -53,8 +53,11 @@ public class LogIn extends JFrame {
 		JPanel flowPanel = new JPanel();
 		flowPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		logInButton = new JButton("Log In");
-
-		class LogInListener implements ActionListener{
+		
+/**********INNER CLASSES FOR LOG IN*************/
+/***********************************************/
+/***********************************************/
+	class LogInListener implements ActionListener{
 			User user;
 			public LogInListener(User user){
 				this.user = user;
@@ -68,10 +71,8 @@ public class LogIn extends JFrame {
 		logInButton.addActionListener(new LogInListener(user));
 
 		flowPanel.add(logInButton);
-//		flowPanel.add(createAccount);
 		centerPanel.add(flowPanel);
 		
-		//adding the layouts
 		add(centerPanel, BorderLayout.CENTER);
 		add(westPanel, BorderLayout.WEST);
 		
@@ -82,7 +83,9 @@ public class LogIn extends JFrame {
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 	}
-
+/*********FUNCTION FOR THE LOG IN***************/
+/***********************************************/
+/***********************************************/
 	public String getPassword(){
 		return passwordTF.getText();
 	}
