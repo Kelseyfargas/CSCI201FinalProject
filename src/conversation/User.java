@@ -57,7 +57,7 @@ public class User {
 		accountWindow.dispose();
 		loginWindow = new LogIn(this);
 	}
-	
+
 	public void createGroupConversationWindow(String convoName) {
 		groupConversationWindow = new MessageWindow(convoName,this,MessageWindow.GROUP_CHAT);
 	}
@@ -97,6 +97,10 @@ public class User {
 				element.updateContent(msg.getContent()); 				  
 			}
 		}
+	}
+	
+	public void addToOnlineConversations(MessageWindow mw)	{
+		openConversations.add(mw);
 	}
 
 	public void removeGroupConvo(String convoName, String moderator)		{
