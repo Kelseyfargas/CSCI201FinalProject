@@ -332,10 +332,8 @@ public class ChatMeClient {
 				// gui needs to take off a convo (it's been deleted)
 				endGroupRequest();
 			} else if (command == ChatMeServer.UPDATE_ONLINE_USERS_REQUEST) {
-				System.out
-						.println("Reading global update online user request...");
-				ArrayList<String> onlineUsers = (ArrayList<String>) servIn
-						.readObject();
+				System.out.println("Reading global update online user request...");
+				ArrayList<String> onlineUsers = (ArrayList<String>) servIn.readObject();
 				user.setOnlineUsers(onlineUsers);
 			} else if(command == ChatMeServer.NEW_GROUP_MESSAGE_REQUEST)  {
 					Message msg = (Message) servIn.readObject();
