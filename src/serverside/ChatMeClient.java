@@ -136,7 +136,6 @@ public class ChatMeClient {
 			} 
 			lock.unlock();
 		}
-
 		public void loginRequest() throws IOException, ClassNotFoundException {
 			// finished but needs database and GUI implementations
 			// Also, remove section: "TESTING NEW CONVO CODE"
@@ -162,7 +161,6 @@ public class ChatMeClient {
 				user.incorrectInfoError();
 			}
 		}
-
 		public void signOutRequest() throws IOException {
 			System.out.println("CLIENT:  signout request");
 			// unfinished, see comment
@@ -172,7 +170,6 @@ public class ChatMeClient {
 			System.out
 					.println(user.getName() + " has signed out...Write Code!");
 		}
-
 		public void newUserRequest() throws IOException {
 			// finished but needs database
 			System.out.println("Got new user request on client");
@@ -236,7 +233,6 @@ public class ChatMeClient {
 				System.out.println("Can't start new group convo!!!");
 			}
 		}
-
 		public void endGroupRequest(GroupConversation convo) throws IOException {
 			// unfinished, needs GUI implementation
 			String convoName = convo.getName();
