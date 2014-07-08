@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import javax.swing.JOptionPane;
+
 import conversation.GroupConversation;
 import conversation.Message;
 import conversation.User;
@@ -211,6 +213,7 @@ public class ChatMeClient {
 			} else if (convoExists == true) {
 				user.displayConvoError();
 				System.out.println("CLIENT: Can't start new group convo!!!");
+				JOptionPane.showMessageDialog(null, "Conversation name is already taken!", "Convo Err", JOptionPane.WARNING_MESSAGE);
 			}
 		}
 		public void endGroupRequest(String convoName) throws IOException {
