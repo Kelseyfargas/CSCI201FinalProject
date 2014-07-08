@@ -94,7 +94,9 @@ public class User {
 		chatClient.sendCommand(ChatMeServer.NEW_PRIVATE_MESSAGE_REQUEST, messageToSend);									
 	}	
 	public void getGroupMessage (Message msg)		{
+		System.out.println("CLIENT: (CHECKING OPEN CONVERSATIONS) Conversation name: " + msg.getConversationName());
 		for(MessageWindow element : openConversations)	{	// only update GUI if open conversations exist
+			System.out.println("convo name: " + element.getName());
 			if(element.getName().equals(msg.getConversationName())) {
 				element.updateContent(msg.getContent()); 				  
 			}
