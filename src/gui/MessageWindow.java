@@ -98,10 +98,16 @@ public class MessageWindow extends JFrame {
 		CenterPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		Font textfont = new Font("SansSerif", Font.BOLD, 12);
 		chatBoxTextArea = new JTextArea();
-		chatBoxTextArea.setPreferredSize(new Dimension(590,280));
+		
 		chatBoxTextArea.setEditable(false); 
 		chatBoxTextArea.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		chatBoxTextArea.setBorder(BorderFactory.createMatteBorder(1,1,1,1, Color.GRAY));
+		chatBoxTextArea.setPreferredSize(new Dimension(590,280));
+		
+		JScrollPane chatBoxScrollPane = new JScrollPane(chatBoxTextArea,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		chatBoxScrollPane.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+		chatBoxScrollPane.setPreferredSize(new Dimension(590,280));
 		
 		JPanel choicesPanel = new JPanel();
 		choicesPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -175,7 +181,7 @@ public class MessageWindow extends JFrame {
 		messageBottomPanel.add(sendButton);
 		
 		
-		CenterPanel.add(chatBoxTextArea);
+		CenterPanel.add(chatBoxScrollPane);
 
 		CenterPanel.add(choicesPanel);
  		
