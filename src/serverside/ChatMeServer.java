@@ -270,6 +270,7 @@ public class ChatMeServer {
 			database.endConvo(convoName); 
 			updateCurrentConversations();
 		}
+		
 		private void updateOnlineUsers() throws IOException{
 			clientLock.lock();
 				ArrayList<String> strArr = database.getOnlineList();
@@ -283,6 +284,7 @@ public class ChatMeServer {
 			clientLock.unlock();
 			srt.updateAllConvos(strArr);
 		}
+		
 		private void newGroupMessageRequest() throws ClassNotFoundException, IOException{
 			Message msg = (Message) threadUserIn.readObject();
 			srt.sendMessageToAll(msg);
@@ -361,7 +363,7 @@ public class ChatMeServer {
 				for(int i=0; i<clients.size();i++){
 					if( ! clients.get(i).getName().isEmpty()){
 						ObjectOutputStream oos = clients.get(i).serverOut;
-						oos.writeInt(NEW_GROUP_REQUEST);
+						oos.writeInt(UPDATE_GROUP_REQUEST);
 						oos.flush();
 						oos.writeObject(convos);
 						oos.flush();					
