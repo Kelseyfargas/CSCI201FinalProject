@@ -36,7 +36,6 @@ public class User {
 	private ArrayList <messageWindow> openConversations;
 	private ArrayList<GroupConversation> currentConversations;	// change to Conversation 						
 	private ChatMeClient chatClient;
-	private ChatMeServer chatServer;
 	private ArrayList<ChatRoomGUI> messageWindow;
 	
 	/* Constructor */
@@ -78,15 +77,25 @@ public class User {
 		buddyList.updateActiveConversations();
 	}
 	
-	public void sendNewMessage(String content, String conversationName)		{															// send new message to server
+	public void sendNewGroupMessage(String content, String conversationName)		{															// send new message to server
 		String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());				// find the time that message was created					 
-		Message messageToSend = new Message(content,time,conversationName)															// create new message class to send server 
-		chatServer.sendMessageAndObject(chatServer.NEW_MESSAGE_REQUEST, messageToSend);									
+		content = this.getName() + ": " + content;								
+		Message messageToSend = new Message(content,time,conversationName);														// create new message class to send server 
+		chatClient.sendCommand(ChatMeServer.NEW_GROUP_MESSAGE_REQUEST, messageToSend);									
 	}
 	
-	public void  receiveMessage (Message message)	{														// receive message from server and update GUI to display new message 
+	public void sendNewPrivateMessage(String content, String conversationName)		{
+		String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());				// find the time that message was created					 
+		content = this.getName() + ": " + content;								
+		Message messageToSend = new Message(content,time,conversationName);														// create new message class to send server 
+		chatClient.sendCommand(ChatMeServer.NEW_PRIVATE_MESSAGE_REQUEST, messageToSend);									
+	}
+	
+	public void getGroupMessage (Message msg)		{
 		for(messageWindow element : openConversations)	{													// only update GUI if open conversations exist
-				// element.updateGUI(message.getContent(), message.getConversationName()); 				// fake code  
+			if(element.getName().equals(msg.getConversationName())) {
+				element.updateContent(msg.getContent()); 				  
+			}
 		}
 	}
 
@@ -100,6 +109,8 @@ public class User {
 			i++;
 		}
 	}
+	
+		
 
 	public void displayConvoError() {						//called when addGroupConvo failed 
 		//call gui for error message 
