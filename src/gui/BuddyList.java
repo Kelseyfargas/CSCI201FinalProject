@@ -345,6 +345,7 @@ public class BuddyList extends JFrame{
 	
 	public void updateActiveConversations(){
 		
+		innerConvoPanel.removeAll();
 		for(int i = 0; i < user.getConversations().size(); i++){
 			JButton OUButton = new JButton(user.getConversations().get(i));
 			OUButton.setEnabled(true);
