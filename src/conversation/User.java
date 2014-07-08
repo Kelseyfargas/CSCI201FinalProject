@@ -59,7 +59,7 @@ public class User {
 	}
 	
 	public void createGroupConversationWindow(String convoName) {
-		groupConversationWindow = new MessageWindow(convoName,this);
+		groupConversationWindow = new MessageWindow(convoName,this,MessageWindow.GROUP_CHAT);
 	}
 
 	public LogIn getLoginWindow()     {
