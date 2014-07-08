@@ -70,41 +70,26 @@ public class User {
 		this.chatClient = client;
 		//System.out.println("adding client");
 	}
-	public void sendGroupConvoRequest(String convoName){
-		chatClient.sendCommand(ChatMeServer.NEW_GROUP_REQUEST, convoName);
-	}
-	public void addGroupConvo(String convoName)		{
-		
-		if(currentConversations.contains(convoName)){
-			return;
-		}
-		currentConversations.add(convoName);
+	public void setCurrentConversations(ArrayList<String> convos){
+		currentConversations = convos;
 		buddyList.updateActiveConversations();
 	}
-	public void removeGroupConvo(String convoName)		{
-		int i = 0;
-		for(String element : currentConversations)		{						// remove from currentConversations list 
-			if(element.equals(convoName))	{
-				currentConversations.remove(i);
-				buddyList.updateActiveConversations();
-			}
-			i++;
-		}
+	public void sendGroupConvoRequest(String convoName){
+		chatClient.sendCommand(ChatMeServer.UPDATE_GROUP_REQUEST, convoName);
 	}
+	
 	public void sendNewGroupMessage(String content, String conversationName)		{															// send new message to server
 		String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());				// find the time that message was created					 
 		content = this.getName() + ": " + content;								
 		Message messageToSend = new Message(content,time,conversationName);														// create new message class to send server 
 		chatClient.sendCommand(ChatMeServer.NEW_GROUP_MESSAGE_REQUEST, messageToSend);									
 	}
-	
 	public void sendNewPrivateMessage(String content, String conversationName)		{
 		String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());				// find the time that message was created					 
 		content = this.getName() + ": " + content;								
 		Message messageToSend = new Message(content,time,conversationName);														// create new message class to send server 
 		chatClient.sendCommand(ChatMeServer.NEW_PRIVATE_MESSAGE_REQUEST, messageToSend);									
-	}
-	
+	}	
 	public void getGroupMessage (Message msg)		{
 		for(MessageWindow element : openConversations)	{	// only update GUI if open conversations exist
 			if(element.getName().equals(msg.getConversationName())) {
@@ -112,14 +97,9 @@ public class User {
 			}
 		}
 	}
-	
 	public void addToOnlineConversations(MessageWindow mw)	{
 		openConversations.add(mw);
 	}
-
-	
-	
-		
 
 	public void displayConvoError() {						//called when addGroupConvo failed 
 		//call gui for error message 
@@ -130,32 +110,21 @@ public class User {
 		// verify if isn't taken, wait for respose // 
 		createLoginWindow();
 	}
-
 	public void sendLogInRequest() {	
 		this.chatClient.sendCommand(ChatMeServer.LOGIN_REQUEST);
 		//update GUI based on online users 
 		//UpdateBuddyList(this);
 	}
-	
 	public void createBuddyList() {
 		buddyList = new BuddyList(this);
 		loginWindow.dispose();
 	}
-
+	
 	public void nameExistError() {
 		accountWindow.displayError();
 	}
-
 	public void incorrectInfoError() {
 		JOptionPane.showMessageDialog(buddyList,"You entered incorrect information", "Message Dialog", JOptionPane.ERROR_MESSAGE);
-	}
-
-	public int getSignal() {
-		return signal;
-	}
-
-	public void setSignal(int command)  {
-		signal = command; 
 	}
 
 	public void setOnlineUsers(ArrayList<String> onlineUsers) {
@@ -190,7 +159,7 @@ public class User {
 		this.password = password;
 	}
 
-	public String getPassword() 		{
+	public String getPassword() {
 		return this.password;
 	}
 	

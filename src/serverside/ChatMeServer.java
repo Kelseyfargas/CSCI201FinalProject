@@ -26,6 +26,7 @@ public class ChatMeServer {
 	public static int UPDATE_ONLINE_USERS_REQUEST = 3;
 	public static int NEW_GROUP_REQUEST = 4;
 	public static int END_GROUP_REQUEST = 5;
+	public static int UPDATE_GROUP_REQUEST = 388;
 	public static int NEW_GROUP_MESSAGE_REQUEST = 6;
 	public static int NEW_PRIVATE_MESSAGE_REQUEST = 7;
 
@@ -226,6 +227,7 @@ public class ChatMeServer {
 				
 				registerSocket(un); //<-- Synchronized server log in
 				updateOnlineUsers();
+				updateCurrentConversations();
 
 			}
 			else{
@@ -257,8 +259,8 @@ public class ChatMeServer {
 			boolean OK = true;
 			threadUserOut.writeBoolean(OK); //Change this later when we want to put limitations on when a new group conversation can be created
 			threadUserOut.flush();
-			database.createConversation(convoName, ""); 
-			srt.addConvoToAll(convoName);
+			database.createConversation(convoName, "");
+			updateCurrentConversations();
 		}
 		private void endGroupRequest() throws ClassNotFoundException, IOException {
 			// unfinished ??? client might have to write code for this
@@ -266,7 +268,7 @@ public class ChatMeServer {
 			String convoName = (String) threadUserIn.readObject();
 			String moderator = (String) threadUserIn.readObject();
 			database.endConvo(convoName); 
-			srt.removeConvoFromAll(convoName, moderator);
+			updateCurrentConversations();
 		}
 		private void updateOnlineUsers() throws IOException{
 			clientLock.lock();
@@ -275,7 +277,12 @@ public class ChatMeServer {
 			
 			srt.updateAllOnlineUsers(strArr);
 		}
-		
+		private void updateCurrentConversations(){
+			clientLock.lock();
+				ArrayList<String> strArr = database.getGroupConversations();
+			clientLock.unlock();
+			srt.updateAllConvos(strArr);
+		}
 		private void newGroupMessageRequest() throws ClassNotFoundException, IOException{
 			Message msg = (Message) threadUserIn.readObject();
 			srt.sendMessageToAll(msg);
@@ -349,34 +356,20 @@ public class ChatMeServer {
 				}
 			clientLock.unlock();
 		}
-		public void addConvoToAll(String convoName) throws IOException{
+		public void updateAllConvos(ArrayList<String> convos) throws IOException{
 			clientLock.lock();
-			System.out.println("global convo write");
 				for(int i=0; i<clients.size();i++){
 					if( ! clients.get(i).getName().isEmpty()){
 						ObjectOutputStream oos = clients.get(i).serverOut;
 						oos.writeInt(NEW_GROUP_REQUEST);
 						oos.flush();
-						oos.writeObject(convoName);
+						oos.writeObject(convos);
 						oos.flush();					
 					}
 				}
 			clientLock.unlock();
 		}
-		public void removeConvoFromAll(String convoName, String moderator) throws IOException {
-			clientLock.lock();
-				for(int i=0; i<clients.size();i++){
-					if( ! clients.get(i).getName().isEmpty()){
-						ObjectOutputStream oos = clients.get(i).serverOut;
-						oos.writeInt(END_GROUP_REQUEST);
-						oos.flush();
-						oos.writeObject(convoName);
-						oos.writeObject(moderator);
-						oos.flush();
-					}
-				}
-			clientLock.unlock();
-		}
+		
 		public void sendMessageToAll(Message msg) throws IOException{
 			clientLock.lock();
 				database.updateConvoContent(msg.getConversationName(), msg.getContent());
