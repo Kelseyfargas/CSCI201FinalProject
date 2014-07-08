@@ -263,7 +263,8 @@ public class BuddyList extends JFrame{
 			this.messageType = messageType;
 		}
 		public void actionPerformed(ActionEvent ae){
-			 createDialogeGroupMessage();
+			 String convoname = createDialogeGroupMessage();
+			 u.addGroupConvo(convoname,u.getName());
 		}
 	
 	}
@@ -317,57 +318,17 @@ public class BuddyList extends JFrame{
 		 jd.setVisible(true);
 	}
 	
-	public void createDialogeGroupMessage(){
+	public String createDialogeGroupMessage(){
 		String value = JOptionPane.showInputDialog(null, 
 				"Group Message", 
 				"Name Conversation:", 
 				JOptionPane.QUESTION_MESSAGE);
 		 MessageWindow mw = new MessageWindow(value, user,2);
 		 user.addToOnlineConversations(mw);
-//		 JDialog jd = new JDialog();
-//		 jd.setTitle("Group Message");
-//		 jd.setLocation(450,100);
-//		 jd.setSize(350,100);
-//		 jd.setModal(true);
-//		 
-//		 JPanel jp = new JPanel();
-//		 jp.setLayout(new BoxLayout(jp, BoxLayout.Y_AXIS)); 
-//		 
-//		 JPanel topPanel = new JPanel();
-//		 topPanel.setLayout( new FlowLayout(FlowLayout.LEFT));
-//		 JLabel nameOfConversation = new JLabel("Name the Conversation:");
-//		 NOCTextField = new JTextField("Conversation name", 13);
-//		 topPanel.add(nameOfConversation);
-//		 topPanel.add(NOCTextField);
-//
-//		 JPanel bottomPanel = new JPanel();
-//		 bottomPanel.setLayout( new FlowLayout(FlowLayout.RIGHT));
-//
-//		 startChatButton = new JButton("Start Chat");
-//		 startChatButton.addActionListener(new ActionListener(){
-//			 public void actionPerformed(ActionEvent ae){
-//				 new MessageWindow(NOCTextField.getText(), user,2);
-//			 }
-//		 });
-//		 bottomPanel.add(startChatButton);
-//
-//		 jp.add(topPanel);
-//		 jp.add(bottomPanel);
-//		 jd.add(jp);
-//		 jd.setVisible(true);
+		 return value;
 	}
-	
 	public void updateOnlineUser(){
 		
-//		ArrayList<JButton> arrayofButtons = new ArrayList<JButton>();
-//		
-//		//if(arrayofButtons != null){//if there are items in the arraylist
-//			for(int k = 0; k < arrayofButtons.size(); k++){
-//				System.out.println("REMOVING THE USER: " + arrayofButtons.get(k));
-//				inneronlineusersPanel.remove(arrayofButtons.get(k));
-//			}
-//		//}
-//		
 		inneronlineusersPanel.removeAll();
 		for(int i = 0; i < user.getOnlineUsers().size(); i++){
 			JButton OUButton = new JButton(user.getOnlineUsers().get(i));
