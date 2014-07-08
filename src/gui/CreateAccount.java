@@ -25,10 +25,9 @@ import conversation.*;
 
 public class CreateAccount extends JFrame{
 	
+	private static User user;
 	private JButton createAccount;
 	private JButton logInButton;
-
-	private static User user;
 	private JTextField usernameField;
 	private JTextField passwordField;
 	private JTextArea Bio;
@@ -218,9 +217,6 @@ public class CreateAccount extends JFrame{
 	public String getUserBio(){
 		return Bio.getText();
 	}
-//	public void pullThePlug() {
-//	    WindowEvent wev = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
-//	    Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(wev);
-//	}
+
 
 }

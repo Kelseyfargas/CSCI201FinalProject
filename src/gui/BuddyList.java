@@ -66,21 +66,13 @@ public class BuddyList extends JFrame{
 		startGroupMessageMI.addActionListener(new StartGroupMessage(getUser(),GROUP_CHAT));
 		aboutMenuItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
-				 JDialog jd = new JDialog();
-				 jd.setTitle("About");
-				 jd.setLocation(450,300);
-				 jd.setSize(200, 200);
-				 jd.setModal(true);
-				 JPanel jp = new JPanel();
-				 BoxLayout bl = new BoxLayout(jp, BoxLayout.Y_AXIS);
-				 jp.setLayout(bl);
-				 JLabel jl = new JLabel("Created for CSCI 201L");
-				 JLabel jl1 = new JLabel("Kelsey, Katrina, "
-				 		+ "Ryan C., Ryan J.");
-				 jp.add(jl);
-				 jp.add(jl1);
-				 jd.add(jp);
-				 jd.setVisible(true);
+				JOptionPane.showMessageDialog(null, 
+						"Created for CSCI 201L by Ryan Chase, "
+						+ "Kelsey Fargas, "
+						+ "Katrina Gloriani, "
+						+ " and Ryan Jeong.", 
+						"About", 
+						JOptionPane.PLAIN_MESSAGE);
 			}
 		});
 		helpMenu.add(aboutMenuItem);
@@ -104,6 +96,7 @@ public class BuddyList extends JFrame{
 		userButton.setSize(30,30);
 		userButton.setLocation(10,10);
 		userButton.setBorderPainted(false);
+		userButton.addActionListener(new iconButtonClass(user));
 		topPanel.add(userButton);
 		
 		ImageIcon messageIcon = new ImageIcon("Pictures/Message.png");
@@ -227,7 +220,7 @@ public class BuddyList extends JFrame{
 		public void actionPerformed(ActionEvent ae){
 			Object[] onlinelist = user.getOnlineUsers().toArray();
 			
-			if(onlinelist == null){//if nobody is online and pushes message, then do JOptionPane
+			if(onlinelist.equals(null)){//if nobody is online and pushes message, then do JOptionPane
 				System.out.println("NOBODY IS ONLINE NOOB");
 				JOptionPane.showMessageDialog(null, 
 						"ERROR", 
@@ -266,7 +259,7 @@ public class BuddyList extends JFrame{
 		}
 		public void actionPerformed(ActionEvent ae){
 			 String convoname = createDialogeGroupMessage();
-			 u.addGroupConvo(convoname,u.getName());
+			 u.sendGroupConvoRequest(convoname);
 		}
 	
 	}
@@ -277,18 +270,10 @@ public class BuddyList extends JFrame{
 			this.us = u;
 		}
 		public void actionPerformed(ActionEvent e) {
-			 JDialog jd = new JDialog();
-	//		 jd.setTitle("About");
-			 jd.setLocation(450,300);
-			 jd.setSize(200, 200);
-			 jd.setModal(true);
-			 JPanel jp = new JPanel();
-			 BoxLayout bl = new BoxLayout(jp, BoxLayout.Y_AXIS);
-			 jp.setLayout(bl);
-			 JTextArea aboutMeTA = new JTextArea(us.getBio());
-			 jd.add(aboutMeTA);
-			 jd.add(jp);
-			 jd.setVisible(true);
+			JOptionPane.showMessageDialog(null, 
+					us.getBio(), 
+					"About: " + us.getName(), 
+					JOptionPane.PLAIN_MESSAGE);
 		}
 	}
 
@@ -338,7 +323,6 @@ public class BuddyList extends JFrame{
 			OUButton.setBorderPainted(false);
 			OUButton.addMouseListener(new mouseClass(user.getOnlineUsers().get(i), user,2));
 			inneronlineusersPanel.add(OUButton);
-			//arrayofButtons.add(OUButton);
 		}
 		
 	}

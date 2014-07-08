@@ -37,19 +37,24 @@ public class MessageWindow extends JFrame {
 	
 	public static int GROUP_CHAT = 1;
 	public static int PRIVATE_CHAT = 2;
-	private  JButton addUserButton;
+	private JButton addUserButton;
 	private JTextArea chatBoxTextArea;
 	private JTextField outputTextField;
 	private String convoName;
 	private User user;
+	private String moderator;
 	private int messageType;
 	
 	public MessageWindow(String convoName, User user, int messageType){
-		//this.convoName = convoName;
+		
 		super(convoName);
 		this.user = user;
 		this.messageType = messageType;
 		setName(convoName);
+		
+		if(messageType == GROUP_CHAT){
+			this.moderator = user.getName();
+		}
 		
 		//Menu bar
 		JMenuBar jmb = new JMenuBar();
@@ -63,9 +68,6 @@ public class MessageWindow extends JFrame {
 		CenterPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		Font textfont = new Font("SansSerif", Font.BOLD, 12);
 		chatBoxTextArea = new JTextArea();
-	
-//		areap.setText("Katrina: I hope we get an A in the class!" + 
-//				"\n"+ "Kelsey: Me also!");
 		chatBoxTextArea.setPreferredSize(new Dimension(590,280));
 		chatBoxTextArea.setEditable(false); 
 		chatBoxTextArea.setBorder(javax.swing.BorderFactory.createEmptyBorder());
@@ -136,7 +138,9 @@ public class MessageWindow extends JFrame {
 		CenterPanel.add(messageBottomPanel); 
 		add(CenterPanel, BorderLayout.CENTER);
 		
-		
+		if(messageType == GROUP_CHAT){
+			user.addGroupConvo(convoName, moderator);
+		}
 		//necessities
 		this.setSize(600,400);
 		this.setLocation(350,200);
@@ -197,14 +201,6 @@ public class MessageWindow extends JFrame {
 	/*******FUNCTION FOR THE ChatRoomGUI************/
 	/***********************************************/
 	/***********************************************/
-//	private void addUsersToTextField(String selected, JTextArea jta){
-//		addUserButton.addActionListener( new addUserToChatClass(selected, jta));
-//	}
-//
-//	static private String selectedString(ItemSelectable is) {
-//	    Object selected[] = is.getSelectedObjects();
-//	    return ((selected.length == 0) ? "null" : (String) selected[0]);
-//	 }
 	public void updateContent(String messageinput){
 		String text = chatBoxTextArea.getText();
 		if (text == null || text.length() == 0) {
@@ -222,7 +218,5 @@ public class MessageWindow extends JFrame {
 		return convoName;
 	}
 	public static void main(String []args){
-		//new LogIn("Login");
-		//new MessageWindow("Kelsey", user);
 	}
 }
