@@ -50,7 +50,6 @@ public class ChatMeClient {
 	public void addUser(User user) {
 		this.user = user;
 	}
-
 	public void sendCommand(int command) {
 		try {
 			uioclass.sendCommandAndListen(command);
@@ -58,7 +57,6 @@ public class ChatMeClient {
 			e.printStackTrace();
 		}
 	}
-
 	public void sendCommand(int command, String convo) {
 		try {
 			uioclass.sendCommandAndObject(command, convo);
@@ -66,7 +64,6 @@ public class ChatMeClient {
 			e.printStackTrace();
 		}
 	}
-
 	public void sendCommand(int command, Message msg) {
 		try {
 			uioclass.sendCommandAndObject(command, msg);
@@ -77,22 +74,20 @@ public class ChatMeClient {
 
 	class UserInputOutputClass extends Thread {
 		/* * * * * * * * * * * * * * * * * * * *
-		 * BEGINNING of USER Request Thread * * * * * * * * * * * * * * * * * *
-		 * *
-		 */
+		 * BEGINNING of USER Request Thread    * 
+		 * * * * * * * * * * * * * * * * * * * */
 		boolean continueRunning = true;
 
 		/* Welcom Message */
-		public void readAndPrintWelcomeMessage() throws ClassNotFoundException,
-				IOException {
+		public void readAndPrintWelcomeMessage() throws ClassNotFoundException, IOException {
 			System.out.println("Attempting to read welcome message: \n");
 			String message = (String) userIn.readObject();
 			System.out.println(message);
 		}
 
 		/* * * * * * * * * * * * * * * * * *
-		 * Thread LISTEN for USER block * * * * * * * * * * * * * * * * *
-		 */
+		 * Thread LISTEN for USER block    * 
+		 * * * * * * * * * * * * * * * * * */
 		public void run() {
 			try {
 				readAndPrintWelcomeMessage();
@@ -110,11 +105,12 @@ public class ChatMeClient {
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * *
-		 * Thread DO request from USER block * * * * * * * * * * * * * * * * * *
-		 * * *
-		 */
+		 * Thread DO request from USER block     * 
+		 * * * * * * * * * * * * * * * * * * * * */
+		
 		// Each Helper function should contain a comment saying finished, or
 		// unfinished, then specifying what needs to be done
+		
 		/* Command doesn't need arguments */
 		private void sendCommandAndListen(int command) throws IOException,
 				ClassNotFoundException {
@@ -131,8 +127,7 @@ public class ChatMeClient {
 			lock.unlock();
 		}
 		public void loginRequest() throws IOException, ClassNotFoundException {
-			// finished but needs database and GUI implementations
-			// Also, remove section: "TESTING NEW CONVO CODE"
+			
 			System.out.println("CLIENT: log in request");
 			String un = user.getName();
 			String pw = user.getPassword();
@@ -190,7 +185,7 @@ public class ChatMeClient {
 
 		/* Command does need arguments */
 
-		// Takes Conversation as parameter
+		// Takes Conversation Name as parameter
 		public void sendCommandAndObject(int command, String convo)
 				throws IOException {
 			lock.lock();
@@ -226,7 +221,6 @@ public class ChatMeClient {
 			 * IMPLEMENTATION
 			 */
 
-			// Precaution: Recieve OK
 			boolean OK = userIn.readBoolean();
 			if (OK == true) {
 				
