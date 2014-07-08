@@ -59,7 +59,7 @@ public class ChatMeClient {
 		}
 	}
 
-	public void sendCommand(int command, GroupConversation convo) {
+	public void sendCommand(int command, String convo) {
 		try {
 			uioclass.sendCommandAndObject(command, convo);
 		} catch (Exception e) {
@@ -191,7 +191,7 @@ public class ChatMeClient {
 		/* Command does need arguments */
 
 		// Takes Conversation as parameter
-		public void sendCommandAndObject(int command, GroupConversation convo)
+		public void sendCommandAndObject(int command, String convo)
 				throws IOException {
 			lock.lock();
 			userOut.writeInt(command);
@@ -203,36 +203,28 @@ public class ChatMeClient {
 			lock.unlock();
 		}
 
-		public void newGroupRequest(GroupConversation convo) throws IOException {
+		public void newGroupRequest(String convoName) throws IOException {
 			// unfinished: , GUI Implementations,
-			String convoName = convo.getName();
-			String moderator = convo.getModeratorName();
 			userOut.writeObject(convoName);
-			userOut.writeObject(moderator);
 			userOut.flush();
 
 			// Precaution: Recieve OK
 
 			boolean OK = userIn.readBoolean();
 			if (OK == true) {
-				user.createGroupConversationWindow(convoName); // start new
-																// group
-																// conversation
-																// window
-				System.out
-						.println("User will then add convo to buddy list. Write Code!");
-				user.addGroupConvo(convoName, moderator);
+				user.createGroupConversationWindow(convoName); 
+				// start new group conversation window
+				System.out.println("User will then add convo to buddy list. Write Code!");
+				user.addGroupConvo(convoName);
 			} else if (OK == false) {
 				user.displayConvoError();
 				System.out.println("Can't start new group convo!!!");
 			}
 		}
-		public void endGroupRequest(GroupConversation convo) throws IOException {
+		public void endGroupRequest(String convoName) throws IOException {
 			// unfinished, needs GUI implementation
-			String convoName = convo.getName();
-			String moderator = convo.getModeratorName();
 			userOut.writeObject(convoName);
-			userOut.writeObject(moderator);
+
 			userOut.flush();
 			/*
 			 * NOTE: THIS METHOD IS CALLED UNDER THE ASSUMPTION THAT ONLY THE
@@ -243,7 +235,7 @@ public class ChatMeClient {
 			// Precaution: Recieve OK
 			boolean OK = userIn.readBoolean();
 			if (OK == true) {
-				user.removeGroupConvo(convoName, moderator);
+				user.removeGroupConvo(convoName);
 				System.out.println("ending group convo. write code!");
 			} else if (OK == false) {
 				user.displayConvoError();
@@ -278,13 +270,12 @@ public class ChatMeClient {
 	class ServerInputOutputClass extends Thread {
 
 		/* * * * * * * * * * * * * * * * * * * * *
-		 * BEGINNING of SERVER Request Thread * * * * * * * * * * * * * * * * *
-		 * * * *
-		 */
+		 * BEGINNING of SERVER Request Thread    * 
+		 * * * * * * * * * * * * * * * * * * * * */
 
 		/* * * * * * * * * * * * * * * * * * *
-		 * Thread LISTEN for SERVER block * * * * * * * * * * * * * * * * * *
-		 */
+		 * Thread LISTEN for SERVER block    *
+		 * * * * * * * * * * * * * * * * * * */
 		public void run() {
 
 			while (true) {
@@ -300,7 +291,8 @@ public class ChatMeClient {
 		}
 
 		/* * * * * * * * * * * * * * * * * * * * *
-		 * Thread DO action from SERVER block * * * * * * * * * * * * * * * * *
+		 * Thread DO action from SERVER block    *
+		 *  * * * * * * * * * * * * * * * *
 		 * * * *
 		 */
 		public void handleCommand(int command) throws ClassNotFoundException,
@@ -334,21 +326,13 @@ public class ChatMeClient {
 			} else if(command == ChatMeServer.NEW_GROUP_MESSAGE_REQUEST)  {
 					Message msg = (Message) servIn.readObject();
 					user.getGroupMessage(msg);
-				
-				
 			}
-			
-			
-
 		}
-
 		public void newGroupRequest() throws ClassNotFoundException,
 				IOException {
 			// unfinished see comment
 			String convoName = (String) servIn.readObject();
-			String moderator = (String) servIn.readObject();
-			System.out.println("user.addConvo;i;ijjij WRITE");
-			user.addGroupConvo(convoName, moderator);
+			user.addGroupConvo(convoName);
 		}
 
 		public void endGroupRequest() throws ClassNotFoundException,
@@ -356,7 +340,7 @@ public class ChatMeClient {
 			String convoName = (String) servIn.readObject();
 			String moderator = (String) servIn.readObject();
 			System.out.println("user.removeConvo boiaeijf. write!!!111!!");
-			user.removeGroupConvo(convoName, moderator);
+			user.removeGroupConvo(convoName);
 
 		}
 

@@ -70,13 +70,23 @@ public class User {
 		this.chatClient = client;
 		//System.out.println("adding client");
 	}
-
-	public void addGroupConvo(String convoName, String moderator)		{
-		GroupConversation newConversation = new GroupConversation(convoName, this);
-		currentConversations.add(convoName);                                           
+	public void sendGroupConvoRequest(String convoName){
+		chatClient.sendCommand(ChatMeServer.NEW_GROUP_REQUEST, convoName);
+	}
+	public void addGroupConvo(String convoName)		{
+		currentConversations.add(convoName);
 		buddyList.updateActiveConversations();
 	}
-	
+	public void removeGroupConvo(String convoName)		{
+		int i = 0;
+		for(String element : currentConversations)		{						// remove from currentConversations list 
+			if(element.equals(convoName))	{
+				currentConversations.remove(i);
+				buddyList.updateActiveConversations();
+			}
+			i++;
+		}
+	}
 	public void sendNewGroupMessage(String content, String conversationName)		{															// send new message to server
 		String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());				// find the time that message was created					 
 		content = this.getName() + ": " + content;								
@@ -92,7 +102,7 @@ public class User {
 	}
 	
 	public void getGroupMessage (Message msg)		{
-		for(MessageWindow element : openConversations)	{													// only update GUI if open conversations exist
+		for(MessageWindow element : openConversations)	{	// only update GUI if open conversations exist
 			if(element.getName().equals(msg.getConversationName())) {
 				element.updateContent(msg.getContent()); 				  
 			}
@@ -103,16 +113,7 @@ public class User {
 		openConversations.add(mw);
 	}
 
-	public void removeGroupConvo(String convoName, String moderator)		{
-		int i = 0;
-		for(String element : currentConversations)		{						// remove from currentConversations list 
-			if(element.equals(convoName))	{
-				currentConversations.remove(i);
-				buddyList.updateActiveConversations();
-			}
-			i++;
-		}
-	}
+	
 	
 		
 

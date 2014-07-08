@@ -254,12 +254,11 @@ public class ChatMeServer {
 			//needs database implementation
 			printDbg("Reading group convo initiation request");
 			String convoName = (String) threadUserIn.readObject();
-			String moderator = (String) threadUserIn.readObject();
 			boolean OK = true;
 			threadUserOut.writeBoolean(OK); //Change this later when we want to put limitations on when a new group conversation can be created
 			threadUserOut.flush();
-			database.createConversation(convoName, moderator, ""); 
-			srt.addConvoToAll(convoName, moderator);
+			database.createConversation(convoName, ""); 
+			srt.addConvoToAll(convoName);
 		}
 		private void endGroupRequest() throws ClassNotFoundException, IOException {
 			// unfinished ??? client might have to write code for this
@@ -350,7 +349,7 @@ public class ChatMeServer {
 				}
 			clientLock.unlock();
 		}
-		public void addConvoToAll(String convoName, String moderator) throws IOException{
+		public void addConvoToAll(String convoName) throws IOException{
 			clientLock.lock();
 				for(int i=0; i<clients.size();i++){
 					if( ! clients.get(i).getName().isEmpty()){
@@ -358,7 +357,6 @@ public class ChatMeServer {
 						oos.writeInt(NEW_GROUP_REQUEST);
 						oos.flush();
 						oos.writeObject(convoName);
-						oos.writeObject(moderator);
 						oos.flush();					
 					}
 				}
