@@ -1,17 +1,11 @@
 package serverside;
 
-import java.awt.Image;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-
-import conversation.Conversation;
 import conversation.GroupConversation;
 import conversation.Message;
 import conversation.User;
