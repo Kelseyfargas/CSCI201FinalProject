@@ -307,7 +307,7 @@ public class ChatMeClient {
 			// unfinished, see comment
 			System.out.println("CLIENTEeeee : about to get msg...");
 			Message msg = (Message) servIn.readObject();
-			System.out.println("You have the message now do something with it. Write COoooOoOde");
+			System.out.println("You have the message now: " + msg.getContent());
 			user.getGroupMessage(msg);
 		}
 		public void updateGroupRequest() throws ClassNotFoundException, IOException {
