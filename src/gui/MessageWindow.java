@@ -123,7 +123,7 @@ public class MessageWindow extends JFrame {
 		outputTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		outputTextField.setBorder(BorderFactory.createMatteBorder(1,1,1,1, Color.GRAY));
 		JButton sendButton = new JButton("Send");
-		sendButton.addActionListener(new sendButtonAction(outputTextField);
+		sendButton.addActionListener(new sendButtonAction(outputTextField));
 		messageBottomPanel.add(outputTextField);
 		messageBottomPanel.add(sendButton);
 		
@@ -181,7 +181,7 @@ public class MessageWindow extends JFrame {
 			System.out.println("Message is : " + messageinput);
 		}
 		public void actionPerformed(ActionEvent e) {
-			user.sendNewGroupMessage(messageinput,convoName);
+			user.sendNewMessage(messageinput,convoName);
 			outputTextField.setText("");
 			//updateContent(messageinput);
 		}
@@ -215,6 +215,6 @@ public class MessageWindow extends JFrame {
 	}
 	public static void main(String []args){
 		//new LogIn("Login");
-		new MessageWindow("Kelsey", user);
+		//new MessageWindow("Kelsey", user);
 	}
 }
