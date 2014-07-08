@@ -74,8 +74,8 @@ public class User {
 		currentConversations = convos;
 		buddyList.updateActiveConversations();
 	}
-	public void sendGroupConvoRequest(String convoName){
-		chatClient.sendCommand(ChatMeServer.UPDATE_GROUP_REQUEST, convoName);
+	public void initiateGroupConvoRequest(String convoName){
+		chatClient.sendCommand(ChatMeServer.NEW_GROUP_REQUEST, convoName);
 	}
 	
 	public void sendNewGroupMessage(String content, String conversationName)		{															// send new message to server
