@@ -117,14 +117,13 @@ public class MessageWindow extends JFrame {
 		JPanel messageBottomPanel = new JPanel();
 		messageBottomPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		outputTextField = new JTextField();
-		//outputTextField.setText("New Message");
 		outputTextField.setForeground(Color.GRAY);
 		outputTextField.setPreferredSize(new Dimension(510,20));
 		outputTextField.setEditable(true); 
 		outputTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		outputTextField.setBorder(BorderFactory.createMatteBorder(1,1,1,1, Color.GRAY));
 		JButton sendButton = new JButton("Send");
-		sendButton.addActionListener(new sendButtonAction(outputTextField));
+		sendButton.addActionListener(new sendButtonAction(outputTextField, messageType));
 		messageBottomPanel.add(outputTextField);
 		messageBottomPanel.add(sendButton);
 		
@@ -187,7 +186,7 @@ public class MessageWindow extends JFrame {
 				user.sendNewGroupMessage(messageinput,convoName);
 			}
 			else if(messageType == PRIVATE_CHAT){
-				
+				user.sendNewPrivateMessage(messageinput,convoName);
 			}
 			outputTextField.setText("");
 			//updateContent(messageinput);

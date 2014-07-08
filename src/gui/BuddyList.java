@@ -50,7 +50,7 @@ public class BuddyList extends JFrame{
 	private JPanel inneronlineusersPanel;
 	
 	//CONSTRUCTOR FOR THE BUDDY LIST
-	BuddyList(User user){
+	public BuddyList(User user){
 		super("Buddy List");
 		this.user = user;
 		
@@ -187,15 +187,17 @@ public class BuddyList extends JFrame{
 	class mouseClass extends MouseAdapter{
 		private String name;
 		private User u;
-		mouseClass(String name, User us){
-			name = name;
+		private int messageType;
+		mouseClass(String name, User us, int messageType){
+			this.name = name;
 			this.u = us;
+			this.messageType = messageType;
 		}
 		public void mouseClicked(MouseEvent e){
 	    	
 	        if(e.getClickCount()==2){//double clicked
 	        	//create a message w/ that user
-	        	new MessageWindow(name, u);
+	        	new MessageWindow(name, u, messageType);
 	        }
 	        else if(e.getModifiers() == MouseEvent.BUTTON3_MASK){
 	        	//if right click, then the about me should displayed
@@ -233,7 +235,7 @@ public class BuddyList extends JFrame{
 			try{
 				if(!user.equals(null)){
 				System.out.println("User selected is" + people);
-				new MessageWindow(people,u);
+				new MessageWindow(people,u,2);
 				}
 			} catch (NullPointerException npe){
 				System.out.println(npe.getMessage());
@@ -344,7 +346,7 @@ public class BuddyList extends JFrame{
 		 startChatButton = new JButton("Start Chat");
 		 startChatButton.addActionListener(new ActionListener(){
 			 public void actionPerformed(ActionEvent ae){
-				 new MessageWindow(NOCTextField.getText(), user);
+				 new MessageWindow(NOCTextField.getText(), user,2);
 			 }
 		 });
 		 bottomPanel.add(startChatButton);
@@ -364,7 +366,7 @@ public class BuddyList extends JFrame{
 			JButton OUButton = new JButton(user.getOnlineUsers().get(i));
 			OUButton.setEnabled(true);
 			OUButton.setBorderPainted(false);
-			OUButton.addMouseListener(new mouseClass(user.getOnlineUsers().get(i), user));
+			OUButton.addMouseListener(new mouseClass(user.getOnlineUsers().get(i), user,2));
 			inneronlineusersPanel.add(OUButton);
 		}
 
@@ -376,7 +378,7 @@ public class BuddyList extends JFrame{
 			JButton OUButton = new JButton(user.getConversations().get(i));
 			OUButton.setEnabled(true);
 			OUButton.setBorderPainted(false);
-			OUButton.addMouseListener(new mouseClass(user.getConversations().get(i), user));
+			OUButton.addMouseListener(new mouseClass(user.getConversations().get(i), user,1));
 			innerConvoPanel.add(OUButton);
 		}
 
