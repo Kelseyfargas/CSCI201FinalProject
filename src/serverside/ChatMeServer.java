@@ -48,6 +48,8 @@ public class ChatMeServer {
 		clients = new ArrayList<SocketHolder> ();
 		database = new Database();
 		
+		System.out.println("IP Address: " + InetAddress.getLocalHost());
+		
 		while(true){
 			userReqSocket = ss1.accept();
 			servReqSocket = ss2.accept();
