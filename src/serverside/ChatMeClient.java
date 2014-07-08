@@ -323,7 +323,7 @@ public class ChatMeClient {
 				Message msg = (Message) servIn.readObject();
 				System.out
 						.println("You have the message now do something with it. Write COoooOoOde");
-				user.receiveMessage(msg);
+				user.getGroupMessage(msg);
 			} else if (command == ChatMeServer.NEW_GROUP_REQUEST) {
 				// getting a new-group-request here means the gui needs to add a
 				// new convo
