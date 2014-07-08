@@ -260,11 +260,15 @@ public class ChatMeServer {
 			printDbg("Reading group convo initiation request");
 			String convoName = (String) threadUserIn.readObject();
 			boolean convoExists = database.verifyConvoNameExists(convoName);
-			threadUserOut.writeBoolean( ! convoExists ); //Change this later when we want to put limitations on when a new group conversation can be created
+			threadUserOut.writeBoolean(convoExists ); //Change this later when we want to put limitations on when a new group conversation can be created
 			threadUserOut.flush();
 			if( ! convoExists){
+				System.out.println("SERVER: Should add to database......");
 				database.createConversation(convoName, "");				
 				updateCurrentConversations();
+			}
+			else{
+				System.out.println("SEVER: could not add to database");
 			}
 
 		}

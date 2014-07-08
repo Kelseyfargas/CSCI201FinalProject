@@ -203,13 +203,13 @@ public class ChatMeClient {
 			//bugs
 			userOut.writeObject(convoName);
 			userOut.flush();
-			// Precaution: Recieve OK
-			boolean userExists = userIn.readBoolean();
-			if (userExists == false) {
-				System.out.println("User will then add convo to buddy list. Write Code!");
-			} else if (userExists == true) {
+
+			boolean convoExists = userIn.readBoolean();
+			if (convoExists == false) {
+				System.out.println("CLIENT: User will then add convo to buddy list. Write Code!");
+			} else if (convoExists == true) {
 				user.displayConvoError();
-				System.out.println("Can't start new group convo!!!");
+				System.out.println("CLIENT: Can't start new group convo!!!");
 			}
 		}
 		public void endGroupRequest(String convoName) throws IOException {
