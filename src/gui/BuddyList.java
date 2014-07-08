@@ -39,6 +39,8 @@ import conversation.User;
 
 public class BuddyList extends JFrame{
 	
+	public static int GROUP_CHAT = 1;
+	public static int PRIVATE_CHAT = 2;
 	public static User user;
 	public static MessageWindow CRG;
 	public static JPanel buddyListPanel;
@@ -60,8 +62,8 @@ public class BuddyList extends JFrame{
 		JMenuItem startGroupMessageMI = new JMenuItem("Start Group Message");
 		JMenu helpMenu = new JMenu("Help");
 		JMenuItem aboutMenuItem = new JMenuItem("About");
-		startMessageMenuItem.addActionListener(new StartPrivateMessage(this.user));
-		startGroupMessageMI.addActionListener(new StartGroupMessage());
+		startMessageMenuItem.addActionListener(new StartPrivateMessage(this.user,PRIVATE_CHAT ));
+		startGroupMessageMI.addActionListener(new StartGroupMessage(this.user,GROUP_CHAT));
 		aboutMenuItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
 				 JDialog jd = new JDialog();
@@ -109,7 +111,7 @@ public class BuddyList extends JFrame{
 		messageButton.setSize(30,30);
 		messageButton.setLocation(10,10);
 		messageButton.setBorderPainted(false);
-		messageButton.addActionListener(new StartPrivateMessage(this.user));
+		messageButton.addActionListener(new StartPrivateMessage(this.user, PRIVATE_CHAT));
 		topPanel.add(messageButton);
 		
 		ImageIcon groupChatIcon = new ImageIcon("Pictures/GroupChat.png");
@@ -118,7 +120,7 @@ public class BuddyList extends JFrame{
 		groupChatButton.setSize(30,30);
 		groupChatButton.setLocation(10,10);
 		groupChatButton.setBorderPainted(false);
-		groupChatButton.addActionListener(new StartGroupMessage());//share action listener with group chat
+		groupChatButton.addActionListener(new StartGroupMessage(this.user, GROUP_CHAT));//share action listener with group chat
 		topPanel.add(groupChatButton);
 		
 		buddyListPanel.add(topPanel);
@@ -219,9 +221,10 @@ public class BuddyList extends JFrame{
 	class StartPrivateMessage implements ActionListener{
 		
 		private User u;
-		
-		StartPrivateMessage(User user){
+		private int messageType;
+		StartPrivateMessage(User user, int messageType){
 			this.u = user;
+			this.messageType = messageType;
 		}
 		
 		public void actionPerformed(ActionEvent ae){
@@ -235,7 +238,7 @@ public class BuddyList extends JFrame{
 			try{
 				if(!user.equals(null)){
 				System.out.println("User selected is" + people);
-				new MessageWindow(people,u,2);
+				new MessageWindow(people,u,messageType);
 				}
 			} catch (NullPointerException npe){
 				System.out.println(npe.getMessage());
@@ -245,6 +248,12 @@ public class BuddyList extends JFrame{
 
 	class StartGroupMessage implements ActionListener{
 		
+		private User u;
+		private int messageType;
+		StartGroupMessage(User user, int messageType){
+			this.u = user;
+			this.messageType = messageType;
+		}
 		public void actionPerformed(ActionEvent ae){
 			 createDialogeGroupMessage();
 		}
