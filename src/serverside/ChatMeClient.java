@@ -207,7 +207,7 @@ public class ChatMeClient {
 			boolean convoExists = userIn.readBoolean();
 			if (convoExists == false) {
 				System.out.println("CLIENT: User will then add convo to buddy list. Write Code!");
-				user.createNewMessageWindow(conversationName);
+				user.createNewMessageWindow(convoName);
 			} else if (convoExists == true) {
 				user.displayConvoError();
 				System.out.println("CLIENT: Can't start new group convo!!!");
