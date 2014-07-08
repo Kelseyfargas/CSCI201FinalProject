@@ -277,7 +277,7 @@ public class ChatMeServer {
 			
 			srt.updateAllOnlineUsers(strArr);
 		}
-		private void updateCurrentConversations(){
+		private void updateCurrentConversations() throws IOException{
 			clientLock.lock();
 				ArrayList<String> strArr = database.getGroupConversations();
 			clientLock.unlock();
