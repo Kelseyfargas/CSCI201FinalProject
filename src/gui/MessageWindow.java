@@ -46,6 +46,7 @@ public class MessageWindow extends JFrame {
 	
 	public MessageWindow(String convoName, User user, int messageType){
 		//this.convoName = convoName;
+		super(convoName);
 		this.user = user;
 		this.messageType = messageType;
 		setName(convoName);
@@ -178,7 +179,8 @@ public class MessageWindow extends JFrame {
 		int messageType;
 		sendButtonAction(JTextField outputTextField, int messageType){
 			messageinput = outputTextField.getText();
-			messageType = messageType;
+			this.messageType = messageType;
+			//outputTextField.setText(messageinput);
 			System.out.println("Message is : " + messageinput);
 		}
 		public void actionPerformed(ActionEvent e) {
