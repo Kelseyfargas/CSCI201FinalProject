@@ -241,6 +241,7 @@ public class ChatMeClient {
 		public void sendCommandAndObject(int command, Message msg)
 				throws IOException {
 			lock.lock();
+			userOut.writeInt(command);
 			if (command == ChatMeServer.NEW_GROUP_MESSAGE_REQUEST) {
 				newGroupMessageRequest(msg);
 			}
