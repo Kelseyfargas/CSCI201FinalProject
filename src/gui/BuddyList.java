@@ -247,8 +247,15 @@ public class BuddyList extends JFrame{
 		}
 		public void actionPerformed(ActionEvent ae){
 			 System.out.println("In StartGroupMessage AE " + messageType);
-			 String convoName = createDialogeGroupMessage();
+			 String convoName = JOptionPane.showInputDialog(null, 
+							"Group Message", 
+							"Name Conversation:", 
+							JOptionPane.QUESTION_MESSAGE);
+			 System.out.println("Convo name is " + convoName);
+			 boolean hasNonAlpha = !String.isAlphanumeric(convoName);
+			 u.createNewMessageWindow(convoName);
 			 //new MessageWindow(convoName, u,messageType);
+			 //check for alphanumeric on convoName
 			 u.initiateGroupConvoRequest(convoName);
 		}
 	}
@@ -306,14 +313,9 @@ public class BuddyList extends JFrame{
 				JOptionPane.INFORMATION_MESSAGE, userIcon);
 	}
 	
-	public String createDialogeGroupMessage(){
-		String value = JOptionPane.showInputDialog(null, 
-				"Group Message", 
-				"Name Conversation:", 
-				JOptionPane.QUESTION_MESSAGE);
+	public void StartChat(String value){
 		 MessageWindow mw = new MessageWindow(value, user, GROUP_CHAT);
 		 user.addToOnlineConversations(mw);
-		 return value;
 	}
 	
 	public void updateOnlineUser(){
@@ -339,5 +341,7 @@ public class BuddyList extends JFrame{
 		}
 		repaint();
 	}
+	//method that start the message window and called by the user
+	
 }
 	
