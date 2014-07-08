@@ -44,9 +44,10 @@ public class MessageWindow extends JFrame {
 	private User user;
 	private int messageType;
 	
-	public MessageWindow(String convoName, User user){
+	public MessageWindow(String convoName, User user, int messageType){
 		//this.convoName = convoName;
 		this.user = user;
+		this.messageType = messageType;
 		setName(convoName);
 		
 		//Menu bar
@@ -175,13 +176,19 @@ public class MessageWindow extends JFrame {
 	
 	class sendButtonAction implements ActionListener{
 		String messageinput;
-		
-		sendButtonAction(JTextField outputTextField){
+		int messageType;
+		sendButtonAction(JTextField outputTextField, int messageType){
 			messageinput = outputTextField.getText();
+			messageType = messageType;
 			System.out.println("Message is : " + messageinput);
 		}
 		public void actionPerformed(ActionEvent e) {
-			user.sendNewMessage(messageinput,convoName);
+			if(messageType == GROUP_CHAT){
+				user.sendNewGroupMessage(messageinput,convoName);
+			}
+			else if(messageType == PRIVATE_CHAT){
+				
+			}
 			outputTextField.setText("");
 			//updateContent(messageinput);
 		}
