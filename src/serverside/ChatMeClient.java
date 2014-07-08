@@ -27,7 +27,7 @@ public class ChatMeClient {
 	private Lock lock = new ReentrantLock();
 
 	public ChatMeClient(String hostname) throws IOException {
-		String ipAddress = "10.122.204.61";
+		String ipAddress = "10.120.95.24";
 
 		System.out.println("Connecting...");
 		userRequestSocket = new Socket(ipAddress, 7777);
