@@ -34,7 +34,7 @@ public class User {
 	private Image image;
 	private ArrayList<String> onlineUsers;
 	private ArrayList <messageWindow> openConversations;
-	private ArrayList<GroupConversation> currentConversations;	// change to Conversation 						
+	private ArrayList<String> currentConversations;	// change to Conversation 						
 	private ChatMeClient chatClient;
 	private ArrayList<ChatRoomGUI> messageWindow;
 	
@@ -42,9 +42,9 @@ public class User {
 	public User() {
 		createAccountWindow();
 		onlineUsers = new ArrayList<String>();
-		currentConversations = new ArrayList<GroupConversation>();
+		currentConversations = new ArrayList<String>();
 		messageWindow = new ArrayList<ChatRoomGUI>();
-		//openConversations = new ArrayList<messageWindow>();
+		openConversations = new ArrayList<messageWindow>();
 	}
 
 	public void createAccountWindow() {
@@ -73,7 +73,7 @@ public class User {
 
 	public void addGroupConvo(String convoName, String moderator)		{
 		GroupConversation newConversation = new GroupConversation(convoName, this);
-		currentConversations.add(newConversation);                                           
+		currentConversations.add(convoName);                                           
 		buddyList.updateActiveConversations();
 	}
 	
@@ -101,8 +101,8 @@ public class User {
 
 	public void removeGroupConvo(String convoName, String moderator)		{
 		int i = 0;
-		for(GroupConversation element : currentConversations)		{						// remove from currentConversations list 
-			if(element.getName() == convoName)	{
+		for(String element : currentConversations)		{						// remove from currentConversations list 
+			if(element.equals(convoName))	{
 				currentConversations.remove(i);
 				buddyList.updateActiveConversations();
 			}
@@ -186,7 +186,7 @@ public class User {
 		return this.password;
 	}
 	
-	public ArrayList<GroupConversation> getConversations() {
+	public ArrayList<String> getConversations() {
 		return this.currentConversations;
 	}
 	

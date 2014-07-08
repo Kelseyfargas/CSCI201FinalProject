@@ -163,19 +163,6 @@ public class ChatMeClient {
 			}
 		}
 
-		public void newGroupRequest() throws IOException,
-				ClassNotFoundException {
-			System.out.println("CLIENT:  new message request");
-			boolean OK = userIn.readBoolean();
-			if (OK == true) {
-				String content = (String) userIn.readObject();
-				String conversationName = (String) userIn.readObject();
-				user.sendNewMessage(content, conversationName);
-			} else {
-
-			}
-		}
-
 		public void signOutRequest() throws IOException {
 			System.out.println("CLIENT:  signout request");
 			// unfinished, see comment
