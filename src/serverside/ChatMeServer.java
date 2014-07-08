@@ -272,7 +272,6 @@ public class ChatMeServer {
 			// unfinished ??? client might have to write code for this
 			printDbg("Reading group convo deletion request");
 			String convoName = (String) threadUserIn.readObject();
-			String moderator = (String) threadUserIn.readObject();
 			database.endConvo(convoName); 
 			updateCurrentConversations();
 		}

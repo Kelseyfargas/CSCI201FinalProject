@@ -77,6 +77,9 @@ public class User {
 	public void initiateGroupConvoRequest(String convoName){
 		chatClient.sendCommand(ChatMeServer.NEW_GROUP_REQUEST, convoName);
 	}
+	public void removeGroupConvoRequest(String convoName){
+		chatClient.sendCommand(ChatMeServer.END_GROUP_REQUEST, convoName);
+	}
 	
 	public void sendNewGroupMessage(String content, String conversationName)		{															// send new message to server
 		String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());				// find the time that message was created					 
