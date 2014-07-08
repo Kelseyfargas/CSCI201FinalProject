@@ -80,7 +80,7 @@ public class ChatMeClient {
 		 * * * * * * * * * * * * * * * * * * * */
 		boolean continueRunning = true;
 
-		/* Welcom Message */
+		/* Welcome Message */
 		public void readAndPrintWelcomeMessage() throws ClassNotFoundException, IOException {
 			System.out.println("Attempting to read welcome message: \n");
 			String message = (String) userIn.readObject();
@@ -198,6 +198,9 @@ public class ChatMeClient {
 			if (command == ChatMeServer.END_GROUP_REQUEST){
 				endGroupRequest(convo);
 			}
+			if(command == ChatMeServer.NEW_PRIVATE_REQUEST){
+				newPrivateRequest(convo);
+			}
 			lock.unlock();
 		}
 
@@ -236,7 +239,12 @@ public class ChatMeClient {
 				System.out.println("Can't remove group convo...");
 			}
 		}
-
+		public void newPrivateRequest(String convoName) throws IOException{
+			userOut.writeObject(convoName);
+			userOut.flush();
+			
+			boolean convoExists = userIn.readBoolean();
+		}
 		// Takes Message as parameter
 		public void sendCommandAndObject(int command, Message msg)
 				throws IOException {
