@@ -294,7 +294,10 @@ public class ChatMeServer {
 		}
 		
 		private void newGroupMessageRequest() throws ClassNotFoundException, IOException{
+			printDbg(" *** *** about to read GROUP msg *** ***");
 			Message msg = (Message) threadUserIn.readObject();
+			printDbg(" *** *** read GROUP message ***** *");
+			
 			srt.sendMessageToAll(msg);
 		}
 		private void newPrivateMessageRequest() throws ClassNotFoundException, IOException{
@@ -385,8 +388,12 @@ public class ChatMeServer {
 		}
 		
 		public void sendMessageToAll(Message msg) throws IOException{
+			printDbg("----- before lock ------");
 			clientLock.lock();
+			printDbg("------sendMsgToAllAfterLock-------");
+			printDbg("------writingMsg to DATABASE ------");
 				database.updateConvoContent(msg.getConversationName(), msg.getContent());
+				printDbg(" ~~~~~ done writing to DATABASE ~~~~~~");
 				for(int i=0; i<clients.size();i++){
 					if( ! clients.get(i).getName().isEmpty()){
 						ObjectOutputStream oos = clients.get(i).serverOut;
