@@ -162,9 +162,6 @@ public class ChatMeServer {
 				else if(command == SIGN_OUT_REQUEST){
 					signOutRequest();
 				}
-				else if(command == UPDATE_GROUP_REQUEST){
-					
-				}
 				else if(command == NEW_GROUP_REQUEST){
 					newGroupRequest();
 				}
