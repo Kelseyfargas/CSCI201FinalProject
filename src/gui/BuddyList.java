@@ -161,6 +161,8 @@ public class BuddyList extends JFrame{
 		gbc.gridy = 4;
 		add(ConversationJTA, gbc);//grid 4
 		
+		innerConvoPanel = new JPanel();//panel to contain the scroll bar for usernames
+		innerConvoPanel.setLayout(new BoxLayout(innerConvoPanel, BoxLayout.Y_AXIS));
 		JScrollPane onlineconvoSP = new JScrollPane(innerConvoPanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 						JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		onlineconvoSP.setBorder(javax.swing.BorderFactory.createEmptyBorder());
