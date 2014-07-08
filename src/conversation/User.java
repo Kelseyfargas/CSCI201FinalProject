@@ -34,18 +34,17 @@ public class User {
 	private Image image;
 	private ArrayList<String> onlineUsers;
 	private ArrayList <messageWindow> openConversations;
-	private ArrayList<GroupConversation> currentConversations;	// change to Conversation 						
+	private ArrayList<String> currentConversations;	// change to Conversation 						
 	private ChatMeClient chatClient;
-	private ChatMeServer chatServer;
 	private ArrayList<ChatRoomGUI> messageWindow;
 	
 	/* Constructor */
 	public User() {
 		createAccountWindow();
 		onlineUsers = new ArrayList<String>();
-		currentConversations = new ArrayList<GroupConversation>();
+		currentConversations = new ArrayList<String>();
 		messageWindow = new ArrayList<ChatRoomGUI>();
-		//openConversations = new ArrayList<messageWindow>();
+		openConversations = new ArrayList<messageWindow>();
 	}
 
 	public void createAccountWindow() {
@@ -74,32 +73,44 @@ public class User {
 
 	public void addGroupConvo(String convoName, String moderator)		{
 		GroupConversation newConversation = new GroupConversation(convoName, this);
-		currentConversations.add(newConversation);                                           
+		currentConversations.add(convoName);                                           
 		buddyList.updateActiveConversations();
 	}
 	
-	public void sendNewMessage(String content, String conversationName)		{															// send new message to server
+	public void sendNewGroupMessage(String content, String conversationName)		{															// send new message to server
 		String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());				// find the time that message was created					 
-		Message messageToSend = new Message(content,time,conversationName)															// create new message class to send server 
-		chatServer.sendMessageAndObject(chatServer.NEW_MESSAGE_REQUEST, messageToSend);									
+		content = this.getName() + ": " + content;								
+		Message messageToSend = new Message(content,time,conversationName);														// create new message class to send server 
+		chatClient.sendCommand(ChatMeServer.NEW_GROUP_MESSAGE_REQUEST, messageToSend);									
 	}
 	
-	public void  receiveMessage (Message message)	{														// receive message from server and update GUI to display new message 
+	public void sendNewPrivateMessage(String content, String conversationName)		{
+		String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());				// find the time that message was created					 
+		content = this.getName() + ": " + content;								
+		Message messageToSend = new Message(content,time,conversationName);														// create new message class to send server 
+		chatClient.sendCommand(ChatMeServer.NEW_PRIVATE_MESSAGE_REQUEST, messageToSend);									
+	}
+	
+	public void getGroupMessage (Message msg)		{
 		for(messageWindow element : openConversations)	{													// only update GUI if open conversations exist
-				// element.updateGUI(message.getContent(), message.getConversationName()); 				// fake code  
+			if(element.getName().equals(msg.getConversationName())) {
+				element.updateContent(msg.getContent()); 				  
+			}
 		}
 	}
 
 	public void removeGroupConvo(String convoName, String moderator)		{
 		int i = 0;
-		for(GroupConversation element : currentConversations)		{						// remove from currentConversations list 
-			if(element.getName() == convoName)	{
+		for(String element : currentConversations)		{						// remove from currentConversations list 
+			if(element.equals(convoName))	{
 				currentConversations.remove(i);
 				buddyList.updateActiveConversations();
 			}
 			i++;
 		}
 	}
+	
+		
 
 	public void displayConvoError() {						//called when addGroupConvo failed 
 		//call gui for error message 
@@ -175,7 +186,7 @@ public class User {
 		return this.password;
 	}
 	
-	public ArrayList<GroupConversation> getConversations() {
+	public ArrayList<String> getConversations() {
 		return this.currentConversations;
 	}
 	
