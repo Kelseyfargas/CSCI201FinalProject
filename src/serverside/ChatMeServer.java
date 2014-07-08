@@ -334,6 +334,10 @@ public class ChatMeServer {
 		 * 	Send Information to clients  *
 		 * * * * * * * * * * * * * * * * */
 		public void updateAllOnlineUsers(ArrayList<String> onlineUsers) throws IOException{
+			printDbg("Online users: ");
+			for(int i=0;i<onlineUsers.size();i++){
+				printDbg("user: " + onlineUsers.get(i));
+			}
 			clientLock.lock();
 				for(int i=0; i<clients.size();i++){
 					if( ! clients.get(i).getName().isEmpty() ){
