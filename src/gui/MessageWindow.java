@@ -30,14 +30,24 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 
+import conversation.User;
 
-public class ChatRoomGUI extends JFrame {
+
+public class MessageWindow extends JFrame {
 	
+	public static int GROUP_CHAT = 1;
+	public static int PRIVATE_CHAT = 2;
 	private  JButton addUserButton;
-	public static JTextArea chatBoxTextArea;
-	public static JTextArea outputTextArea;
-	public ChatRoomGUI(String convoName){
-		super(convoName);
+	private JTextArea chatBoxTextArea;
+	private JTextField outputTextField;
+	private String convoName;
+	private User user;
+	private int messageType;
+	
+	public MessageWindow(String convoName, User user){
+		//this.convoName = convoName;
+		this.user = user;
+		setName(convoName);
 		
 		//Menu bar
 		JMenuBar jmb = new JMenuBar();
@@ -46,7 +56,6 @@ public class ChatRoomGUI extends JFrame {
 		fileMenu.add(saveConversationMI);
 		jmb.add(fileMenu);
 		add(jmb);
-		
 		
 		JPanel CenterPanel = new JPanel();
 		CenterPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -106,16 +115,16 @@ public class ChatRoomGUI extends JFrame {
 		
 		JPanel messageBottomPanel = new JPanel();
 		messageBottomPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-		outputTextArea = new JTextArea();
-		//outputTextArea.setText("New Message");
-		outputTextArea.setForeground(Color.GRAY);
-		outputTextArea.setPreferredSize(new Dimension(510,20));
-		outputTextArea.setEditable(true); 
-		outputTextArea.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-		outputTextArea.setBorder(BorderFactory.createMatteBorder(1,1,1,1, Color.GRAY));
+		outputTextField = new JTextField();
+		//outputTextField.setText("New Message");
+		outputTextField.setForeground(Color.GRAY);
+		outputTextField.setPreferredSize(new Dimension(510,20));
+		outputTextField.setEditable(true); 
+		outputTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+		outputTextField.setBorder(BorderFactory.createMatteBorder(1,1,1,1, Color.GRAY));
 		JButton sendButton = new JButton("Send");
-		sendButton.addActionListener(new sendButtonAction(outputTextArea));
-		messageBottomPanel.add(outputTextArea);
+		sendButton.addActionListener(new sendButtonAction(outputTextField);
+		messageBottomPanel.add(outputTextField);
 		messageBottomPanel.add(sendButton);
 		
 		
@@ -167,11 +176,14 @@ public class ChatRoomGUI extends JFrame {
 	class sendButtonAction implements ActionListener{
 		String messageinput;
 		
-		sendButtonAction(JTextArea outputTextArea){
-			messageinput = outputTextArea.getText().toString();
+		sendButtonAction(JTextField outputTextField){
+			messageinput = outputTextField.getText();
+			System.out.println("Message is : " + messageinput);
 		}
 		public void actionPerformed(ActionEvent e) {
-			addTextToChatBox(messageinput);
+			user.sendNewGroupMessage(messageinput,convoName);
+			outputTextField.setText("");
+			//updateContent(messageinput);
 		}
 	}
 	/*******FUNCTION FOR THE ChatRoomGUI************/
@@ -185,7 +197,7 @@ public class ChatRoomGUI extends JFrame {
 //	    Object selected[] = is.getSelectedObjects();
 //	    return ((selected.length == 0) ? "null" : (String) selected[0]);
 //	 }
-	public void addTextToChatBox(String messageinput){
+	public void updateContent(String messageinput){
 		String text = chatBoxTextArea.getText();
 		if (text == null || text.length() == 0) {
 			chatBoxTextArea.setText(messageinput);
@@ -194,8 +206,15 @@ public class ChatRoomGUI extends JFrame {
 			chatBoxTextArea.setText(chatBoxTextArea.getText() + "\n" + messageinput);
 		}
 	}
+	
+	public void setName(String convoName){
+		this.convoName = convoName;
+	}
+	public String getName(){
+		return convoName;
+	}
 	public static void main(String []args){
 		//new LogIn("Login");
-		new ChatRoomGUI("Kelsey");
+		new MessageWindow("Kelsey", user);
 	}
 }

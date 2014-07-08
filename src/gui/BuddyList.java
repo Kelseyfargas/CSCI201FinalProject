@@ -40,24 +40,12 @@ import conversation.User;
 public class BuddyList extends JFrame{
 	
 	public static User user;
-	public static ChatRoomGUI CRG;
+	public static MessageWindow CRG;
 	public static JPanel buddyListPanel;
 	public static JPanel onlineUsersPanel;
 	public static JPanel onlineConvoPanel; 
 	private JTextField NOCTextField;
 	private JButton startChatButton;
-	private  String []Users = {"Katrina.jpg",
-			"Sharads.jpg",
-			"Ryan C.jpg",
-			"Ryan J.jpg",
-			"Harvey.jpg",
-			"Mike.jpg",
-			"Katrina.jpg",
-			"Sharads.jpg",
-			"Ryan C.jpg",
-			"Ryan J.jpg",
-			"Harvey.jpg",
-			"Mike.jpg"};
 	private JPanel innerConvoPanel;
 	private JPanel inneronlineusersPanel;
 	
@@ -66,14 +54,13 @@ public class BuddyList extends JFrame{
 		super("Buddy List");
 		this.user = user;
 		
-		//ALL CLASSES FOR ACTION LISTENER
 		JMenuBar jmb = new JMenuBar();
 		JMenu fileMenu = new JMenu("File");
 		JMenuItem startMessageMenuItem = new JMenuItem("Start Message");
 		JMenuItem startGroupMessageMI = new JMenuItem("Start Group Message");
 		JMenu helpMenu = new JMenu("Help");
 		JMenuItem aboutMenuItem = new JMenuItem("About");
-		startMessageMenuItem.addActionListener(new StartMessage());
+		startMessageMenuItem.addActionListener(new StartPrivateMessage(this.user));
 		startGroupMessageMI.addActionListener(new StartGroupMessage());
 		aboutMenuItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
@@ -108,7 +95,6 @@ public class BuddyList extends JFrame{
 		JPanel topPanel = new JPanel();
 		topPanel.setLayout(new FlowLayout()); 
 		
-		System.out.println("User for Kelsey: " + user.getImagePath());
 		ImageIcon userIcon = new ImageIcon(user.getImagePath());
 		JButton userButton = new JButton(userIcon);
 		userButton.setPressedIcon(userIcon);
@@ -123,7 +109,7 @@ public class BuddyList extends JFrame{
 		messageButton.setSize(30,30);
 		messageButton.setLocation(10,10);
 		messageButton.setBorderPainted(false);
-		messageButton.addActionListener(new StartMessage());
+		messageButton.addActionListener(new StartPrivateMessage(this.user));
 		topPanel.add(messageButton);
 		
 		ImageIcon groupChatIcon = new ImageIcon("Pictures/GroupChat.png");
@@ -191,20 +177,25 @@ public class BuddyList extends JFrame{
 		this.setVisible(true);
 		
 	}//public buddy list
+	public static void main(String []args){
+		new BuddyList(user);
+	}
 	
-	/*******classes for action listeners************/
-	/*******       						************/
-	/*******							************/
+/*******classes for action listeners************/
+/*******       						************/
+/*******							************/
 	class mouseClass extends MouseAdapter{
-		String name;
-		mouseClass(String name){
+		private String name;
+		private User u;
+		mouseClass(String name, User us){
 			name = name;
+			this.u = us;
 		}
 		public void mouseClicked(MouseEvent e){
 	    	
 	        if(e.getClickCount()==2){//double clicked
 	        	//create a message w/ that user
-	        	new ChatRoomGUI(name);
+	        	new MessageWindow(name, u);
 	        }
 	        else if(e.getModifiers() == MouseEvent.BUTTON3_MASK){
 	        	//if right click, then the about me should displayed
@@ -217,37 +208,47 @@ public class BuddyList extends JFrame{
 	        	else{//no option
 	        		System.out.println("No option");
 	        	}
-
+	
 	        }
 	    }
 	
 	}
-	class StartMessage implements ActionListener{
-		StartMessage(){
+
+	class StartPrivateMessage implements ActionListener{
+		
+		private User u;
+		
+		StartPrivateMessage(User user){
+			this.u = user;
 		}
+		
 		public void actionPerformed(ActionEvent ae){
-			//Katrina will give table of users that are online
-			String user = (String)JOptionPane.showInputDialog(BuddyList.this, 
+			Object[] onlinelist = user.getOnlineUsers().toArray();
+			String people = (String)JOptionPane.showInputDialog(BuddyList.this, 
 			"Choose User to Start Chat!", 
 			"Start Message", 
 			JOptionPane.QUESTION_MESSAGE,
 			null, // icon
-			Users, Users[0]);
+			onlinelist, onlinelist[0]);
 			try{
 				if(!user.equals(null)){
-				System.out.println("User selected is" + user);
-				new ChatRoomGUI(user);
+				System.out.println("User selected is" + people);
+				new MessageWindow(people,u);
 				}
 			} catch (NullPointerException npe){
 				System.out.println(npe.getMessage());
 			}
 		}
 	}
+
 	class StartGroupMessage implements ActionListener{
+		
 		public void actionPerformed(ActionEvent ae){
 			 createDialogeGroupMessage();
 		}
+	
 	}
+
 	class iconButtonClass implements ActionListener{
 		User us;
 		public iconButtonClass(User u){
@@ -255,23 +256,25 @@ public class BuddyList extends JFrame{
 		}
 		public void actionPerformed(ActionEvent e) {
 			 JDialog jd = new JDialog();
-//			 jd.setTitle("About");
+	//		 jd.setTitle("About");
 			 jd.setLocation(450,300);
 			 jd.setSize(200, 200);
 			 jd.setModal(true);
 			 JPanel jp = new JPanel();
 			 BoxLayout bl = new BoxLayout(jp, BoxLayout.Y_AXIS);
 			 jp.setLayout(bl);
-			 JTextArea aboutMeTA = new JTextArea(us.getAboutme());
+			 JTextArea aboutMeTA = new JTextArea(us.getBio());
 			 jd.add(aboutMeTA);
 			 jd.add(jp);
 			 jd.setVisible(true);
 		}
 	}
-	
-	/*******FUNCTIONS FOR THE BUDDY LIST************/
-	/***********************************************/
-	/***********************************************/
+
+
+
+/*******FUNCTIONS FOR THE BUDDY LIST************/
+/***********************************************/
+/***********************************************/
 	private void aboutMeAction(){
         System.out.println("You right clicked, so It'll show the about me.");
       	 JDialog jd = new JDialog();
@@ -341,7 +344,7 @@ public class BuddyList extends JFrame{
 		 startChatButton = new JButton("Start Chat");
 		 startChatButton.addActionListener(new ActionListener(){
 			 public void actionPerformed(ActionEvent ae){
-				 new ChatRoomGUI(NOCTextField.getText());
+				 new MessageWindow(NOCTextField.getText(), user);
 			 }
 		 });
 		 bottomPanel.add(startChatButton);
@@ -361,7 +364,7 @@ public class BuddyList extends JFrame{
 			JButton OUButton = new JButton(user.getOnlineUsers().get(i));
 			OUButton.setEnabled(true);
 			OUButton.setBorderPainted(false);
-			OUButton.addMouseListener(new mouseClass(user.getOnlineUsers().get(i)));
+			OUButton.addMouseListener(new mouseClass(user.getOnlineUsers().get(i), user));
 			inneronlineusersPanel.add(OUButton);
 		}
 
@@ -373,14 +376,10 @@ public class BuddyList extends JFrame{
 			JButton OUButton = new JButton(user.getConversations().get(i).getName());
 			OUButton.setEnabled(true);
 			OUButton.setBorderPainted(false);
-			OUButton.addMouseListener(new mouseClass(user.getConversations().get(i).getName()));
+			OUButton.addMouseListener(new mouseClass(user.getConversations().get(i).getName(), user));
 			innerConvoPanel.add(OUButton);
 		}
 
 	}
-	
-	public static void main(String []args){
-		new BuddyList(user);
-	}
-	
 }
+	
