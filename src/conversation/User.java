@@ -182,5 +182,10 @@ public class User {
 	public void signOut()   {
 		
 	}
+	
+	public void createNewMessageWindow(String conversationName)	{
+		MessageWindow mw = new MessageWindow(conversationName,this,MessageWindow.GROUP_CHAT);
+		openConversations.add(mw);
+	}
 
 }
