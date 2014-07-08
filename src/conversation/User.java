@@ -24,7 +24,7 @@ public class User {
 	public  Message messagePackage;
 	private BuddyList buddyList;
 	private CreateAccount accountWindow;
-	private ChatRoomGUI groupConversationWindow;
+	private MessageWindow groupConversationWindow;
 	public LogIn loginWindow;
 	private JFrame chatWindow; 
 	private String name;
@@ -33,18 +33,18 @@ public class User {
 	private String imagePath;
 	private Image image;
 	private ArrayList<String> onlineUsers;
-	private ArrayList <messageWindow> openConversations;
+	private ArrayList <MessageWindow> openConversations;
 	private ArrayList<String> currentConversations;	// change to Conversation 						
 	private ChatMeClient chatClient;
-	private ArrayList<ChatRoomGUI> messageWindow;
+	private ArrayList<MessageWindow> messageWindow;
 	
 	/* Constructor */
 	public User() {
 		createAccountWindow();
 		onlineUsers = new ArrayList<String>();
 		currentConversations = new ArrayList<String>();
-		messageWindow = new ArrayList<ChatRoomGUI>();
-		openConversations = new ArrayList<messageWindow>();
+		messageWindow = new ArrayList<MessageWindow>();
+		openConversations = new ArrayList<MessageWindow>();
 	}
 
 	public void createAccountWindow() {
@@ -59,7 +59,7 @@ public class User {
 	}
 	
 	public void createGroupConversationWindow(String convoName) {
-		groupConversationWindow = new ChatRoomGUI(convoName);
+		groupConversationWindow = new MessageWindow(convoName,this);
 	}
 
 	public LogIn getLoginWindow()     {
@@ -92,7 +92,7 @@ public class User {
 	}
 	
 	public void getGroupMessage (Message msg)		{
-		for(messageWindow element : openConversations)	{													// only update GUI if open conversations exist
+		for(MessageWindow element : openConversations)	{													// only update GUI if open conversations exist
 			if(element.getName().equals(msg.getConversationName())) {
 				element.updateContent(msg.getContent()); 				  
 			}
@@ -123,12 +123,11 @@ public class User {
 	}
 
 	public void sendLogInRequest() {	
-		chatClient.sendCommand(ChatMeServer.LOGIN_REQUEST);
+		this.chatClient.sendCommand(ChatMeServer.LOGIN_REQUEST);
 		//update GUI based on online users 
 		//UpdateBuddyList(this);
 	}
 	
-
 	public void createBuddyList() {
 		buddyList = new BuddyList(this);
 		loginWindow.dispose();
