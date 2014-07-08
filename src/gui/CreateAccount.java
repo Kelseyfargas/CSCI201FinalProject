@@ -20,6 +20,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -32,7 +33,7 @@ public class CreateAccount extends JFrame{
 	private JButton createAccount;
 	private JButton logInButton;
 	private JTextField usernameField;
-	private JTextField passwordField;
+	private JPasswordField passwordField;
 	private JTextArea Bio;
 	
 	public CreateAccount(User user){
@@ -70,7 +71,7 @@ public class CreateAccount extends JFrame{
 		gbc.gridwidth = 2; 
 		add(usernameField,gbc);
 		
-		passwordField = new JTextField(15);
+		passwordField = new JPasswordField(15);
 		passwordField.setFont(inputfont);
 		JLabel password = new JLabel("Desired Password:");
 		gbc.gridx = 0; 

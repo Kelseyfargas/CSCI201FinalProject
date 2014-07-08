@@ -29,6 +29,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Highlighter;
 
 import conversation.User;
 
@@ -49,6 +51,10 @@ public class MessageWindow extends JFrame {
 	private JComboBox<?> sizeCB;
 	private JComboBox<?> fontTypeCB;
 	private JComboBox<?> emojiCB;
+	private Color HILIT_COLOR = Color.ORANGE;
+	private Highlighter hilit;
+	private Highlighter.HighlightPainter painter;
+	private String copieditem = "";
 	
 	public MessageWindow(String convoName, User user, int messageType){
 		
@@ -61,11 +67,22 @@ public class MessageWindow extends JFrame {
 			this.moderator = user.getName();
 		}
 		
-		//Menu bar
+		//Menu bars
 		JMenuBar jmb = new JMenuBar();
 		JMenu fileMenu = new JMenu("File");
-		JMenuItem saveConversationMI = new JMenuItem("Save Conversation");
-		fileMenu.add(saveConversationMI);
+		JMenuItem copyMenuItem = new JMenuItem("Copy");
+		JMenuItem cutMenuItem = new JMenuItem("Cut");
+		JMenuItem pasteMenuItem = new JMenuItem("Paste");
+		
+		copyMenuItem.addActionListener(new CutCopyPasteAction(copyMenuItem));
+		cutMenuItem.addActionListener(new CutCopyPasteAction(cutMenuItem));
+		pasteMenuItem.addActionListener(new CutCopyPasteAction(cutMenuItem));
+		
+		JMenuItem saveConversationMenuItem = new JMenuItem("Save Conversation");
+		fileMenu.add(copyMenuItem);
+		fileMenu.add(cutMenuItem);
+		fileMenu.add(pasteMenuItem);
+		fileMenu.add(saveConversationMenuItem);
 		jmb.add(fileMenu);
 		setJMenuBar(jmb);
 		
@@ -218,6 +235,33 @@ public class MessageWindow extends JFrame {
 			outputTextField.setText("");
 			//updateContent(messageinput);
 		}
+	}
+	private class CutCopyPasteAction implements ActionListener{
+		
+		private String actionword;
+		private CutCopyPasteAction(JMenuItem action){
+			this.actionword = action.getText();
+		}
+		public void actionPerformed(ActionEvent e) {
+			
+			System.out.println("String is : " + actionword);
+			hilit = new DefaultHighlighter();
+		    painter = new DefaultHighlighter.DefaultHighlightPainter(HILIT_COLOR);
+		    outputTextField.setHighlighter(hilit);
+			if(actionword.equals("Cut")){
+				copieditem = outputTextField.getText();
+				outputTextField.setText("");
+				
+			}
+			else if(actionword.equals("Copy")){
+				copieditem = outputTextField.getText();
+				System.out.println("copied item is : " + copieditem);
+			}
+			else if(actionword.equals("Paste")){
+				outputTextField.setText(outputTextField.getText()+copieditem);
+			}
+		}
+		
 	}
 /*******FUNCTION FOR THE ChatRoomGUI************/
 /***********************************************/

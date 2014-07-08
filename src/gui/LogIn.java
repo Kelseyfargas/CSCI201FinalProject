@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import conversation.User;
@@ -22,7 +23,7 @@ import conversation.User;
 public class LogIn extends JFrame {
 	
 	private JTextField usernameTF;
-	private JTextField passwordTF;
+	private JPasswordField passwordTF;
 	private User user;
 	public JButton logInButton;
 	
@@ -44,7 +45,7 @@ public class LogIn extends JFrame {
 		centerPanel.add(username);
 		centerPanel.add(usernameTF);
 		
-		passwordTF = new JTextField(15);
+		passwordTF = new JPasswordField(15);
 		passwordTF.setFont(inputfont);
 		JLabel password = new JLabel("Password");
 		centerPanel.add(password);
