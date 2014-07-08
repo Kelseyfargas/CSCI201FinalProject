@@ -126,7 +126,7 @@ public class Database {
 	 * Takes in the username
 	 * Will be called after a user successfully logins (if login method returns true)
 	 */
-	public void addToOnlineList(String username) throws SQLException {
+	public synchronized void addToOnlineList(String username) throws SQLException {
 		stmt = conn.createStatement();
 		//add user to OnlineStatus table in database
 		sql = "insert into OnlineUsers(username) values('__USER__');";
@@ -138,7 +138,7 @@ public class Database {
 	 * Returns an arraylist of online users from the DB
 	 * Will be called after a user either logs in or logs off in order to update the GUI
 	 */
-	public ArrayList<String> getOnlineList() {
+	public synchronized ArrayList<String> getOnlineList() {
 		try {
 			stmt = conn.createStatement();
 		} catch (SQLException e1) {
@@ -457,7 +457,7 @@ public class Database {
 	 * Takes in the username
 	 * getOnlinList() should be called after this method in order for the GUI buddy list to be updated
 	 */
-	public void signOut(String username) {
+	public synchronized void  signOut(String username) {
 		try {
 			stmt = conn.createStatement();
 		} catch (SQLException e1) {
