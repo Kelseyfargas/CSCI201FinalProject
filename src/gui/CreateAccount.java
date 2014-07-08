@@ -43,7 +43,7 @@ public class CreateAccount extends JFrame{
 		setLayout(new GridBagLayout()); 
 		GridBagConstraints gbc = new GridBagConstraints(); 
 
-		Font inputfont = new Font("Courrier New", Font.ITALIC, 12);
+		Font inputfont = new Font("sansserif", Font.ITALIC, 12);
 		usernameField = new JTextField(15); //user can type in
 		usernameField.setFont(inputfont);
 		JLabel username = new JLabel("Desired UserName:");
@@ -64,7 +64,6 @@ public class CreateAccount extends JFrame{
 		gbc.gridy = 1;  
 		gbc.gridwidth = 1; 
 		add(password, gbc);
-		
 		gbc.gridx = 1;
 		gbc.gridy = 1; 
 		gbc.gridwidth = 2; 
@@ -73,7 +72,7 @@ public class CreateAccount extends JFrame{
 		
 		JLabel ChooseIcon = new JLabel("Desired Icon:");
 		gbc.gridx = 0; 
-		gbc.gridy = 3;  
+		gbc.gridy = 2;  
 		gbc.gridwidth = 1; 
 		add(ChooseIcon, gbc);
 		
@@ -201,8 +200,8 @@ public class CreateAccount extends JFrame{
 		createAccount.addActionListener(new createAcc(this.user));
 		add(createAccount,gbc);
 	
-		this.setSize(450,500);
-		this.setLocation(100,100);
+		this.setSize(430,380);
+		this.setLocation(400,250);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
