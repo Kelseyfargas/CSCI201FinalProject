@@ -101,6 +101,7 @@ public class ChatMeClient {
 				while(continueRunning){
 					try {
 						Thread.sleep(100);
+						//userin.readInt();
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -152,6 +153,8 @@ public class ChatMeClient {
 			boolean OK = userIn.readBoolean();
 			if(OK == true)
 			{
+				//LISTEN FOR BIO AND IMG PATH
+				
 				System.out.println("you have been cleared to log in.");
 				user.createBuddyList();
 			}
@@ -159,6 +162,13 @@ public class ChatMeClient {
 				System.out.println("Could not log in. Incorrect Credentials");
 				user.incorrectInfoError();
 			}
+		}
+		public void signOutRequest() throws IOException{
+			//unfinished, see comment
+			userOut.writeObject(user.getName());
+			userOut.flush();
+			//user.signOut(); // write this
+			System.out.println(user.getName() + " has signed out...Write Code!");
 		}
 		public void newUserRequest() throws IOException{
 			//finished but needs database
@@ -183,16 +193,10 @@ public class ChatMeClient {
 				user.nameExistError();
 			}
 		}
-		public void signOutRequest() throws IOException{
-			//unfinished, see comment
-			userOut.writeObject(user.getName());
-			userOut.flush();
-			//user.signOut(); // write this
-			System.out.println(user.getName() + " has signed out...Write Code!");
-		}
 		
 		
 		/* Command does need arguments */
+		
 		//Takes Conversation as parameter
 		public void sendCommandAndObject(int command, GroupConversation convo) throws IOException{
 			lock.lock();
@@ -328,6 +332,8 @@ public class ChatMeClient {
 			//unfinished see comment
 			String convoName = (String) servIn.readObject();
 			String moderator = (String) servIn.readObject();
+			
+			
 			System.out.println("user.addConvo;i;ijjij WRITE");
 /////////////user.addGroupConvo(convoName, moderator);
 		}

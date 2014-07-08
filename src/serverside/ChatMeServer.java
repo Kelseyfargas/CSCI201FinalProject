@@ -98,11 +98,12 @@ public class ChatMeServer {
 		private ServReqThread srt;
 		private SocketHolder sh;
 		
+		/* Constructor */
 		public UserReqThread(ObjectInputStream in, ObjectOutputStream out) throws IOException{
 			threadUserIn = in;
 			threadUserOut = out;
 		}
-		
+		//constructor helpers
 		public void setSocketHolder(SocketHolder sh){
 			this.sh = sh;
 		}
@@ -165,15 +166,10 @@ public class ChatMeServer {
 					newGroupRequest();
 				}
 				else if(command == END_GROUP_REQUEST){
-					printDbg("Reading group convo deletion request");
-					String convoName = (String) threadUserIn.readObject();
-					String moderator = (String) threadUserIn.readObject();
-					database.endConvo(convoName); 
-					srt.removeConvoFromAll(convoName, moderator);
+					endGroupRequest();
 				}
 				else if(command == UPDATE_ONLINE_USERS_REQUEST){
-					ArrayList<String> strArr = database.getOnlineList();
-					srt.updateAllOnlineUsers(strArr);
+					updateOnlineUsersRequest();
 				}
 			} catch (SQLException s){
 				s.printStackTrace();
@@ -221,9 +217,12 @@ public class ChatMeServer {
 				
 				//send bio
 				String bio = database.getBio(un);
+				threadUserOut.writeObject(bio);
 				
 				//send imagepath
 				String imgPath = database.getImagePath(un);
+				threadUserOut.writeObject(un);
+				//SEND IT
 				
 				
 				//send onlineUsers
@@ -288,6 +287,17 @@ public class ChatMeServer {
 			database.createConversation(convoName, moderator, ""); 
 			srt.addConvoToAll(convoName, moderator);
 		}
+		private void endGroupRequest() throws ClassNotFoundException, IOException {
+			printDbg("Reading group convo deletion request");
+			String convoName = (String) threadUserIn.readObject();
+			String moderator = (String) threadUserIn.readObject();
+			database.endConvo(convoName); 
+			srt.removeConvoFromAll(convoName, moderator);
+		}
+		private void updateOnlineUsersRequest() throws IOException{
+			ArrayList<String> strArr = database.getOnlineList();
+			srt.updateAllOnlineUsers(strArr);
+		}
 		
 		/* call this method upon logging in  */
 		public void registerSocket(String name){
@@ -329,6 +339,10 @@ public class ChatMeServer {
 		public void setUserReqThread(UserReqThread ct) {
 			this.ct = ct;
 		}
+		
+		/* * * * * * * * * * * * * * * * *
+		 * 	Send Information to clients  *
+		 * * * * * * * * * * * * * * * * */
 		public void updateAllOnlineUsers(ArrayList<String> onlineUsers) throws IOException{
 			for(int i=0; i<clients.size();i++){
 				if( ! clients.get(i).getName().isEmpty() ){

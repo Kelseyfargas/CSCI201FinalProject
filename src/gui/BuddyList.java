@@ -41,6 +41,8 @@ public class BuddyList extends JFrame{
 	public static User user;
 	public static ChatRoomGUI CRG;
 	public static JPanel centerPanel;
+	public static JPanel onlineUsersPanel;
+	public static JPanel onlineConvoPanel; 
 	private JTextField NOCTextField;
 	private JButton startChatButton;
 	private  String []Users = {"Katrina.jpg",
@@ -57,16 +59,9 @@ public class BuddyList extends JFrame{
 			"Mike.jpg"};
 	public void updateActiveConversations(){
 		
-		JTextArea ConversationJTA = new JTextArea("Online Conversations", 1, 16); // online users section of code
-		ConversationJTA.setEditable(false);
-		ConversationJTA.setLineWrap(true);
-		ConversationJTA.setWrapStyleWord(true);
-		ConversationJTA.setForeground(Color.DARK_GRAY);
-		ConversationJTA.setBackground(Color.LIGHT_GRAY);
-		ConversationJTA.setFont(new Font("Courier", Font.BOLD, 22));
-		centerPanel.add(ConversationJTA);
-		JPanel onlineusersPanel = new JPanel();
-		onlineusersPanel.setLayout(new BoxLayout(onlineusersPanel, BoxLayout.Y_AXIS));
+		
+		JPanel innerConvoPanel = new JPanel();
+		innerConvoPanel.setLayout(new BoxLayout(innerConvoPanel, BoxLayout.Y_AXIS));
 		
 		class mouseClass extends MouseAdapter{
 			String name;
@@ -103,15 +98,15 @@ public class BuddyList extends JFrame{
 			OUButton.setEnabled(true);
 			OUButton.setBorderPainted(false);
 			OUButton.addMouseListener(new mouseClass(user.getConversations().get(i).getName()));
-			onlineusersPanel.add(OUButton);
+			innerConvoPanel.add(OUButton);
 		}
 		//end of forloop
-		JScrollPane onlineconvoSP = new JScrollPane(onlineusersPanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+		JScrollPane onlineconvoSP = new JScrollPane(innerConvoPanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 												JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		onlineconvoSP.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		onlineconvoSP.setPreferredSize(new Dimension(210,250));
 
-		centerPanel.add(onlineconvoSP);
+		onlineConvoPanel.add(onlineconvoSP, BorderLayout.CENTER);
 	}
 	public void updateOnlineUser(){//update the online users given the strings
 		//create void updateOnlineUser and void updateActiveConversations
@@ -119,17 +114,10 @@ public class BuddyList extends JFrame{
 		//make sure that you dont create a chat with yourself
 		//add online users to a display list
 		//OnlineUsers = online;
-		JTextArea jtaNote = new JTextArea("Online Users", 1, 16); // online users section of code
-		jtaNote.setEditable(false);
-		jtaNote.setLineWrap(true);
-		jtaNote.setWrapStyleWord(true);
-		jtaNote.setForeground(Color.DARK_GRAY);
-		jtaNote.setBackground(Color.LIGHT_GRAY);
-		jtaNote.setFont(new Font("Courier", Font.BOLD, 22));
-		centerPanel.add(jtaNote);
+
 		
-		JPanel onlineusersPanel = new JPanel();
-		onlineusersPanel.setLayout(new BoxLayout(onlineusersPanel, BoxLayout.Y_AXIS));
+		JPanel inneronlineusersPanel = new JPanel();
+		inneronlineusersPanel.setLayout(new BoxLayout(inneronlineusersPanel, BoxLayout.Y_AXIS));
 		
 		class mouseClass extends MouseAdapter{
 			String name;
@@ -166,15 +154,15 @@ public class BuddyList extends JFrame{
 			OUButton.setEnabled(true);
 			OUButton.setBorderPainted(false);
 			OUButton.addMouseListener(new mouseClass(user.getOnlineUsers().get(i)));
-			onlineusersPanel.add(OUButton);
+			inneronlineusersPanel.add(OUButton);
 		}
 		//end of forloop
-		JScrollPane onlineUsersSP = new JScrollPane(onlineusersPanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+		JScrollPane onlineUsersSP = new JScrollPane(inneronlineusersPanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 												JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		onlineUsersSP.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		onlineUsersSP.setPreferredSize(new Dimension(210,250));
 
-		centerPanel.add(onlineUsersSP);
+		onlineUsersPanel.add(onlineUsersSP, BorderLayout.CENTER);
 
 		
 	}
@@ -381,10 +369,31 @@ public class BuddyList extends JFrame{
 		
 		centerPanel.add(topPanel);
 		
+		onlineUsersPanel = new JPanel();
+		JTextArea jtaNote = new JTextArea("Online Users", 1, 16); // online users section of code
+		jtaNote.setEditable(false);
+		jtaNote.setLineWrap(true);
+		jtaNote.setWrapStyleWord(true);
+		jtaNote.setForeground(Color.DARK_GRAY);
+		jtaNote.setBackground(Color.LIGHT_GRAY);
+		jtaNote.setFont(new Font("Courier", Font.BOLD, 22));
+		onlineUsersPanel.add(jtaNote, BorderLayout.NORTH);
+		centerPanel.add(onlineUsersPanel);
 
 //		updateOnlineUser();
 //		updateActiveConversations();
-			
+		
+		onlineConvoPanel = new JPanel();
+		JTextArea ConversationJTA = new JTextArea("Online Conversations", 1, 16); // online users section of code
+		ConversationJTA.setEditable(false);
+		ConversationJTA.setLineWrap(true);
+		ConversationJTA.setWrapStyleWord(true);
+		ConversationJTA.setForeground(Color.DARK_GRAY);
+		ConversationJTA.setBackground(Color.LIGHT_GRAY);
+		ConversationJTA.setFont(new Font("Courier", Font.BOLD, 22));
+		onlineConvoPanel.add(ConversationJTA,BorderLayout.NORTH);
+		centerPanel.add(onlineConvoPanel);
+		
 		add(westPanel, BorderLayout.WEST);
 		add(centerPanel, BorderLayout.CENTER);
 		this.setSize(300,700);
