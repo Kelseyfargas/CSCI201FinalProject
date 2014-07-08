@@ -252,8 +252,9 @@ public class BuddyList extends JFrame{
 							"Name Conversation:", 
 							JOptionPane.QUESTION_MESSAGE);
 			 System.out.println("Convo name is " + convoName);
-			 //boolean hasNonAlpha = !String.isAlphanumeric(convoName);
-			 u.createNewMessageWindow(convoName);
+			 //TELL RYAN TO FIX HIS FOR ERROR MESSAGE
+			// boolean hasNonAlpha = !String.isAlphanumeric(convoName);
+			 //u.createNewMessageWindow(convoName);
 			 //new MessageWindow(convoName, u,messageType);
 			 //check for alphanumeric on convoName
 			 u.initiateGroupConvoRequest(convoName);
