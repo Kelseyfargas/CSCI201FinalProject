@@ -24,11 +24,11 @@ public class User {
 	public  Message messagePackage;
 	private BuddyList buddyList;
 	private CreateAccount accountWindow;
-	private ChatRoomGUI chatRoomGUI;
+	private ChatRoomGUI groupConversationWindow;
 	public LogIn loginWindow;
 	private JFrame chatWindow; 
 	private String name;
-	private String aboutme;
+	private String bio;
 	private String password;
 	private String imagePath;
 	private Image image;
@@ -51,10 +51,16 @@ public class User {
 	public void createAccountWindow() {
 		accountWindow =  new CreateAccount(this);
 	}
-
+	public void displayClearMessage() {
+		
+	}
 	public void createLoginWindow() {
 		accountWindow.dispose();
 		loginWindow = new LogIn(this);
+	}
+	
+	public void createGroupConversationWindow(String convoName) {
+		groupConversationWindow = new ChatRoomGUI(convoName);
 	}
 
 	public LogIn getLoginWindow()     {
@@ -154,12 +160,12 @@ public class User {
 		return this.name;
 	}
 
-	public void setAboutme(String aboutme)	{
-		this.aboutme = aboutme;
+	public void setBio(String bio)	{
+		this.bio = bio;
 	}
 
-	public String getAboutme()				{
-		return this.aboutme;
+	public String getBio()				{
+		return this.bio;
 	}
 	public void setPassword(String password)	{
 		this.password = password;
@@ -180,6 +186,10 @@ public class User {
 
 	public String getImagePath()				{
 		return this.imagePath;
+	}
+	
+	public void signOut()   {
+		
 	}
 
 }
