@@ -255,6 +255,7 @@ public class BuddyList extends JFrame{
 			this.messageType = messageType;
 		}
 		public void actionPerformed(ActionEvent ae){
+			 System.out.println("In StartGroupMessage AE " + messageType);
 			 String convoname = createDialogeGroupMessage();
 			 u.sendGroupConvoRequest(convoname);
 		}
@@ -317,7 +318,7 @@ public class BuddyList extends JFrame{
 				"Group Message", 
 				"Name Conversation:", 
 				JOptionPane.QUESTION_MESSAGE);
-		 MessageWindow mw = new MessageWindow(value, user,2);
+		 MessageWindow mw = new MessageWindow(value, user, GROUP_CHAT);
 		 user.addToOnlineConversations(mw);
 		 return value;
 	}
@@ -328,7 +329,7 @@ public class BuddyList extends JFrame{
 			JButton OUButton = new JButton(user.getOnlineUsers().get(i));
 			OUButton.setEnabled(true);
 			OUButton.setBorderPainted(false);
-			OUButton.addMouseListener(new mouseClass(user.getOnlineUsers().get(i), user,2));
+			OUButton.addMouseListener(new mouseClass(user.getOnlineUsers().get(i), user,PRIVATE_CHAT));
 			inneronlineusersPanel.add(OUButton);
 		}
 		repaint();
@@ -340,7 +341,7 @@ public class BuddyList extends JFrame{
 			JButton OUButton = new JButton(user.getConversations().get(i));
 			OUButton.setEnabled(true);
 			OUButton.setBorderPainted(false);
-			OUButton.addMouseListener(new mouseClass(user.getConversations().get(i), user,1));
+			OUButton.addMouseListener(new mouseClass(user.getConversations().get(i), user,GROUP_CHAT));
 			innerConvoPanel.add(OUButton);
 		}
 		repaint();

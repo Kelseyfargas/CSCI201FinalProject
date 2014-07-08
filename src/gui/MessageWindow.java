@@ -207,7 +207,9 @@ public class MessageWindow extends JFrame {
 			System.out.println("Message is : " + messageinput);
 		}
 		public void actionPerformed(ActionEvent e) {
+			System.out.println("Message type is: "+ messageType);
 			if(messageType == GROUP_CHAT){
+				System.out.println("IN GROUP MESSAGE AFTER SEND BUTTON");
 				user.sendNewGroupMessage(messageinput,convoName);
 			}
 			else if(messageType == PRIVATE_CHAT){
