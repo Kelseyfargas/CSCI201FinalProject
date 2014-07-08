@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.ItemSelectable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,133 +40,258 @@ import conversation.User;
 public class BuddyList extends JFrame{
 	
 	public static User user;
-	public static ChatRoomGUI CRG;
-	public static JPanel centerPanel;
+	public static MessageWindow CRG;
+	public static JPanel buddyListPanel;
 	public static JPanel onlineUsersPanel;
 	public static JPanel onlineConvoPanel; 
 	private JTextField NOCTextField;
 	private JButton startChatButton;
-	private  String []Users = {"Katrina.jpg",
-			"Sharads.jpg",
-			"Ryan C.jpg",
-			"Ryan J.jpg",
-			"Harvey.jpg",
-			"Mike.jpg",
-			"Katrina.jpg",
-			"Sharads.jpg",
-			"Ryan C.jpg",
-			"Ryan J.jpg",
-			"Harvey.jpg",
-			"Mike.jpg"};
-	public void updateActiveConversations(){
+	private JPanel innerConvoPanel;
+	private JPanel inneronlineusersPanel;
+	
+	//CONSTRUCTOR FOR THE BUDDY LIST
+	BuddyList(User user){
+		super("Buddy List");
+		this.user = user;
 		
-		
-		JPanel innerConvoPanel = new JPanel();
-		innerConvoPanel.setLayout(new BoxLayout(innerConvoPanel, BoxLayout.Y_AXIS));
-		
-		class mouseClass extends MouseAdapter{
-			String name;
-			mouseClass(String name){
-				name = name;
-			}
-			public void mouseClicked(MouseEvent e){
-		    	
-		        if(e.getClickCount()==2){//double clicked
-		        //create a message w/ that user
-		         new ChatRoomGUI(name);
-		        }
-		        else if(e.getModifiers() == MouseEvent.BUTTON3_MASK){
-		         System.out.println("You right clicked, so It'll show the about me");
-		       	 JDialog jd = new JDialog();
+		JMenuBar jmb = new JMenuBar();
+		JMenu fileMenu = new JMenu("File");
+		JMenuItem startMessageMenuItem = new JMenuItem("Start Message");
+		JMenuItem startGroupMessageMI = new JMenuItem("Start Group Message");
+		JMenu helpMenu = new JMenu("Help");
+		JMenuItem aboutMenuItem = new JMenuItem("About");
+		startMessageMenuItem.addActionListener(new StartPrivateMessage(this.user));
+		startGroupMessageMI.addActionListener(new StartGroupMessage());
+		aboutMenuItem.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				 JDialog jd = new JDialog();
+				 jd.setTitle("About");
 				 jd.setLocation(450,300);
 				 jd.setSize(200, 200);
 				 jd.setModal(true);
 				 JPanel jp = new JPanel();
 				 BoxLayout bl = new BoxLayout(jp, BoxLayout.Y_AXIS);
 				 jp.setLayout(bl);
-				 JLabel jl = new JLabel("About Me");
-				 JLabel jl1 = new JLabel("This is my about me");
+				 JLabel jl = new JLabel("Created for CSCI 201L");
+				 JLabel jl1 = new JLabel("Kelsey, Katrina, "
+				 		+ "Ryan C., Ryan J.");
 				 jp.add(jl);
 				 jp.add(jl1);
 				 jd.add(jp);
 				 jd.setVisible(true);
-		        }
-		    }
-			
-		}
-		for(int i = 0; i < user.getConversations().size(); i++){
-			JButton OUButton = new JButton(user.getConversations().get(i).getName());
-			OUButton.setEnabled(true);
-			OUButton.setBorderPainted(false);
-			OUButton.addMouseListener(new mouseClass(user.getConversations().get(i).getName()));
-			innerConvoPanel.add(OUButton);
-		}
-		//end of forloop
-		JScrollPane onlineconvoSP = new JScrollPane(innerConvoPanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-												JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		onlineconvoSP.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-		onlineconvoSP.setPreferredSize(new Dimension(210,250));
+			}
+		});
+		helpMenu.add(aboutMenuItem);
+		fileMenu.add(startMessageMenuItem);
+		fileMenu.add(startGroupMessageMI);
+		jmb.add(fileMenu);
+		jmb.add(helpMenu);
+		setJMenuBar(jmb);
 
-		onlineConvoPanel.add(onlineconvoSP, BorderLayout.CENTER);
-	}
-	public void updateOnlineUser(){//update the online users given the strings
-		//create void updateOnlineUser and void updateActiveConversations
+		//center panel
+		buddyListPanel = new JPanel();
+		buddyListPanel.setLayout(new FlowLayout(FlowLayout.LEADING));
 		
-		//make sure that you dont create a chat with yourself
-		//add online users to a display list
-		//OnlineUsers = online;
-
+		JPanel topPanel = new JPanel();
+		topPanel.setLayout(new FlowLayout()); 
 		
-		JPanel inneronlineusersPanel = new JPanel();
+		ImageIcon userIcon = new ImageIcon(user.getImagePath());
+		JButton userButton = new JButton(userIcon);
+		userButton.setPressedIcon(userIcon);
+		userButton.setSize(30,30);
+		userButton.setLocation(10,10);
+		userButton.setBorderPainted(false);
+		topPanel.add(userButton);
+		
+		ImageIcon messageIcon = new ImageIcon("Pictures/Message.png");
+		JButton messageButton = new JButton(messageIcon);
+		messageButton.setPressedIcon(messageIcon);
+		messageButton.setSize(30,30);
+		messageButton.setLocation(10,10);
+		messageButton.setBorderPainted(false);
+		messageButton.addActionListener(new StartPrivateMessage(this.user));
+		topPanel.add(messageButton);
+		
+		ImageIcon groupChatIcon = new ImageIcon("Pictures/GroupChat.png");
+		JButton groupChatButton = new JButton(groupChatIcon);
+		groupChatButton.setPressedIcon(groupChatIcon);
+		groupChatButton.setSize(30,30);
+		groupChatButton.setLocation(10,10);
+		groupChatButton.setBorderPainted(false);
+		groupChatButton.addActionListener(new StartGroupMessage());//share action listener with group chat
+		topPanel.add(groupChatButton);
+		
+		buddyListPanel.add(topPanel);
+		
+		
+		JPanel UserConvoPanel = new JPanel();
+		UserConvoPanel.setLayout(new GridLayout(2, 1));//panel to hold the "Online User/Online Convo"
+		
+		
+		onlineUsersPanel = new JPanel();//panel to put at the top of UserConvoPanel
+		
+		JTextArea jtaNote = new JTextArea("Online Users", 1, 20); // online users section of code
+		jtaNote.setEditable(false);
+		jtaNote.setLineWrap(true);
+		jtaNote.setWrapStyleWord(true);
+		jtaNote.setForeground(Color.DARK_GRAY);
+		jtaNote.setBackground(Color.LIGHT_GRAY);
+		jtaNote.setFont(new Font("Courier", Font.BOLD, 22));
+		inneronlineusersPanel = new JPanel();//panel to contain the scroll bar for usernames
 		inneronlineusersPanel.setLayout(new BoxLayout(inneronlineusersPanel, BoxLayout.Y_AXIS));
-		
-		class mouseClass extends MouseAdapter{
-			String name;
-			mouseClass(String name){
-				name = name;
-			}
-			public void mouseClicked(MouseEvent e){
-		    	
-		        if(e.getClickCount()==2){//double clicked
-		        //create a message w/ that user
-		         new ChatRoomGUI(name);
-		        }
-		        else if(e.getModifiers() == MouseEvent.BUTTON3_MASK){
-		         System.out.println("You right clicked, so It'll show the about me");
-		       	 JDialog jd = new JDialog();
-				 jd.setLocation(450,300);
-				 jd.setSize(200, 200);
-				 jd.setModal(true);
-				 JPanel jp = new JPanel();
-				 BoxLayout bl = new BoxLayout(jp, BoxLayout.Y_AXIS);
-				 jp.setLayout(bl);
-				 JLabel jl = new JLabel("About Me");
-				 JLabel jl1 = new JLabel("This is my about me");
-				 jp.add(jl);
-				 jp.add(jl1);
-				 jd.add(jp);
-				 jd.setVisible(true);
-		        }
-		    }
-			
-		}
-		for(int i = 0; i < user.getOnlineUsers().size(); i++){
-			JButton OUButton = new JButton(user.getOnlineUsers().get(i));
-			OUButton.setEnabled(true);
-			OUButton.setBorderPainted(false);
-			OUButton.addMouseListener(new mouseClass(user.getOnlineUsers().get(i)));
-			inneronlineusersPanel.add(OUButton);
-		}
-		//end of forloop
 		JScrollPane onlineUsersSP = new JScrollPane(inneronlineusersPanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 												JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		onlineUsersSP.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		onlineUsersSP.setPreferredSize(new Dimension(210,250));
-
-		onlineUsersPanel.add(onlineUsersSP, BorderLayout.CENTER);
-
 		
+		onlineUsersPanel.add(jtaNote, BorderLayout.NORTH);
+		onlineUsersPanel.add(onlineUsersSP, BorderLayout.CENTER);
+		
+		
+		//BOTTOM PANEL FOR ONLINE CONVO
+		onlineConvoPanel = new JPanel();//panel to but atht ebottom of UserConvoPanel
+		
+		JTextArea ConversationJTA = new JTextArea("Online Conversations", 1, 20); // online users section of code
+		ConversationJTA.setEditable(false);
+		ConversationJTA.setLineWrap(true);
+		ConversationJTA.setWrapStyleWord(true);
+		ConversationJTA.setForeground(Color.DARK_GRAY);
+		ConversationJTA.setBackground(Color.LIGHT_GRAY);
+		ConversationJTA.setFont(new Font("Courier", Font.BOLD, 22));
+		
+		innerConvoPanel = new JPanel();//panel for a scroll for the convo list
+		innerConvoPanel.setLayout(new BoxLayout(innerConvoPanel, BoxLayout.Y_AXIS));
+		JScrollPane onlineconvoSP = new JScrollPane(innerConvoPanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+						JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		onlineconvoSP.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+		onlineconvoSP.setPreferredSize(new Dimension(210,250));
+		onlineConvoPanel.add(ConversationJTA,BorderLayout.NORTH);
+		onlineConvoPanel.add(onlineconvoSP, BorderLayout.CENTER);
+		
+		UserConvoPanel.add(onlineUsersPanel);
+		UserConvoPanel.add(onlineConvoPanel);
+		buddyListPanel.add(UserConvoPanel);
+		add(buddyListPanel, BorderLayout.CENTER);
+		this.setSize(300,700);
+		this.setLocation(950,500);
+		this.setVisible(true);
+		
+	}//public buddy list
+	public static void main(String []args){
+		new BuddyList(user);
 	}
+	
+/*******classes for action listeners************/
+/*******       						************/
+/*******							************/
+	class mouseClass extends MouseAdapter{
+		private String name;
+		private User u;
+		mouseClass(String name, User us){
+			name = name;
+			this.u = us;
+		}
+		public void mouseClicked(MouseEvent e){
+	    	
+	        if(e.getClickCount()==2){//double clicked
+	        	//create a message w/ that user
+	        	new MessageWindow(name, u);
+	        }
+	        else if(e.getModifiers() == MouseEvent.BUTTON3_MASK){
+	        	//if right click, then the about me should displayed
+	        	int selection = JOptionPane.showConfirmDialog(BuddyList.this, 
+	        			"About", "Are you sure you want to know their 'About Me'?", JOptionPane.YES_NO_OPTION);
+	        	if(selection == 0){// yes
+	        		System.out.println("Yes option");
+	        		aboutMeAction();
+	        	}
+	        	else{//no option
+	        		System.out.println("No option");
+	        	}
+	
+	        }
+	    }
+	
+	}
+
+	class StartPrivateMessage implements ActionListener{
+		
+		private User u;
+		
+		StartPrivateMessage(User user){
+			this.u = user;
+		}
+		
+		public void actionPerformed(ActionEvent ae){
+			Object[] onlinelist = user.getOnlineUsers().toArray();
+			String people = (String)JOptionPane.showInputDialog(BuddyList.this, 
+			"Choose User to Start Chat!", 
+			"Start Message", 
+			JOptionPane.QUESTION_MESSAGE,
+			null, // icon
+			onlinelist, onlinelist[0]);
+			try{
+				if(!user.equals(null)){
+				System.out.println("User selected is" + people);
+				new MessageWindow(people,u);
+				}
+			} catch (NullPointerException npe){
+				System.out.println(npe.getMessage());
+			}
+		}
+	}
+
+	class StartGroupMessage implements ActionListener{
+		
+		public void actionPerformed(ActionEvent ae){
+			 createDialogeGroupMessage();
+		}
+	
+	}
+
+	class iconButtonClass implements ActionListener{
+		User us;
+		public iconButtonClass(User u){
+			this.us = u;
+		}
+		public void actionPerformed(ActionEvent e) {
+			 JDialog jd = new JDialog();
+	//		 jd.setTitle("About");
+			 jd.setLocation(450,300);
+			 jd.setSize(200, 200);
+			 jd.setModal(true);
+			 JPanel jp = new JPanel();
+			 BoxLayout bl = new BoxLayout(jp, BoxLayout.Y_AXIS);
+			 jp.setLayout(bl);
+			 JTextArea aboutMeTA = new JTextArea(us.getBio());
+			 jd.add(aboutMeTA);
+			 jd.add(jp);
+			 jd.setVisible(true);
+		}
+	}
+
+
+
+/*******FUNCTIONS FOR THE BUDDY LIST************/
+/***********************************************/
+/***********************************************/
+	private void aboutMeAction(){
+        System.out.println("You right clicked, so It'll show the about me.");
+      	 JDialog jd = new JDialog();
+		 jd.setLocation(450,300);
+		 jd.setSize(200, 200);
+		 jd.setModal(true);
+		 JPanel jp = new JPanel();
+		 BoxLayout bl = new BoxLayout(jp, BoxLayout.Y_AXIS);
+		 jp.setLayout(bl);
+		 JLabel jl = new JLabel("About Me");
+		 JLabel jl1 = new JLabel("This is my about me");
+		 jp.add(jl);
+		 jp.add(jl1);
+		 jd.add(jp);
+		 jd.setVisible(true);
+	}
+	
 	public void createDialogeGroupMessage(){
 		 JDialog jd = new JDialog();
 		 jd.setTitle("Group Message");
@@ -218,190 +344,42 @@ public class BuddyList extends JFrame{
 		 startChatButton = new JButton("Start Chat");
 		 startChatButton.addActionListener(new ActionListener(){
 			 public void actionPerformed(ActionEvent ae){
-				 new ChatRoomGUI(NOCTextField.getText());
-				 //user.addGroupConvo(NOCTextField, user.getName());
+				 new MessageWindow(NOCTextField.getText(), user);
 			 }
 		 });
-//		 //bottomPanel.add(chooseUsersLabel);
-//		 bottomPanel.add(userSelectedCB);
-//		 bottomPanel.add(addUserButton);
 		 bottomPanel.add(startChatButton);
 
 		 jp.add(topPanel);
-//		 jp.add(centerPanel);
 		 jp.add(bottomPanel);
 		 jd.add(jp);
 		 jd.setVisible(true);
 	}
 	
-	public BuddyList(User user){
-		super("Buddy List");
-		this.user = user;
+	public void updateOnlineUser(){
+		System.out.println("In update user");
+		JButton Test = new JButton("Testing");
+		inneronlineusersPanel.add(Test);
 		
-		//ALL CLASSES FOR ACTION LISTENER
-		class StartMessage implements ActionListener{
-			StartMessage(){
-			}
-			public void actionPerformed(ActionEvent ae){
-				//Katrina will give table of users that are online
-				String user = (String)JOptionPane.showInputDialog(BuddyList.this, 
-				"Choose User to Start Chat!", 
-				"Start Message", 
-				JOptionPane.QUESTION_MESSAGE,
-				null, // icon
-				Users, Users[0]);
-				try{
-					if(!user.equals(null)){
-					System.out.println("User selected is" + user);
-					new ChatRoomGUI(user);
-					}
-				} catch (NullPointerException npe){
-					System.out.println(npe.getMessage());
-				}
-			}
+		for(int i = 0; i < user.getOnlineUsers().size(); i++){
+			JButton OUButton = new JButton(user.getOnlineUsers().get(i));
+			OUButton.setEnabled(true);
+			OUButton.setBorderPainted(false);
+			OUButton.addMouseListener(new mouseClass(user.getOnlineUsers().get(i), user));
+			inneronlineusersPanel.add(OUButton);
 		}
-		class StartGroupMessage implements ActionListener{
-			public void actionPerformed(ActionEvent ae){
-				 createDialogeGroupMessage();
-			}
-		}
-		class iconButtonClass implements ActionListener{
-			User us;
-			public iconButtonClass(User u){
-				this.us = u;
-			}
-			public void actionPerformed(ActionEvent e) {
-				 JDialog jd = new JDialog();
-//				 jd.setTitle("About");
-				 jd.setLocation(450,300);
-				 jd.setSize(200, 200);
-				 jd.setModal(true);
-				 JPanel jp = new JPanel();
-				 BoxLayout bl = new BoxLayout(jp, BoxLayout.Y_AXIS);
-				 jp.setLayout(bl);
-				 JTextArea aboutMeTA = new JTextArea(us.getAboutme());
-				 jd.add(aboutMeTA);
-				 jd.add(jp);
-				 jd.setVisible(true);
-			}
-		}
-		JMenuBar jmb = new JMenuBar();
-		JMenu fileMenu = new JMenu("File");
-		JMenuItem startMessageMenuItem = new JMenuItem("Start Message");
-		JMenuItem startGroupMessageMI = new JMenuItem("Start Group Message");
-		JMenu helpMenu = new JMenu("Help");
-		JMenuItem aboutMenuItem = new JMenuItem("About");
-		startMessageMenuItem.addActionListener(new StartMessage());
-		startGroupMessageMI.addActionListener(new StartGroupMessage());
-		aboutMenuItem.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent ae){
-				 JDialog jd = new JDialog();
-				 jd.setTitle("About");
-				 jd.setLocation(450,300);
-				 jd.setSize(200, 200);
-				 jd.setModal(true);
-				 JPanel jp = new JPanel();
-				 BoxLayout bl = new BoxLayout(jp, BoxLayout.Y_AXIS);
-				 jp.setLayout(bl);
-				 JLabel jl = new JLabel("Created for CSCI 201L");
-				 JLabel jl1 = new JLabel("Kelsey, Katrina, "
-				 		+ "Ryan C., Ryan J.");
-				 jp.add(jl);
-				 jp.add(jl1);
-				 jd.add(jp);
-				 jd.setVisible(true);
-			}
-		});
-		helpMenu.add(aboutMenuItem);
-		fileMenu.add(startMessageMenuItem);
-		fileMenu.add(startGroupMessageMI);
-		jmb.add(fileMenu);
-		jmb.add(helpMenu);
-		setJMenuBar(jmb);
-		
-		//west panel
-		JPanel westPanel = new JPanel();
-		westPanel.setLayout(new BoxLayout(westPanel, BoxLayout.Y_AXIS));
-		westPanel.setBackground(Color.WHITE);
-		
-		//Icon picIcon = user.getImage();
-		//JButton iconButton = new JButton(picIcon);
-		JButton iconButton = new JButton("Icon");
-		//iconButton.setPressedIcon(picIcon);
-		iconButton.setSize(50,50);
-		iconButton.setLocation(0,0);
-		iconButton.setBorderPainted(false);
-		iconButton.addActionListener(new iconButtonClass(user));
-		westPanel.add(iconButton);
-		
-		//center panel
-		centerPanel = new JPanel();
-		centerPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-		
-		JPanel topPanel = new JPanel();
-		topPanel.setLayout(new FlowLayout()); 
-		
-		ImageIcon messageIcon = new ImageIcon("Pictures/Message.png");
-		JButton messageButton = new JButton(messageIcon);
-		messageButton.setPressedIcon(messageIcon);
-		messageButton.setSize(30,30);
-		messageButton.setLocation(10,10);
-		messageButton.setBorderPainted(false);
-		messageButton.addActionListener(new StartMessage());
-		topPanel.add(messageButton);
-		
-		ImageIcon groupChatIcon = new ImageIcon("Pictures/GroupChat.png");
-		JButton groupChatButton = new JButton(groupChatIcon);
-		groupChatButton.setPressedIcon(groupChatIcon);
-		groupChatButton.setSize(30,30);
-		groupChatButton.setLocation(10,10);
-		groupChatButton.setBorderPainted(false);
-		groupChatButton.addActionListener(new StartGroupMessage());//share action listener with group chat
-		topPanel.add(groupChatButton);
-		
-		ImageIcon searchIcon = new ImageIcon("Pictures/Search.png");
-		JButton searchButton = new JButton();
-		searchButton.setPressedIcon(searchIcon);
-		searchButton.setSize(30,30);
-		searchButton.setLocation(10,10);
-		searchButton.setBorderPainted(false);
-		topPanel.add(searchButton);
-		
-		centerPanel.add(topPanel);
-		
-		onlineUsersPanel = new JPanel();
-		JTextArea jtaNote = new JTextArea("Online Users", 1, 16); // online users section of code
-		jtaNote.setEditable(false);
-		jtaNote.setLineWrap(true);
-		jtaNote.setWrapStyleWord(true);
-		jtaNote.setForeground(Color.DARK_GRAY);
-		jtaNote.setBackground(Color.LIGHT_GRAY);
-		jtaNote.setFont(new Font("Courier", Font.BOLD, 22));
-		onlineUsersPanel.add(jtaNote, BorderLayout.NORTH);
-		centerPanel.add(onlineUsersPanel);
 
-//		updateOnlineUser();
-//		updateActiveConversations();
+	}
+	
+	public void updateActiveConversations(){
 		
-		onlineConvoPanel = new JPanel();
-		JTextArea ConversationJTA = new JTextArea("Online Conversations", 1, 16); // online users section of code
-		ConversationJTA.setEditable(false);
-		ConversationJTA.setLineWrap(true);
-		ConversationJTA.setWrapStyleWord(true);
-		ConversationJTA.setForeground(Color.DARK_GRAY);
-		ConversationJTA.setBackground(Color.LIGHT_GRAY);
-		ConversationJTA.setFont(new Font("Courier", Font.BOLD, 22));
-		onlineConvoPanel.add(ConversationJTA,BorderLayout.NORTH);
-		centerPanel.add(onlineConvoPanel);
-		
-		add(westPanel, BorderLayout.WEST);
-		add(centerPanel, BorderLayout.CENTER);
-		this.setSize(300,700);
-		this.setLocation(950,500);
-		this.setVisible(true);
-	}//public buddy list
+		for(int i = 0; i < user.getConversations().size(); i++){
+			JButton OUButton = new JButton(user.getConversations().get(i).getName());
+			OUButton.setEnabled(true);
+			OUButton.setBorderPainted(false);
+			OUButton.addMouseListener(new mouseClass(user.getConversations().get(i).getName(), user));
+			innerConvoPanel.add(OUButton);
+		}
 
-	public static void main(String []args){
-		new BuddyList(user);
 	}
 }
+	
