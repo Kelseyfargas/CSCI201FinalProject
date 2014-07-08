@@ -158,7 +158,7 @@ public class MessageWindow extends JFrame {
 		add(CenterPanel, BorderLayout.CENTER);
 		
 		if(messageType == GROUP_CHAT){
-			user.sendGroupConvoRequest(convoName);
+			user.initiateGroupConvoRequest(convoName);
 		}
 		//necessities
 		this.setSize(600,420);

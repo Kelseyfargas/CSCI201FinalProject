@@ -248,7 +248,7 @@ public class BuddyList extends JFrame{
 		public void actionPerformed(ActionEvent ae){
 			 System.out.println("In StartGroupMessage AE " + messageType);
 			 String convoname = createDialogeGroupMessage();
-			 u.sendGroupConvoRequest(convoname);
+			 u.initiateGroupConvoRequest(convoname);
 		}
 	}
 
