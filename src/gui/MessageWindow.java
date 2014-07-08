@@ -44,9 +44,10 @@ public class MessageWindow extends JFrame {
 	private User user;
 	private int messageType;
 	
-	public MessageWindow(String convoName, User user){
+	public MessageWindow(String convoName, User user, int messageType){
 		//this.convoName = convoName;
 		this.user = user;
+		this.messageType = messageType;
 		setName(convoName);
 		
 		//Menu bar
@@ -123,7 +124,7 @@ public class MessageWindow extends JFrame {
 		outputTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		outputTextField.setBorder(BorderFactory.createMatteBorder(1,1,1,1, Color.GRAY));
 		JButton sendButton = new JButton("Send");
-		sendButton.addActionListener(new sendButtonAction(outputTextField);
+		sendButton.addActionListener(new sendButtonAction(outputTextField));
 		messageBottomPanel.add(outputTextField);
 		messageBottomPanel.add(sendButton);
 		
@@ -175,13 +176,19 @@ public class MessageWindow extends JFrame {
 	
 	class sendButtonAction implements ActionListener{
 		String messageinput;
-		
-		sendButtonAction(JTextField outputTextField){
+		int messageType;
+		sendButtonAction(JTextField outputTextField, int messageType){
 			messageinput = outputTextField.getText();
+			messageType = messageType;
 			System.out.println("Message is : " + messageinput);
 		}
 		public void actionPerformed(ActionEvent e) {
-			user.sendNewGroupMessage(messageinput,convoName);
+			if(messageType == GROUP_CHAT){
+				user.sendNewGroupMessage(messageinput,convoName);
+			}
+			else if(messageType == PRIVATE_CHAT){
+				
+			}
 			outputTextField.setText("");
 			//updateContent(messageinput);
 		}
@@ -215,6 +222,6 @@ public class MessageWindow extends JFrame {
 	}
 	public static void main(String []args){
 		//new LogIn("Login");
-		new MessageWindow("Kelsey", user);
+		//new MessageWindow("Kelsey", user);
 	}
 }

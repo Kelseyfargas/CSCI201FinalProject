@@ -373,10 +373,10 @@ public class BuddyList extends JFrame{
 	public void updateActiveConversations(){
 		
 		for(int i = 0; i < user.getConversations().size(); i++){
-			JButton OUButton = new JButton(user.getConversations().get(i).getName());
+			JButton OUButton = new JButton(user.getConversations().get(i));
 			OUButton.setEnabled(true);
 			OUButton.setBorderPainted(false);
-			OUButton.addMouseListener(new mouseClass(user.getConversations().get(i).getName(), user));
+			OUButton.addMouseListener(new mouseClass(user.getConversations().get(i), user));
 			innerConvoPanel.add(OUButton);
 		}
 
