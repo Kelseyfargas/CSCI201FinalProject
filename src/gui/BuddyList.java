@@ -10,14 +10,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -25,7 +22,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 import conversation.User;
 
@@ -38,12 +34,9 @@ public class BuddyList extends JFrame{
 	public static int GROUP_CHAT = 1;
 	public static int PRIVATE_CHAT = 2;
 	public static User user;
-	public static MessageWindow CRG;
 	public static JPanel buddyListPanel;
 	public static JPanel onlineUsersPanel;
 	public static JPanel onlineConvoPanel; 
-	private JTextField NOCTextField;
-	private JButton startChatButton;
 	private JPanel innerConvoPanel;
 	private JPanel inneronlineusersPanel;
 	
@@ -217,15 +210,7 @@ public class BuddyList extends JFrame{
 		
 		public void actionPerformed(ActionEvent ae){
 			Object[] onlinelist = user.getOnlineUsers().toArray();
-			
-			if(onlinelist.equals(null)){//if nobody is online and pushes message, then do JOptionPane
-				System.out.println("NOBODY IS ONLINE NOOB");
-				JOptionPane.showMessageDialog(null, 
-						"ERROR", 
-						"Nobody is online, can not chat.", 
-						JOptionPane.ERROR_MESSAGE);
 
-			}
 			for(int o = 0; o < onlinelist.length; o++){
 				System.out.println("Online user: " + onlinelist[o]);
 			}
@@ -243,6 +228,12 @@ public class BuddyList extends JFrame{
 				}
 			} catch (NullPointerException npe){
 				System.out.println(npe.getMessage());
+			} catch(ArrayIndexOutOfBoundsException aiobe){
+				System.out.println("NOBODY IS ONLINE NOOB");
+				JOptionPane.showMessageDialog(null,  
+						"Nobody is online, can not chat.", 
+						"ERROR",
+						JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
