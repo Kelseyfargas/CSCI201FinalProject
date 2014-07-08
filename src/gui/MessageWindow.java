@@ -170,6 +170,7 @@ public class MessageWindow extends JFrame {
 		outputTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		outputTextField.setBorder(BorderFactory.createMatteBorder(1,1,1,1, Color.GRAY));
 		JButton sendButton = new JButton("Send");
+		System.out.println("Before send button: " + outputTextField.getText());
 		sendButton.addActionListener(new sendButtonAction(outputTextField, messageType));
 		messageBottomPanel.add(outputTextField);
 		messageBottomPanel.add(sendButton);
@@ -228,11 +229,11 @@ public class MessageWindow extends JFrame {
 		sendButtonAction(JTextField outputTextField, int messageType){
 			messageinput = outputTextField.getText();
 			this.messageType = messageType;
-			//outputTextField.setText(messageinput);
-			System.out.println("Message is : " + messageinput);
+			//System.out.println("Message is : " + messageinput);
 		}
 		public void actionPerformed(ActionEvent e) {
 			System.out.println("Message type is: "+ messageType);
+			System.out.println("In actionperformed for SENDBUTTON:"+ messageinput);
 			if(messageType == GROUP_CHAT){
 				System.out.println("IN GROUP MESSAGE AFTER SEND BUTTON");
 				user.sendNewGroupMessage(messageinput,convoName);

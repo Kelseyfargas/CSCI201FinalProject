@@ -247,17 +247,38 @@ public class BuddyList extends JFrame{
 		}
 		public void actionPerformed(ActionEvent ae){
 			 System.out.println("In StartGroupMessage AE " + messageType);
-			 String convoName = JOptionPane.showInputDialog(null, 
-							"Group Message", 
-							"Name Conversation:", 
-							JOptionPane.QUESTION_MESSAGE);
+			 String convoName = null;
+//			 try{
+				 convoName = JOptionPane.showInputDialog(null, 
+								"Group Message", 
+								"Name Conversation:", 
+								JOptionPane.OK_CANCEL_OPTION);
+//			 } catch (Exception e) { 
+//				 System.out.println("Person clicked Cancel");
+//			 }
 			 System.out.println("Convo name is " + convoName);
-			 //TELL RYAN TO FIX HIS FOR ERROR MESSAGE
-			// boolean hasNonAlpha = !String.isAlphanumeric(convoName);
+			 if(convoName.equals(JOptionPane.CANCEL_OPTION)){
+				   System.out.println("Cancel is pressed");
+			}
+//			 if (convoName == null) {
+//				 System.out.println("Cancel button or X clicked");
+//				 break;
+//			 }
+			
+//			 boolean isValid   = convoName.matches("[A-Za-z0-9]{10}");  
+//			 System.out.println("AlphaNumeric? " + isValid); 
+//			 if(isValid == true){
+				 u.initiateGroupConvoRequest(convoName);
+//			 }
+//			 else{//if not alphanumeric
+//				 JOptionPane.showMessageDialog(null, "Must enter AlphaNumeric characters for Group"
+//				 		+ " Conversations!", 
+//						 "Group Message", JOptionPane.WARNING_MESSAGE);
+//			 }
 			 //u.createNewMessageWindow(convoName);
 			 //new MessageWindow(convoName, u,messageType);
 			 //check for alphanumeric on convoName
-			 u.initiateGroupConvoRequest(convoName);
+			 
 		}
 	}
 
