@@ -367,6 +367,10 @@ public class ChatMeServer {
 			clientLock.unlock();
 		}
 		public void updateAllConvos(ArrayList<String> convos) throws IOException{
+			System.out.println("all convos are: ");
+			for(String elements : convos){
+				System.out.println(elements);
+			}
 			clientLock.lock();
 				for(int i=0; i<clients.size();i++){
 					if( ! clients.get(i).getName().isEmpty()){
