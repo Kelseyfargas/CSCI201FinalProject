@@ -289,7 +289,7 @@ public class Database {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			System.out.println("You have successfully created an account");
+			System.out.println("You have successfully created a new conversation");
 		}
 	}
 
@@ -313,7 +313,7 @@ public class Database {
 			if (resultSet.next()) {
 				final int count = resultSet.getInt(1);
 				if (count != 0) {
-					System.out.println("Conversation name is taken. Please try again.");
+					//System.out.println("Conversation name is taken. Please try again.");
 					return true;
 				}
 			}
