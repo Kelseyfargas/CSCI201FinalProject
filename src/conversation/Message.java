@@ -1,10 +1,11 @@
 package conversation;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /* This class is sent to the server and holds information about the message */
-public class Message {
+public class Message implements Serializable{
 		private String conversationName;
 		private String content;
 		private String time;
