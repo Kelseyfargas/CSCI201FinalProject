@@ -276,6 +276,7 @@ public class MessageWindow extends JFrame {
 /***********************************************/
 /***********************************************/
 	public void updateContent(String messageinput){
+		
 		String text = chatBoxTextArea.getText();
 		System.out.println(user.getName() + ": " + text);
 		if (text == null || text.length() == 0) {
@@ -284,6 +285,7 @@ public class MessageWindow extends JFrame {
 		else {
 			chatBoxTextArea.setText(chatBoxTextArea.getText() + "\n" + messageinput);
 		}
+		
 	}
 	
 	public void setName(String convoName){
