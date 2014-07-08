@@ -272,7 +272,7 @@ public class Database {
 	 * Takes in the conversation name and the content
 	 * Makes sure that the chosen conversation name does not already exist in the DB
 	 */
-	public void createConversation(String convoName, String content) {
+	public synchronized void createConversation(String convoName, String content) {
 		try {
 			stmt = conn.createStatement();
 		} catch (SQLException e1) {
@@ -387,6 +387,32 @@ public class Database {
 			System.out.println(e.getMessage());
 		}
 		return content;
+	}
+	
+	
+	/*
+	 * Method that returns an array of all the active group conversations from the DB
+	 */
+	public synchronized ArrayList<String> getGroupConversations() {
+		try {
+			stmt = conn.createStatement();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		ArrayList<String> groupConversations = new ArrayList<String>();
+		sql = "select * from Conversations";
+		System.out.println(sql);
+		ResultSet rs = null;
+		try {
+			rs = stmt.executeQuery(sql);
+			while (rs.next()) {
+				String user = rs.getString("convoName");
+				groupConversations.add(user);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return groupConversations;
 	}
 
 	/*

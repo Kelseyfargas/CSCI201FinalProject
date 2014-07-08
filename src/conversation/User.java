@@ -74,6 +74,10 @@ public class User {
 		chatClient.sendCommand(ChatMeServer.NEW_GROUP_REQUEST, convoName);
 	}
 	public void addGroupConvo(String convoName)		{
+		
+		if(currentConversations.contains(convoName)){
+			return;
+		}
 		currentConversations.add(convoName);
 		buddyList.updateActiveConversations();
 	}

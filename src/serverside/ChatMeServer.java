@@ -351,6 +351,7 @@ public class ChatMeServer {
 		}
 		public void addConvoToAll(String convoName) throws IOException{
 			clientLock.lock();
+			System.out.println("global convo write");
 				for(int i=0; i<clients.size();i++){
 					if( ! clients.get(i).getName().isEmpty()){
 						ObjectOutputStream oos = clients.get(i).serverOut;

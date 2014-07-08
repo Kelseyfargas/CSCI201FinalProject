@@ -212,7 +212,7 @@ public class ChatMeClient {
 
 			boolean OK = userIn.readBoolean();
 			if (OK == true) {
-				user.createGroupConversationWindow(convoName); 
+				//user.createGroupConversationWindow(convoName); 
 				// start new group conversation window
 				System.out.println("User will then add convo to buddy list. Write Code!");
 				user.addGroupConvo(convoName);
@@ -331,6 +331,7 @@ public class ChatMeClient {
 		public void newGroupRequest() throws ClassNotFoundException,
 				IOException {
 			// unfinished see comment
+			System.out.println("in new grouprequest");
 			String convoName = (String) servIn.readObject();
 			user.addGroupConvo(convoName);
 		}
