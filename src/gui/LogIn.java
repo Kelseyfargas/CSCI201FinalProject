@@ -54,7 +54,7 @@ public class LogIn extends JFrame {
 		JPanel flowPanel = new JPanel();
 		flowPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		logInButton = new JButton("Log In");
-		
+		getRootPane().setDefaultButton(logInButton);//DOES THE ENTER BUTTON
 /**********INNER CLASSES FOR LOG IN*************/
 /***********************************************/
 /***********************************************/
