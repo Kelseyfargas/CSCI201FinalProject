@@ -47,9 +47,12 @@ public class MessageWindow extends JFrame {
 	private JButton addUserButton;
 	private JTextArea chatBoxTextArea;
 	private JTextField outputTextField;
+	private JButton sendButton;
+	private JMenuItem removeChatMenuItem;
+	private JMenu fileMenu;
 	private String convoName;
 	private User user;
-	private String moderator;
+	//private String moderator;
 	private int messageType;
 	private JComboBox<?> fontCB;
 	private JComboBox<?> colorCB;
@@ -60,36 +63,48 @@ public class MessageWindow extends JFrame {
 	private Highlighter hilit;
 	private Highlighter.HighlightPainter painter;
 	private String copieditem = "";
+	private boolean moderator = false;
+	private boolean chatOn = true;
 	
-	public MessageWindow(String convoName, User user, int messageType){
+	//SEND BUTTON-- CHECK IF EMPTY
+	//MODERATOR  MENU
+		// -- disable send button/chat
+		// -- close chat (remove chat)
+	
+	public MessageWindow(String convoName, User user){
 		
 		super(convoName);
 		this.user = user;
-		this.messageType = messageType;
 		setName(convoName);
 		
-		if(messageType == GROUP_CHAT){
-			this.moderator = user.getName();
-		}
+//		if(messageType == GROUP_CHAT){
+//			this.moderator = user.getName();//sets moderator to the person opening the window
+//			//setModerator(user.getName());
+//		}
 		
 		//Menu bars
 		JMenuBar jmb = new JMenuBar();
-		JMenu fileMenu = new JMenu("File");
+		fileMenu = new JMenu("File");
 		JMenuItem copyMenuItem = new JMenuItem("Copy");
 		JMenuItem cutMenuItem = new JMenuItem("Cut");
 		JMenuItem pasteMenuItem = new JMenuItem("Paste");
+		JMenuItem saveConversationMenuItem = new JMenuItem("Save Conversation");
+		removeChatMenuItem = new JMenuItem("Remove Chat");//CHECK FOR MODERATOR
 		
 		copyMenuItem.addActionListener(new CutCopyPasteAction(copyMenuItem.getText()));
 		cutMenuItem.addActionListener(new CutCopyPasteAction(cutMenuItem.getText()));
 		pasteMenuItem.addActionListener(new CutCopyPasteAction(pasteMenuItem.getText()));
+		saveConversationMenuItem.addActionListener(new saveConversationAction());
 		copyMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, 
 				ActionEvent.CTRL_MASK));
 		cutMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, 
 				ActionEvent.CTRL_MASK));
 		pasteMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, 
 				ActionEvent.CTRL_MASK));
-		
-		JMenuItem saveConversationMenuItem = new JMenuItem("Save Conversation");
+		saveConversationMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, 
+				ActionEvent.CTRL_MASK));
+		removeChatMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, 
+				ActionEvent.CTRL_MASK));
 		fileMenu.add(copyMenuItem);
 		fileMenu.add(cutMenuItem);
 		fileMenu.add(pasteMenuItem);
@@ -178,7 +193,7 @@ public class MessageWindow extends JFrame {
 		outputTextField.setEditable(true); 
 		outputTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		outputTextField.setBorder(BorderFactory.createMatteBorder(1,1,1,1, Color.GRAY));
-		JButton sendButton = new JButton("Send");
+		sendButton = new JButton("Send");
 		sendButton.addActionListener(new sendButtonAction(outputTextField, messageType));
 		getRootPane().setDefaultButton(sendButton);//sets the ENTER key
 		messageBottomPanel.add(outputTextField);
@@ -284,6 +299,25 @@ public class MessageWindow extends JFrame {
 		
 	}
 	
+	private class saveConversationAction implements ActionListener{
+		saveConversationAction(){
+			
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			String text = chatBoxTextArea.getText();
+		}
+	}
+	
+	private class removeChatAction implements ActionListener{
+		
+		removeChatAction(){
+		}
+		public void actionPerformed(ActionEvent e){
+			sendButton.setEnabled(false);
+		}
+	}
+	
 	private class windowClosedAction implements WindowListener{
 		String convoName;
 		windowClosedAction(String convoName){
@@ -292,8 +326,10 @@ public class MessageWindow extends JFrame {
 
 		public void windowClosing(WindowEvent e) {
 			System.out.println("WINDOW CLOSING");
-			System.out.println("REMOVING: " + convoName );
-			user.removeGroupConvoRequest(convoName);
+			System.out.println("REMOVING: " + convoName);
+			if(moderator == true){
+				user.removeGroupConvoRequest(convoName);
+			}
 			
 		}
 		//UGGHH UNNCESSEARY
@@ -361,6 +397,26 @@ public class MessageWindow extends JFrame {
 		outputTextField.setForeground(colors[color]);
 		
 	}
+//	private void setModerator(String username){
+//		System.out.println("The moderator is " + username);
+//		if(username == moderator){
+//			setModerator = true;
+//			System.out.println("Moderator is set to  " + setModerator);
+//		}
+//		else{
+//			setModerator = false;
+//		}
+//	}
+	
+	public void setModerator(){
+		this.moderator = true;
+		removeChatMenuItem.addActionListener(new removeChatAction());
+		fileMenu.add(removeChatMenuItem);
+	}
+	public boolean getModerator(){
+		return this.moderator;
+	}
+	
 	public static void main(String []args){
 	}
 }
