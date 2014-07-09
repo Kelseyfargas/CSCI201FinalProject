@@ -57,7 +57,7 @@ public class MessageWindow extends JFrame {
 	private JComboBox<?> colorCB;
 	private JComboBox<?> sizeCB;
 	private JComboBox<?> fontTypeCB;
-	private JComboBox<?> emojiCB;
+	private JComboBox<?> colorCBBackground;
 	private Color HILIT_COLOR = Color.ORANGE;
 	private Highlighter hilit;
 //	private Highlighter.HighlightPainter painter;
@@ -109,7 +109,7 @@ public class MessageWindow extends JFrame {
 		CenterPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		Font textfont = new Font("SansSerif", Font.BOLD, 12);
 		chatBoxTextArea = new JTextArea();
-		
+		//chatBoxTextArea.setFont(textfont);
 		chatBoxTextArea.setEditable(false); 
 		chatBoxTextArea.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		chatBoxTextArea.setLineWrap(true);
@@ -130,12 +130,12 @@ public class MessageWindow extends JFrame {
  		fontCB = new JComboBox<>(fontArray);
  		
 		//font color
-		Object colorArray[] = {"Black","Grey","Green","Magenta","Blue", "Pink"};
+		Object colorArray[] = {"Black","Grey","Green","Magenta","Blue", 
+							"Pink", "Cyan","Orange","Red", "Yellow"};
 		colorCB = new JComboBox<>(colorArray);
 		colorCB.setSelectedItem("Black");
-		
  		//font size
-		Object sizeArray[] = {"8","10","12","16"};
+		Object sizeArray[] = {"8","10","12","14","16"};
 		sizeCB = new JComboBox<>(sizeArray);
 		sizeCB.setSelectedItem("12");
 		
@@ -144,12 +144,10 @@ public class MessageWindow extends JFrame {
 		fontTypeCB = new JComboBox<>(fontTypeArray);
 		fontTypeCB.setSelectedItem("12");
 		
-//		//emoji's
-//		ImageIcon emojiList[] = {
-//				new ImageIcon("Emoji/Happy.png")};
-//        emojiCB = new JComboBox<>(emojiList);
-//        emojiCB.setMaximumRowCount(3);
-        
+		//background color
+		colorCBBackground = new JComboBox<>(colorArray);
+		colorCBBackground.setSelectedItem("Black");
+		
         fontCB.addItemListener(new ItemListener(){
  			public void itemStateChanged(ItemEvent ie){
  				setInputTextField();
@@ -170,19 +168,21 @@ public class MessageWindow extends JFrame {
  				setInputTextField();
  			}
  		});
-//        emojiCB.addItemListener(new ItemListener(){
-// 			public void itemStateChanged(ItemEvent ie){
-// 				setInputTextField();
-// 			}
-// 		});
+        colorCBBackground.addItemListener(new ItemListener(){
+ 			public void itemStateChanged(ItemEvent ie){
+ 				setInputTextField();
+ 			}
+ 		});
+
  		choicesPanel.add(fontCB);
 		choicesPanel.add(colorCB);
 		choicesPanel.add(sizeCB);
 		choicesPanel.add(fontTypeCB);
-//		choicesPanel.add(emojiCB);
+		choicesPanel.add(colorCBBackground);
 		
 		JPanel messageBottomPanel = new JPanel();
 		messageBottomPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+		//outputTextField.setFont(textfont);
 		outputTextField = new JTextField();
 		outputTextField.setRequestFocusEnabled(true);
 		outputTextField.setForeground(Color.BLACK);
@@ -361,14 +361,18 @@ public class MessageWindow extends JFrame {
 
 	public void setInputTextField(){
 		
+		
 		Color colors[] = {Color.BLACK,Color.GRAY,
 						  Color.GREEN,Color.MAGENTA,
-						  Color.BLUE, Color.PINK};
+						  Color.BLUE, Color.PINK,
+						  Color.CYAN, Color.ORANGE,
+						  Color.RED, Color.YELLOW};
 		
 		String font = (String)fontCB.getSelectedItem();
 		int color = (int)colorCB.getSelectedIndex();
 		int size = Integer.parseInt((String)sizeCB.getSelectedItem());
 		String fontType = (String)fontTypeCB.getSelectedItem();
+		int backgroundcolor = (int) colorCBBackground.getSelectedIndex();
 		
 		if(fontType.equals("BOLD")){
 			chatBoxTextArea.setFont(new Font(font,Font.BOLD, size));
@@ -383,6 +387,7 @@ public class MessageWindow extends JFrame {
 			outputTextField.setFont(new Font(font,Font.ITALIC, size));
 		}
 		chatBoxTextArea.setForeground(colors[color]);
+		chatBoxTextArea.setBackground((colors[color]);
 		outputTextField.setForeground(colors[color]);
 		
 	}

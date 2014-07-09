@@ -100,7 +100,7 @@ public class BuddyList extends JFrame{
 		setJMenuBar(jmb);
 
 		JPanel topPanel = new JPanel();
-		topPanel.setLayout(new FlowLayout()); 
+		topPanel.setLayout(new FlowLayout(FlowLayout.LEFT)); 
 		
 		ImageIcon userIcon = new ImageIcon(user.getImagePath());
 		JButton userButton = new JButton(userIcon);
@@ -133,7 +133,8 @@ public class BuddyList extends JFrame{
 		add(topPanel, gbc);//at grid 1
 		
 	
-		JTextArea jtaNote = new JTextArea("Online Users", 1, 23); // online users section of code
+		JTextArea jtaNote = new JTextArea("Online Users", 1, 21); // online users section of code
+		jtaNote.setAlignmentX(CENTER_ALIGNMENT);
 		jtaNote.setEditable(false);
 		jtaNote.setLineWrap(true);
 		jtaNote.setWrapStyleWord(true);
@@ -155,7 +156,8 @@ public class BuddyList extends JFrame{
 		gbc.gridy = 3;
 		add(onlineUsersSP, gbc);//grid 3
 		
-		JTextArea ConversationJTA = new JTextArea("Online Conversations", 1, 23); // online users section of code
+		JTextArea ConversationJTA = new JTextArea("Online Conversations", 1, 21); // online users section of code
+		ConversationJTA.setAlignmentX(CENTER_ALIGNMENT);
 		ConversationJTA.setEditable(false);
 		ConversationJTA.setLineWrap(true);
 		ConversationJTA.setWrapStyleWord(true);
@@ -407,11 +409,13 @@ public class BuddyList extends JFrame{
 		}
 		public void actionPerformed(ActionEvent ae){
 			try{
+				
 				String newbio = JOptionPane.showInputDialog(null, 
 						"Edit Bio:", 
 						"Edit Bio", 
 						JOptionPane.QUESTION_MESSAGE);
 						System.out.println("new bio is = " + newbio);
+				//editingUser.setBioRequest(editingUser.getName(), newbio);
 				if (newbio == null) {
 					System.out.println("Cancel button or X clicked");
 					throw new NullPointerException();
