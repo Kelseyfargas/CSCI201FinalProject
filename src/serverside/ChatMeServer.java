@@ -23,8 +23,11 @@ public class ChatMeServer {
 	public static int NEW_USER_REQUEST = 0;
 	public static int LOGIN_REQUEST = 1;
 	public static int SIGN_OUT_REQUEST = 2;
-	public static int GET_BIO_REQUEST = 9;
 	public static int UPDATE_ONLINE_USERS_REQUEST = 3;
+	
+	public static int GET_BIO_REQUEST = 9;
+	public static int SET_BIO_REQUEST = 10;
+	
 	public static int NEW_GROUP_REQUEST = 4;
 	public static int END_GROUP_REQUEST = 5;
 	public static int UPDATE_GROUP_REQUEST = 6;
@@ -177,6 +180,9 @@ public class ChatMeServer {
 				else if(command == GET_BIO_REQUEST){
 					getBioRequest();
 				}
+				else if(command == SET_BIO_REQUEST){
+					setBioRequest();
+				}
 				else if(command == NEW_PRIVATE_REQUEST){
 					newPrivateRequest();
 				}
@@ -271,6 +277,11 @@ public class ChatMeServer {
 			
 			threadUserOut.writeObject(path);
 			threadUserOut.writeObject(bio);
+		}
+		private void setBioRequest() throws ClassNotFoundException, IOException{
+			Message msg = (Message) threadUserIn.readObject();
+			database.updateBio(msg.getContent(), msg.getConversationName());
+			threadUserOut.writeBoolean(true);
 		}
 		
 		private void newGroupRequest() throws ClassNotFoundException, IOException{

@@ -199,6 +199,10 @@ public class User {
 	public void getBioRequest(String name){
 		chatClient.sendCommand(ChatMeServer.GET_BIO_REQUEST, name);
 	}
+	public void setBioRequest(String name, String newBio){
+		Message msg = new Message(name, bio);
+		chatClient.sendCommand(ChatMeServer.SET_BIO_REQUEST, msg);
+	}
 	
 	public void displayFriendBio(String username, String imagePath, String bio){
 		buddyList.aboutMeAction(username, imagePath, bio);
