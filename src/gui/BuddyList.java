@@ -200,8 +200,24 @@ public class BuddyList extends JFrame{
 	        	
 	        	//create a string that has Atuser and Atfriend
 	        	String user = onlineuser.getName();
+	        	
+        		String combinedConvoName = null;
+        		System.out.println("IN THE DOUBLE CLICK");
+        		System.out.println("Comparing : " + user + " to: " + frienduserName);
+        		int comparingusers = user.compareTo(frienduserName);
+        		System.out.println("The comparingusers int is " + comparingusers);
+        		if(comparingusers < 0){
+        			combinedConvoName = "@" + onlineuser.getName() + "@" + frienduserName;
+        		}
+        		else if(comparingusers > 0){//friend is before user
+        			combinedConvoName = "@" + onlineuser.getName() + "@" + frienduserName;
+        		}
+	        	
+	        	
 	        	System.out.println("Online user selected is : " + frienduserName);
-	        	if (onlineuser.windowIsOpen(user)){
+	        	System.out.println("Combined name in double click is " + combinedConvoName);
+	        	
+	        	if (onlineuser.windowIsOpen(combinedConvoName)){
 	        		System.out.println("~~~~~~~Window is open from double clicking"
 	        				+ " user from 'Online user' list ~~~~~~~~");
 	        	}
@@ -209,16 +225,10 @@ public class BuddyList extends JFrame{
 	        		//data base, but since we're not going to implement that feature, then it's okay to leave here
 		        	//ALPHABETIZE
 	        		//if onlineuser's name is alphabetically before their friend
-	        		String combinedConvoName = null;
-	        		if(onlineuser.getName().compareTo(frienduserName) < 0){
-	        			combinedConvoName = "@" + onlineuser.getName() + "@" + frienduserName;
-	        		}
-	        		else if(onlineuser.getName().compareTo(frienduserName) > 0){//friend is before user
-	        			combinedConvoName = "@" + onlineuser.getName() + "@" + frienduserName;
-	        		}
 		        	MessageWindow mw = new MessageWindow(combinedConvoName, onlineuser);
 		        	mw.setTitle(frienduserName);
 		        	//onlineuser.addToOnlineConversations(mw);
+		        	onlineuser.addToOpenConversations(mw);
 		        	onlineuser.initiatePrivateConvoRequest(combinedConvoName);
 	        	}
 	        	
@@ -282,22 +292,33 @@ public class BuddyList extends JFrame{
 			JOptionPane.QUESTION_MESSAGE,
 			null, // icon
 			onlinelist, onlinelist[0]);
+			System.out.println("In BUTTON/DROPDOWN. User selected is" + privateUser);
+			String user = privateUser.getName();
+    		String combinedConvoName = null;
+    		System.out.println("Comparing : " + user + " to: " + frienduserName);
+    		int comparingusers = user.compareTo(frienduserName);
+    		System.out.println("The comparingusers int is " + comparingusers);
+    		if(comparingusers > 0){
+    			combinedConvoName = "@" + privateUser.getName() + "@" + frienduserName;
+    		}
+    		
+    		else if(comparingusers < 0){//friend is before user
+    			combinedConvoName = "@" + privateUser.getName() + "@" + frienduserName;
+    		}
+    		System.out.println("combined string = " + combinedConvoName);
+			
 			try{
-				if(!privateUser.equals("null")){//make more sense in chatmeclient.newprivaterequest since it would retrieve old history from
+				if (privateUser.windowIsOpen(combinedConvoName)){
+	        		System.out.println("~~~~~~~IN START PRIVATE MESSSAGE. "
+	        				+ "Window is open from double clicking"
+	        				+ " user from 'Online user' list ~~~~~~~~");
+				}
+				else if (!privateUser.equals("null")){//make more sense in chatmeclient.newprivaterequest since it would retrieve old history from
 	        		//data base, but since we're not going to implement that feature, then it's okay to leave here
 					//MAKE THEM GO IN ALPHABETICAL ORDER
-					System.out.println("User selected is" + privateUser);
-					String user = privateUser.getName();
-	        		String combinedConvoName = null;
-	        		if(privateUser.getName().compareTo(frienduserName) < 0){
-	        			combinedConvoName = "@" + privateUser.getName() + "@" + frienduserName;
-	        		}
-	        		else if(privateUser.getName().compareTo(frienduserName) > 0){//friend is before user
-	        			combinedConvoName = "@" + privateUser.getName() + "@" + frienduserName;
-	        		}
-	        		System.out.println("combined string = " + combinedConvoName);
 					MessageWindow mw = new MessageWindow(combinedConvoName,privateUser);
-		        	mw.setTitle(privateUser.getName());
+		        	mw.setTitle(frienduserName);
+		        	privateUser.addToOpenConversations(mw);
 		        	//privateUser.addToOnlineConversations(mw);
 		        	privateUser.initiatePrivateConvoRequest(combinedConvoName);
 				}
