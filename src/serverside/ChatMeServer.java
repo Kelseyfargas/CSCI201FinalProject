@@ -293,6 +293,7 @@ public class ChatMeServer {
 
 		}
 		private void newPrivateRequest() throws ClassNotFoundException, IOException{
+			//Should be good
 			String convoName = (String) threadUserIn.readObject();
 			boolean convoExists = database.verifyConvoNameExists(convoName);
 			threadUserOut.writeBoolean( convoExists);
@@ -302,7 +303,9 @@ public class ChatMeServer {
 				database.createConversation(convoName, "");
 				//MessageWindowIsCreated, but Server doesn't do anything
 			}
-			///////////////////////////////////////////////finish code
+			else{
+				printDbg("SERVER: private convo already exists but we can't stooooooooooop...");
+			}
 		}
 		
 		private void updateOnlineUsers() throws IOException{
