@@ -36,14 +36,14 @@ public class User {
 	private ArrayList <MessageWindow> openConversations;
 	private ArrayList<String> currentConversations;	// change to Conversation 						
 	private ChatMeClient chatClient;
-	private ArrayList<MessageWindow> messageWindow;
+	//private ArrayList<MessageWindow> messageWindow;
 	
 	/* Constructor */
 	public User() {
 		createAccountWindow();
 		onlineUsers = new ArrayList<String>();
 		currentConversations = new ArrayList<String>();
-		messageWindow = new ArrayList<MessageWindow>();
+		//messageWindow = new ArrayList<MessageWindow>();
 		openConversations = new ArrayList<MessageWindow>();
 	}
 
@@ -77,8 +77,19 @@ public class User {
 	public void initiateGroupConvoRequest(String convoName){
 		chatClient.sendCommand(ChatMeServer.NEW_GROUP_REQUEST, convoName);
 	}
+	
+	public void initiatePrivateConvoRequest(String convoName){
+		chatClient.sendCommand(ChatMeServer.NEW_PRIVATE_REQUEST, convoName);
+	}
+	
 	public void removeGroupConvoRequest(String convoName){
 		chatClient.sendCommand(ChatMeServer.END_GROUP_REQUEST, convoName);
+		System.out.println("removedddd");
+		for(MessageWindow element : openConversations)	{
+			if(element.getName().equals(convoName))	{
+				element.remove(element);
+			}
+		}
 	}
 	
 	public void sendNewGroupMessage(String content, String conversationName)		{															// send new message to server
