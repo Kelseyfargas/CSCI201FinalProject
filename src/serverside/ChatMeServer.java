@@ -445,12 +445,16 @@ public class ChatMeServer {
 				database.updateConvoContent(msg.getConversationName(), msg.getContent());
 				for(int i=0; i<clients.size();i++){
 					if( ! clients.get(i).getName().isEmpty()){
+						System.out.println("\tclient: " + clients.get(i).getName() + " is being checked...");
 						for(int j=0; j<recipientList.length;j++){
-							ObjectOutputStream oos = clients.get(i).serverOut;
-							oos.writeInt(NEW_PRIVATE_MESSAGE_REQUEST);
-							oos.flush();
-							oos.writeObject(msg);
-							oos.flush();
+							System.out.println("\t\tchecking against recipient: " + recipientList[j]);
+							if(clients.get(i).getName().equals(recipientList[j])){
+								ObjectOutputStream oos = clients.get(i).serverOut;
+								oos.writeInt(NEW_PRIVATE_MESSAGE_REQUEST);
+								oos.flush();
+								oos.writeObject(msg);
+								oos.flush();
+							}
 						}
 
 					}
