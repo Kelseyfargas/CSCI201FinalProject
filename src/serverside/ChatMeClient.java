@@ -254,6 +254,7 @@ public class ChatMeClient {
 			
 			user.displayFriendBio(username, imagePath, bio);
 		}
+		
 		// Takes Message as parameter
 		public void sendCommandAndObject(int command, Message msg)
 				throws IOException {
@@ -264,6 +265,9 @@ public class ChatMeClient {
 			}
 			else if(command == ChatMeServer.NEW_PRIVATE_MESSAGE_REQUEST) {
 				newPrivateMessageRequest(msg);
+			}
+			else if(command == ChatMeServer.SET_BIO_REQUEST){
+				setBioRequest(msg);
 			}
 			lock.unlock();
 		}
@@ -280,7 +284,11 @@ public class ChatMeClient {
 			userOut.writeObject(msg);
 			userOut.flush();
 		}
-
+		public void setBioRequest(Message msg) throws IOException{
+			//SUPER HACKY
+			userOut.writeObject(msg);
+			userIn.readBoolean();
+		}
 		/* * * * * * * * * * * * * * * * *
 		 * END of USER Request Thread 	 * 
 		 * * * * * * * * * * * * * * * * */
