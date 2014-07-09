@@ -36,12 +36,13 @@ public class BuddyList extends JFrame{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private static String OS;
 	public static int GROUP_CHAT = 1;
 	public static int PRIVATE_CHAT = 2;
 	public static User user;
 	public static JPanel buddyListPanel;
 	public static JPanel onlineUsersPanel;
-	public static JPanel onlineConvoPanel; 
+	public static JPanel onlineConvoPanel;
 	private JPanel innerConvoPanel;
 	private JPanel inneronlineusersPanel;
 	
@@ -478,8 +479,19 @@ public class BuddyList extends JFrame{
 			OUButton.addMouseListener(new mouseClassOnlineUser(user.getOnlineUsers().get(i), user));//PRIVATE CHATS
 			inneronlineusersPanel.add(OUButton);
 		}
-		revalidate();
-		repaint();
+		OS = System.getProperty("os.name").toLowerCase();
+		System.out.println(OS);
+	
+		if (OS.indexOf("win") >= 0) {
+			System.out.println("This is Windows");
+			repaint();
+		} 
+		else if (OS.indexOf("mac") >= 0) {
+			System.out.println("This is Mac");
+			revalidate();
+			repaint();
+		}
+		
 	}
 	
 	public void updateActiveConversations(){//update Online Conversations GUI
@@ -491,8 +503,18 @@ public class BuddyList extends JFrame{
 			ACButton.addMouseListener(new mouseClassActiveConvo(user.getConversations().get(i), user));//GROUP CHATS
 			innerConvoPanel.add(ACButton);
 		}
-		revalidate();
-		repaint();
+		OS = System.getProperty("os.name").toLowerCase();
+		System.out.println(OS);
+	
+		if (OS.indexOf("win") >= 0) {
+			System.out.println("This is Windows");
+			repaint();
+		} 
+		else if (OS.indexOf("mac") >= 0) {
+			System.out.println("This is Mac");
+			revalidate();
+			repaint();
+		}
 	}
 	//method that start the message window and called by the user
 	
