@@ -144,7 +144,6 @@ public class ChatMeClient {
 				String imagePath = (String) userIn.readObject();
 				user.setBio(bio);
 				user.setImagePath(imagePath);
-				user.displayClearMessage();
 				System.out.println("you have been cleared to log in.");
 				user.createBuddyList();
 			} else {
@@ -154,12 +153,10 @@ public class ChatMeClient {
 		}
 		public void signOutRequest() throws IOException {
 			System.out.println("CLIENT:  signout request");
-			// unfinished, see comment
 			userOut.writeObject(user.getName());
 			userOut.flush();
-			user.signOut(); // need implementation
-			System.out
-					.println(user.getName() + " has signed out...Write Code!");
+			System.out.println(user.getName() + " has signed out...");
+			
 		}
 		public void newUserRequest() throws IOException {
 			// finished but needs database
