@@ -185,10 +185,10 @@ public class BuddyList extends JFrame{
 /*******       						************/
 /*******							************/
 	private class mouseClassOnlineUser extends MouseAdapter{
-		private String convoname;
+		private String userName;
 		private User u;
-		mouseClassOnlineUser(String convoname, User us){
-			this.convoname = convoname;
+		mouseClassOnlineUser(String userName, User us){
+			this.userName = userName;
 			this.u = us;
 		}
 		public void mouseClicked(MouseEvent e){
@@ -196,8 +196,20 @@ public class BuddyList extends JFrame{
 	        if(e.getClickCount()==2){//double clicked
 	        	//create a message w/ that user
 	        	//double click button , make null to make sure that the the moderator is NOT anyone
-	        	MessageWindow mw = new MessageWindow(convoname, u);
-	        	u.addToOnlineConversations(mw);
+	        	
+	        	//create a string that has Atuser and Atfriend
+	        	String user = u.getName();
+	        	if (u.windowIsOpen(user)){
+	        		System.out.println("@#$#!$%$%%$#%$ WINDOW IS OPENENNENEN!!@#!#@%$^$&%");
+	        	}
+	        	else{//make more sense in chatmeclient.newprivaterequest since it would retrieve old history from
+	        		//data base, but since we're not going to implement that feature, then it's okay to leave here
+		        	String combinedConvoName = "@" + user + "@" + userName;
+		        	MessageWindow mw = new MessageWindow(combinedConvoName, u);
+		        	mw.setTitle(u.getName());
+		        	u.addToOnlineConversations(mw);
+		        	u.initiatePrivateConvoRequest(combinedConvoName);
+	        	}
 	        	
 	        }
 	        else if(e.getModifiers() == MouseEvent.BUTTON3_MASK){
@@ -227,8 +239,12 @@ public class BuddyList extends JFrame{
 		}
 		public void mouseClicked(MouseEvent e){
 	        if(e.getClickCount()==2){//double clicked
-	        	MessageWindow mw = new MessageWindow(convoname, u);
-	        	u.addToOnlineConversations(mw);
+	        	
+	        	if(!u.windowIsOpen(convoname)){
+		        	MessageWindow mw = new MessageWindow(convoname, u);
+		        	u.addToOnlineConversations(mw);
+		        	//doesn't call client cause we know conversation already exists via initiate convo from other user
+	        	}
 			}
 		}
 	}
@@ -254,9 +270,15 @@ public class BuddyList extends JFrame{
 			null, // icon
 			onlinelist, onlinelist[0]);
 			try{
-				if(!user.equals(null)){
-				System.out.println("User selected is" + people);
-				new MessageWindow(people,u);
+				if(!user.equals(null)){//make more sense in chatmeclient.newprivaterequest since it would retrieve old history from
+	        		//data base, but since we're not going to implement that feature, then it's okay to leave here
+					System.out.println("User selected is" + people);
+					String user = u.getName();
+					String combinedConvoName = "@" + user + "@" + people;
+					MessageWindow mw = new MessageWindow(combinedConvoName,u);
+		        	mw.setTitle(u.getName());
+		        	u.addToOnlineConversations(mw);
+		        	u.initiatePrivateConvoRequest(combinedConvoName);
 				}
 			} catch (NullPointerException npe){
 				System.out.println(npe.getMessage());
@@ -299,6 +321,7 @@ public class BuddyList extends JFrame{
 //			 boolean isValid   = convoName.matches("[A-Za-z0-9]{10}");  
 //			 System.out.println("AlphaNumeric? " + isValid); 
 //			 if(isValid == true){
+			 	System.out.println("NOT CREATING MESSAGE WINDOW B/C CLIENT WILL TELL USER TO DO THAT");
 				 u.initiateGroupConvoRequest(convoName);
 //			 }
 //			 else{//if not alphanumeric
@@ -366,10 +389,10 @@ public class BuddyList extends JFrame{
 				JOptionPane.INFORMATION_MESSAGE, userIcon);
 	}
 	
-	public void StartChat(String value){
-		 MessageWindow mw = new MessageWindow(value, user);
-		 user.addToOnlineConversations(mw);
-	}
+//	public void StartChat(String value){
+//		 MessageWindow mw = new MessageWindow(value, user);
+//		 user.addToOnlineConversations(mw);
+//	}
 	
 	public void updateOnlineUser(){
 		inneronlineusersPanel.removeAll();

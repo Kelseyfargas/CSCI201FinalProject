@@ -227,7 +227,7 @@ public class ChatMeClient {
 				System.out.println("CLIENT: ending group convo.");
 			} else if (OK == false) {
 				user.displayConvoError();
-				System.out.println("CLIENT: Can't remove group convo...");
+				System.out.println("CLIENT: Can't remove group convo...weird");
 			}
 		}
 		public void newPrivateRequest(String convoName) throws IOException{
@@ -237,10 +237,15 @@ public class ChatMeClient {
 			boolean convoExists = userIn.readBoolean();
 			if( convoExists == false) {
 				System.out.println("CLIENT: User will pop a new window, other user doesn't know about it");
-				user.createNewMessageWindow(convoName, false); //no moderator
-				//////////////////////////////////////////////////////////////
-				//PickUpFromHere (private chat)
-				/////////////////////////////////////////////////////////////
+				//user.createNewMessageWindow(convoName, false); //no moderator
+				
+				/* Hacky Note: */
+				//the commented out section would make more sense in this function, however it is
+				//called in Buddy.mouseClassOnlineUser and BuddyList.startPrivateMessage
+				//because we don't want to have to write extra methods/ do extra checks
+			}
+			else{
+				System.out.println("CLIENGGG: convo already in the database but you're gonna load dat ish up anyway.");
 			}
 		}
 		// Takes Message as parameter

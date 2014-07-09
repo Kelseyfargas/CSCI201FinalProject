@@ -79,6 +79,7 @@ public class User {
 	}
 	
 	public void initiatePrivateConvoRequest(String convoName){
+		System.out.println("IN initiatePrivateConvoRequest. Convo is : " + convoName);
 		chatClient.sendCommand(ChatMeServer.NEW_PRIVATE_REQUEST, convoName);
 	}
 	
@@ -127,6 +128,15 @@ public class User {
 		System.out.println("$$$$$$$$$$$$$conversation window was not openeddd$$$$$$$$$$");
 		createNewMessageWindow(msg.getConversationName(),false,msg.getContent());
 		
+	}
+	
+	public boolean windowIsOpen(String name)		{
+		for(MessageWindow element : openConversations )	{
+			if(element.getName() == name)	{
+				return true;
+			}
+		}
+		 return false; 
 	}
 	public void addToOnlineConversations(MessageWindow mw)	{
 		openConversations.add(mw);
