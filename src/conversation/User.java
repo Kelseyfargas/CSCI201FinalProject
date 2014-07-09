@@ -196,7 +196,13 @@ public class User {
 		buddyList = new BuddyList(this);
 		loginWindow.dispose();
 	}
+	public void getBioRequest(String name){
+		chatClient.sendCommand(ChatMeServer.GET_BIO_REQUEST, name);
+	}
 	
+	public void displayFriendBio(String imagePath, String bio){
+		buddyList.aboutMeAction(imagePath, bio);
+	}
 	public void nameExistError() {
 		accountWindow.displayError();
 	}
