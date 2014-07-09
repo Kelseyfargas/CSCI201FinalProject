@@ -280,6 +280,7 @@ public class MessageWindow extends JFrame {
 		public void windowClosing(WindowEvent e) {
 			System.out.println("WINDOW CLOSING");
 			System.out.println("REMOVING: " + convoName);
+			user.closeMessageWindow(convoName);
 //			thinking about changing it
 //			if(moderator == true){
 //				user.removeGroupConvoRequest(convoName);
