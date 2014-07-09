@@ -3,28 +3,21 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.ItemSelectable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -33,8 +26,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import javax.swing.ListCellRenderer;
-import javax.swing.text.DefaultCaret;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 
@@ -45,7 +36,6 @@ public class MessageWindow extends JFrame {
 	
 	public static int GROUP_CHAT = 1;
 	public static int PRIVATE_CHAT = 2;
-	private JButton addUserButton;
 	private JTextArea chatBoxTextArea;
 	private JTextField outputTextField;
 	private JButton sendButton;
@@ -62,10 +52,9 @@ public class MessageWindow extends JFrame {
 	private JComboBox<?> emojiCB;
 	private Color HILIT_COLOR = Color.ORANGE;
 	private Highlighter hilit;
-	private Highlighter.HighlightPainter painter;
+//	private Highlighter.HighlightPainter painter;
 	private String copieditem = "";
 	private boolean moderator = false;
-	private boolean chatOn = true;
 	
 	//SEND BUTTON-- CHECK IF EMPTY
 	//MODERATOR  MENU
@@ -77,7 +66,6 @@ public class MessageWindow extends JFrame {
 		super(convoName);
 		this.user = user;
 		setName(convoName);
-		
 		//Menu bars
 		JMenuBar jmb = new JMenuBar();
 		fileMenu = new JMenu("File");
@@ -128,27 +116,27 @@ public class MessageWindow extends JFrame {
 		choicesPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		//font choices
 		Object fontArray[] = {"SansSerif", "Courier New","Arial", "Times New Roman"};
- 		fontCB = new JComboBox(fontArray);
+ 		fontCB = new JComboBox<>(fontArray);
  		
 		//font color
 		Object colorArray[] = {"Black","Grey","Green","Magenta","Blue", "Pink"};
-		colorCB = new JComboBox(colorArray);
+		colorCB = new JComboBox<>(colorArray);
 		colorCB.setSelectedItem("Black");
 		
  		//font size
 		Object sizeArray[] = {"8","10","12","16"};
-		sizeCB = new JComboBox(sizeArray);
+		sizeCB = new JComboBox<>(sizeArray);
 		sizeCB.setSelectedItem("12");
 		
 		//font type
 		Object fontTypeArray[] = {"BOLD", "ITALIC","PLAIN"};
-		fontTypeCB = new JComboBox(fontTypeArray);
+		fontTypeCB = new JComboBox<>(fontTypeArray);
 		fontTypeCB.setSelectedItem("12");
 		
 //		//emoji's
 //		ImageIcon emojiList[] = {
 //				new ImageIcon("Emoji/Happy.png")};
-//        emojiCB = new JComboBox(emojiList);
+//        emojiCB = new JComboBox<>(emojiList);
 //        emojiCB.setMaximumRowCount(3);
         
         fontCB.addItemListener(new ItemListener(){
@@ -246,7 +234,7 @@ public class MessageWindow extends JFrame {
 			
 			System.out.println("String is : " + actionword);
 			hilit = new DefaultHighlighter();
-		    painter = new DefaultHighlighter.DefaultHighlightPainter(HILIT_COLOR);
+			new DefaultHighlighter.DefaultHighlightPainter(HILIT_COLOR);
 		    outputTextField.setHighlighter(hilit);
 			if(actionword.equals("Cut")){
 				copieditem = outputTextField.getText();

@@ -185,10 +185,10 @@ public class BuddyList extends JFrame{
 /*******       						************/
 /*******							************/
 	private class mouseClassOnlineUser extends MouseAdapter{
-		private String convoname;
+		private String userName;
 		private User u;
-		mouseClassOnlineUser(String convoname, User us){
-			this.convoname = convoname;
+		mouseClassOnlineUser(String userName, User us){
+			this.userName = userName;
 			this.u = us;
 		}
 		public void mouseClicked(MouseEvent e){
@@ -196,8 +196,18 @@ public class BuddyList extends JFrame{
 	        if(e.getClickCount()==2){//double clicked
 	        	//create a message w/ that user
 	        	//double click button , make null to make sure that the the moderator is NOT anyone
-	        	MessageWindow mw = new MessageWindow(convoname, u);
-	        	u.addToOnlineConversations(mw);
+	        	
+	        	//create a string that has Atuser and Atfriend
+	        	String user = u.getName();
+	        	if (u.windowIsOpen(user)){
+	        		System.out.println("@#$#!$%$%%$#%$ WINDOW IS OPENENNENEN!!@#!#@%$^$&%");
+	        	}
+	        	else{
+		        	String combinedConvoName = "@" + user + "@" + userName;
+		        	MessageWindow mw = new MessageWindow(combinedConvoName, u);
+		        	mw.setTitle(u.getName());
+		        	u.addToOnlineConversations(mw);
+	        	}
 	        	
 	        }
 	        else if(e.getModifiers() == MouseEvent.BUTTON3_MASK){
@@ -227,8 +237,11 @@ public class BuddyList extends JFrame{
 		}
 		public void mouseClicked(MouseEvent e){
 	        if(e.getClickCount()==2){//double clicked
-	        	MessageWindow mw = new MessageWindow(convoname, u);
-	        	u.addToOnlineConversations(mw);
+	        	
+	        	if(!u.windowIsOpen(convoname)){
+		        	MessageWindow mw = new MessageWindow(convoname, u);
+		        	u.addToOnlineConversations(mw);
+	        	}
 			}
 		}
 	}
@@ -366,10 +379,10 @@ public class BuddyList extends JFrame{
 				JOptionPane.INFORMATION_MESSAGE, userIcon);
 	}
 	
-	public void StartChat(String value){
-		 MessageWindow mw = new MessageWindow(value, user);
-		 user.addToOnlineConversations(mw);
-	}
+//	public void StartChat(String value){
+//		 MessageWindow mw = new MessageWindow(value, user);
+//		 user.addToOnlineConversations(mw);
+//	}
 	
 	public void updateOnlineUser(){
 		inneronlineusersPanel.removeAll();
