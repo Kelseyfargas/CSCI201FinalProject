@@ -312,8 +312,10 @@ public class ChatMeServer {
 		
 		private void newGroupMessageRequest() throws ClassNotFoundException, IOException{
 			printDbg(" *** *** about to read GROUP msg *** ***");
+			
 			Message msg = (Message) threadUserIn.readObject();
-			printDbg(" *** *** read GROUP message ***** *");
+			
+			printDbg(" *** *** read GROUP message ***** * \n conversation name is: " + msg.getConversationName());
 			
 			srt.sendMessageToAll(msg);
 		}
