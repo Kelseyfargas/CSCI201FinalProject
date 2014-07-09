@@ -294,11 +294,12 @@ public class ChatMeServer {
 		private void newPrivateRequest() throws ClassNotFoundException, IOException{
 			//Should be good
 			String convoName = (String) threadUserIn.readObject();
+			System.out.println("THIS IS THE CONVO NAME in new private request********************** " + convoName);
 			boolean convoExists = database.verifyConvoNameExists(convoName);
 			threadUserOut.writeBoolean( convoExists);
 			threadUserOut.flush();
 			if( ! convoExists){
-				System.out.println("SERVER: Adding private convo to database........");
+//				System.out.println("SERVER: Adding private convo to database........");
 				database.createConversation(convoName, "");
 				//MessageWindowIsCreated, but Server doesn't do anything
 			}
@@ -437,6 +438,9 @@ public class ChatMeServer {
 		}
 		public void sendMessageToRecipients(Message msg) throws IOException{
 			String [] recipientList = msg.getConversationName().split("@");
+			for (int i = 0; i < recipientList.length; i++) {
+				System.out.println("IN RECIP LIST************: " + recipientList[i]);
+			}
 			clientLock.lock();
 				database.updateConvoContent(msg.getConversationName(), msg.getContent());
 				for(int i=0; i<clients.size();i++){
