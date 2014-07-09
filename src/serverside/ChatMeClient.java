@@ -237,10 +237,15 @@ public class ChatMeClient {
 			boolean convoExists = userIn.readBoolean();
 			if( convoExists == false) {
 				System.out.println("CLIENT: User will pop a new window, other user doesn't know about it");
-				user.createNewMessageWindow(convoName, false); //no moderator
-				//////////////////////////////////////////////////////////////
-				//PickUpFromHere (private chat)
-				/////////////////////////////////////////////////////////////
+				//user.createNewMessageWindow(convoName, false); //no moderator
+				
+				/* Hacky Note: */
+				//the commented out section would make more sense in this function, however it is
+				//called in Buddy.mouseClassOnlineUser and BuddyList.startPrivateMessage
+				//because we don't want to have to write extra methods/ do extra checks
+				
+				
+				
 			}
 		}
 		// Takes Message as parameter
