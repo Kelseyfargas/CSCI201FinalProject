@@ -34,9 +34,8 @@ public class User {
 	private Image image;
 	private ArrayList<String> onlineUsers;
 	private ArrayList <MessageWindow> openConversations;
-	private ArrayList<String> currentConversations;	// change to Conversation 						
+	private ArrayList<String> currentConversations;					//buddylist									
 	private ChatMeClient chatClient;
-	//private ArrayList<MessageWindow> messageWindow;
 	
 	/* Constructor */
 	public User() {
@@ -84,7 +83,7 @@ public class User {
 	
 	public void removeGroupConvoRequest(String convoName){
 		chatClient.sendCommand(ChatMeServer.END_GROUP_REQUEST, convoName);
-		System.out.println("removedddd");
+		System.out.println("remove request entered");
 		for(MessageWindow element : openConversations)	{
 			if(element.getName().equals(convoName))	{
 				element.remove(element);
@@ -193,12 +192,19 @@ public class User {
 	}
 	
 	public void signOut()   {
-		
+		this.chatClient.sendCommand(ChatMeServer.SIGN_OUT_REQUEST);
 	}
 	
-	public void createNewMessageWindow(String conversationName)	{
-		MessageWindow mw = new MessageWindow(conversationName,this,MessageWindow.GROUP_CHAT);
+	public void createNewMessageWindow(String conversationName, boolean moderator)	{
+		MessageWindow mw = new MessageWindow(conversationName,this);
+		System.out.println("Entered createNewMessageWindow");
+		if(moderator == true )	{									// set moderator 
+			System.out.println("moderator is true");
+			mw.setModerator();
+		}
+		else {
+			System.out.println("not moderator!");
+		}
 		openConversations.add(mw);
 	}
-
 }
