@@ -292,7 +292,7 @@ public class ChatMeServer {
 			if( ! convoExists){
 				System.out.println("SERVER: adding private convo to database........");
 				database.createConversation(convoName, "");
-				
+				//MessageWindowIsCreated, but Server doesn't do anything
 			}
 		}
 		

@@ -244,6 +244,10 @@ public class ChatMeClient {
 			userOut.flush();
 			
 			boolean convoExists = userIn.readBoolean();
+			if( convoExists == false) {
+				System.out.println("CLIENT: User will pop a new window, other user doesn't know about it");
+				//pick up where you left off here///////////////////////////////////////////////////////////////////////////////////
+			}
 		}
 		// Takes Message as parameter
 		public void sendCommandAndObject(int command, Message msg)
