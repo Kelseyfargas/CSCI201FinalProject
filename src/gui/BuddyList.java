@@ -51,14 +51,16 @@ public class BuddyList extends JFrame{
 		JMenuBar jmb = new JMenuBar();
 		JMenu fileMenu = new JMenu("File");
 		JMenuItem startMessageMenuItem = new JMenuItem("Start Message");
-		JMenuItem startGroupMessageMI = new JMenuItem("Start Group Message");
+		JMenuItem startGroupMessageMenuItem = new JMenuItem("Start Group Message");
+		JMenuItem editBioMenuItem = new JMenuItem("Edit Bio");
 		JMenuItem logOutMenuItem = new JMenuItem("Log Out");
+		startMessageMenuItem.addActionListener(new StartPrivateMessage(getUser()));
+		startGroupMessageMenuItem.addActionListener(new StartGroupMessage(getUser()));
 		logOutMenuItem.addActionListener(new logoutAction(user));
 		
 		JMenu helpMenu = new JMenu("Help");
 		JMenuItem aboutMenuItem = new JMenuItem("About");
-		startMessageMenuItem.addActionListener(new StartPrivateMessage(getUser(),PRIVATE_CHAT ));
-		startGroupMessageMI.addActionListener(new StartGroupMessage(getUser(),GROUP_CHAT));
+
 		aboutMenuItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
 				JOptionPane.showMessageDialog(null, 
@@ -71,8 +73,9 @@ public class BuddyList extends JFrame{
 			}
 		});
 		helpMenu.add(aboutMenuItem);
+		fileMenu.add(editBioMenuItem);
 		fileMenu.add(startMessageMenuItem);
-		fileMenu.add(startGroupMessageMI);
+		fileMenu.add(startGroupMessageMenuItem);
 		fileMenu.add(logOutMenuItem);
 		jmb.add(fileMenu);
 		jmb.add(helpMenu);
@@ -96,7 +99,7 @@ public class BuddyList extends JFrame{
 		messageButton.setSize(30,30);
 		messageButton.setLocation(10,10);
 		messageButton.setBorderPainted(false);
-		messageButton.addActionListener(new StartPrivateMessage(getUser(), PRIVATE_CHAT));
+		messageButton.addActionListener(new StartPrivateMessage(getUser()));
 		topPanel.add(messageButton);
 		
 		ImageIcon groupChatIcon = new ImageIcon("Pictures/GroupChat.png");
@@ -105,7 +108,7 @@ public class BuddyList extends JFrame{
 		groupChatButton.setSize(30,30);
 		groupChatButton.setLocation(10,10);
 		groupChatButton.setBorderPainted(false);
-		groupChatButton.addActionListener(new StartGroupMessage(getUser(), GROUP_CHAT));//share action listener with group chat
+		groupChatButton.addActionListener(new StartGroupMessage(getUser()));//share action listener with group chat
 		topPanel.add(groupChatButton);
 		gbc.gridx = 0; 
 		gbc.gridy = 0; 
@@ -168,19 +171,18 @@ public class BuddyList extends JFrame{
 /*******       						************/
 /*******							************/
 	private class mouseClass extends MouseAdapter{
-		private String name;
+		private String convoname;
 		private User u;
-		private int messageType;
-		mouseClass(String name, User us, int messageType){
-			this.name = name;
+		mouseClass(String convoname, User us){
+			this.convoname = convoname;
 			this.u = us;
-			this.messageType = messageType;
 		}
 		public void mouseClicked(MouseEvent e){
 	    	
 	        if(e.getClickCount()==2){//double clicked
 	        	//create a message w/ that user
-	        	MessageWindow mw = new MessageWindow(name, u, messageType);
+	        	//double click button , make null to make sure that the the moderator is NOT anyone
+	        	MessageWindow mw = new MessageWindow(convoname, u);
 	        	u.addToOnlineConversations(mw);
 	        	
 	        }
@@ -200,14 +202,26 @@ public class BuddyList extends JFrame{
 	    }
 	
 	}
+	private class conversationClassAction implements ActionListener{
+		
+		private String convoname;
+		private User u;
+		
+		conversationClassAction(String convoname, User us){
+			this.convoname = convoname;
+			this.u = us;
+		}
+		public void actionPerformed(ActionEvent ae){
+        	MessageWindow mw = new MessageWindow(convoname, u);
+        	u.addToOnlineConversations(mw);
+		}
+	}
 
 	private class StartPrivateMessage implements ActionListener{
 		
 		private User u;
-		private int messageType;
-		StartPrivateMessage(User user, int messageType){
+		StartPrivateMessage(User user){
 			this.u = user;
-			this.messageType = messageType;
 		}
 		
 		public void actionPerformed(ActionEvent ae){
@@ -226,7 +240,7 @@ public class BuddyList extends JFrame{
 			try{
 				if(!user.equals(null)){
 				System.out.println("User selected is" + people);
-				new MessageWindow(people,u,messageType);
+				new MessageWindow(people,u);
 				}
 			} catch (NullPointerException npe){
 				System.out.println(npe.getMessage());
@@ -242,13 +256,12 @@ public class BuddyList extends JFrame{
 
 	private class StartGroupMessage implements ActionListener{
 		private User u;
-		private int messageType;
-		StartGroupMessage(User user, int messageType){
+		StartGroupMessage(User user){
 			this.u = user;
-			this.messageType = messageType;
 		}
 		public void actionPerformed(ActionEvent ae){
-			 System.out.println("In StartGroupMessage AE " + messageType);
+			 //setModeratorForChat();//INITIALIZE THE MODERATOR ONLY IF YOURE THE ONE CLICKING THE BUTTON
+			 System.out.println("In StartGroupMessage AE ");
 			 String convoName = null;
 //			 try{
 				 convoName = JOptionPane.showInputDialog(null, 
@@ -324,7 +337,7 @@ public class BuddyList extends JFrame{
 		this.user = user;
 	}
 	
-	private User getUser(){
+	public User getUser(){
 		return this.user;
 	}
 	
@@ -338,7 +351,7 @@ public class BuddyList extends JFrame{
 	}
 	
 	public void StartChat(String value){
-		 MessageWindow mw = new MessageWindow(value, user, GROUP_CHAT);
+		 MessageWindow mw = new MessageWindow(value, user);
 		 user.addToOnlineConversations(mw);
 	}
 	
@@ -348,7 +361,7 @@ public class BuddyList extends JFrame{
 			JButton OUButton = new JButton(user.getOnlineUsers().get(i));
 			OUButton.setEnabled(true);
 			OUButton.setBorderPainted(false);
-			OUButton.addMouseListener(new mouseClass(user.getOnlineUsers().get(i), user,PRIVATE_CHAT));
+			OUButton.addMouseListener(new mouseClass(user.getOnlineUsers().get(i), user));//PRIVATE CHATS
 			inneronlineusersPanel.add(OUButton);
 		}
 		repaint();
@@ -357,11 +370,11 @@ public class BuddyList extends JFrame{
 	public void updateActiveConversations(){
 		innerConvoPanel.removeAll();
 		for(int i = 0; i < user.getConversations().size(); i++){
-			JButton OUButton = new JButton(user.getConversations().get(i));
-			OUButton.setEnabled(true);
-			OUButton.setBorderPainted(false);
-			OUButton.addMouseListener(new mouseClass(user.getConversations().get(i), user,GROUP_CHAT));
-			innerConvoPanel.add(OUButton);
+			JButton ACButton = new JButton(user.getConversations().get(i));
+			ACButton.setEnabled(true);
+			ACButton.setBorderPainted(false);
+			ACButton.addActionListener(new conversationClassAction(user.getOnlineUsers().get(i), user));//GROUP CHATS
+			innerConvoPanel.add(ACButton);
 		}
 		repaint();
 	}

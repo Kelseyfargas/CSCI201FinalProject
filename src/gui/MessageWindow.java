@@ -49,7 +49,7 @@ public class MessageWindow extends JFrame {
 	private JTextField outputTextField;
 	private String convoName;
 	private User user;
-	private String moderator;
+	//private String moderator;
 	private int messageType;
 	private JComboBox<?> fontCB;
 	private JComboBox<?> colorCB;
@@ -60,17 +60,18 @@ public class MessageWindow extends JFrame {
 	private Highlighter hilit;
 	private Highlighter.HighlightPainter painter;
 	private String copieditem = "";
+	private boolean moderator = false;
 	
-	public MessageWindow(String convoName, User user, int messageType){
+	public MessageWindow(String convoName, User user){
 		
 		super(convoName);
 		this.user = user;
-		this.messageType = messageType;
 		setName(convoName);
 		
-		if(messageType == GROUP_CHAT){
-			this.moderator = user.getName();
-		}
+//		if(messageType == GROUP_CHAT){
+//			this.moderator = user.getName();//sets moderator to the person opening the window
+//			//setModerator(user.getName());
+//		}
 		
 		//Menu bars
 		JMenuBar jmb = new JMenuBar();
@@ -292,8 +293,10 @@ public class MessageWindow extends JFrame {
 
 		public void windowClosing(WindowEvent e) {
 			System.out.println("WINDOW CLOSING");
-			System.out.println("REMOVING: " + convoName );
-			user.removeGroupConvoRequest(convoName);
+			System.out.println("REMOVING: " + convoName);
+			if(moderator == true){
+				user.removeGroupConvoRequest(convoName);
+			}
 			
 		}
 		//UGGHH UNNCESSEARY
@@ -361,6 +364,24 @@ public class MessageWindow extends JFrame {
 		outputTextField.setForeground(colors[color]);
 		
 	}
+//	private void setModerator(String username){
+//		System.out.println("The moderator is " + username);
+//		if(username == moderator){
+//			setModerator = true;
+//			System.out.println("Moderator is set to  " + setModerator);
+//		}
+//		else{
+//			setModerator = false;
+//		}
+//	}
+	
+	public void setModerator(){
+		this.moderator = true;
+	}
+	public boolean getModerator(){
+		return this.moderator;
+	}
+	
 	public static void main(String []args){
 	}
 }
