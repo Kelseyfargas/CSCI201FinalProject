@@ -25,6 +25,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -48,7 +49,7 @@ public class MessageWindow extends JFrame {
 	private JTextArea chatBoxTextArea;
 	private JTextField outputTextField;
 	private JButton sendButton;
-	private JMenuItem removeChatMenuItem;
+	//private JMenuItem removeChatMenuItem;
 	private JMenu fileMenu;
 	private String convoName;
 	private User user;
@@ -75,7 +76,7 @@ public class MessageWindow extends JFrame {
 		JMenuItem cutMenuItem = new JMenuItem("Cut");
 		JMenuItem pasteMenuItem = new JMenuItem("Paste");
 		JMenuItem saveConversationMenuItem = new JMenuItem("Save Conversation");
-		removeChatMenuItem = new JMenuItem("Remove Chat");//CHECK FOR MODERATOR
+		//removeChatMenuItem = new JMenuItem("Remove Chat");//CHECK FOR MODERATOR
 		
 		copyMenuItem.addActionListener(new CutCopyPasteAction(copyMenuItem.getText()));
 		cutMenuItem.addActionListener(new CutCopyPasteAction(cutMenuItem.getText()));
@@ -90,8 +91,8 @@ public class MessageWindow extends JFrame {
 				ActionEvent.CTRL_MASK));
 		saveConversationMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, 
 				ActionEvent.CTRL_MASK));
-		removeChatMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, 
-				ActionEvent.CTRL_MASK));
+		//removeChatMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, 
+				//ActionEvent.CTRL_MASK));
 		fileMenu.add(copyMenuItem);
 		fileMenu.add(cutMenuItem);
 		fileMenu.add(pasteMenuItem);
@@ -123,7 +124,7 @@ public class MessageWindow extends JFrame {
  		fontCB = new JComboBox<>(fontArray);
  		
 		//font color
-		Object colorArray[] = {"Black","Grey","Green","Magenta","Blue", 
+		Object colorArray[] = {"White","Black","Grey","Green","Magenta","Blue", 
 							"Pink", "Cyan","Orange","Red", "Yellow"};
 		colorCB = new JComboBox<>(colorArray);
 		colorCB.setSelectedItem("Black");
@@ -167,18 +168,21 @@ public class MessageWindow extends JFrame {
  				setInputTextField();
  			}
  		});
-
+        JLabel font = new JLabel("Text");
+        JLabel background = new JLabel("Background:");
  		choicesPanel.add(fontCB);
+ 		choicesPanel.add(font);
 		choicesPanel.add(colorCB);
 		choicesPanel.add(sizeCB);
 		choicesPanel.add(fontTypeCB);
+		choicesPanel.add(background);
 		choicesPanel.add(colorCBBackground);
 		
 		JPanel messageBottomPanel = new JPanel();
 		messageBottomPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		outputTextField = new JTextField();
 		outputTextField.setRequestFocusEnabled(true);
-		outputTextField.setForeground(Color.BLACK);
+		outputTextField.setForeground(Color.WHITE);
 		outputTextField.setPreferredSize(new Dimension(510,20));
 		outputTextField.setEditable(true); 
 		outputTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
@@ -292,14 +296,14 @@ public class MessageWindow extends JFrame {
 		}
 	}
 	
-	private class removeChatAction implements ActionListener{
-		
-		public void actionPerformed(ActionEvent e){
-			//sendButton.setEnabled(false);
-			user.removeGroupConvoRequest(convoName);
-			user.closeMessageWindow(convoName);
-		}
-	}
+//	private class removeChatAction implements ActionListener{
+//		
+//		public void actionPerformed(ActionEvent e){
+//			//sendButton.setEnabled(false);
+//			user.removeGroupConvoRequest(convoName);
+//			user.closeMessageWindow(convoName);
+//		}
+//	}
 	
 	
 	private class windowClosedAction extends WindowAdapter{
@@ -338,7 +342,8 @@ public class MessageWindow extends JFrame {
 	public void setInputTextField(){
 		
 		chatBoxTextArea.setBackground(Color.WHITE);
-		Color colors[] = {Color.BLACK,Color.GRAY,
+		Color colors[] = {Color.WHITE,
+						  Color.BLACK,Color.GRAY,
 						  Color.GREEN,Color.MAGENTA,
 						  Color.BLUE, Color.PINK,
 						  Color.CYAN, Color.ORANGE,
@@ -370,8 +375,8 @@ public class MessageWindow extends JFrame {
 
 	public void setModerator(){
 		this.moderator = true;
-		removeChatMenuItem.addActionListener(new removeChatAction());
-		fileMenu.add(removeChatMenuItem);
+//		removeChatMenuItem.addActionListener(new removeChatAction());
+//		fileMenu.add(removeChatMenuItem);
 	}
 	public boolean getModerator(){
 		return this.moderator;
