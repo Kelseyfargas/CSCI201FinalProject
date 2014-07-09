@@ -295,6 +295,7 @@ public class BuddyList extends JFrame{
 	        		else if(privateUser.getName().compareTo(frienduserName) > 0){//friend is before user
 	        			combinedConvoName = "@" + privateUser.getName() + "@" + frienduserName;
 	        		}
+	        		System.out.println("combined string = " + combinedConvoName);
 					MessageWindow mw = new MessageWindow(combinedConvoName,privateUser);
 		        	mw.setTitle(privateUser.getName());
 		        	//privateUser.addToOnlineConversations(mw);
