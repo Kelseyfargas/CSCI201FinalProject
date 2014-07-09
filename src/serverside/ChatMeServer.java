@@ -278,11 +278,19 @@ public class ChatMeServer {
 
 		}
 		private void endGroupRequest() throws ClassNotFoundException, IOException {
-			// unfinished ??? client might have to write code for this
+			//unchecked, go over again after writing
 			printDbg("Reading group convo deletion request");
 			String convoName = (String) threadUserIn.readObject();
-			database.endConvo(convoName); 
-			updateCurrentConversations();
+			boolean convoExists = database.verifyConvoNameExists(convoName);
+			if(convoExists){
+				printDbg("ENDGROUPREQUEST&&&&&&: " + convoName);
+				database.endConvo(convoName); 
+				updateCurrentConversations();
+			}
+			else{
+				printDbg("ERRORS IN MY BREAD");
+			}
+
 		}
 		private void newPrivateRequest() throws ClassNotFoundException, IOException{
 			String convoName = (String) threadUserIn.readObject();
