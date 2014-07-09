@@ -200,7 +200,7 @@ public class User {
 		chatClient.sendCommand(ChatMeServer.GET_BIO_REQUEST, name);
 	}
 	public void setBioRequest(String name, String newBio){
-		Message msg = new Message(name, bio);
+		Message msg = new Message(name, newBio);
 		chatClient.sendCommand(ChatMeServer.SET_BIO_REQUEST, msg);
 	}
 	
