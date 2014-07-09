@@ -207,6 +207,7 @@ public class BuddyList extends JFrame{
 		        	MessageWindow mw = new MessageWindow(combinedConvoName, u);
 		        	mw.setTitle(u.getName());
 		        	u.addToOnlineConversations(mw);
+		        	u.initiatePrivateConvoRequest(combinedConvoName);
 	        	}
 	        	
 	        }
@@ -269,7 +270,12 @@ public class BuddyList extends JFrame{
 			try{
 				if(!user.equals(null)){
 				System.out.println("User selected is" + people);
-				new MessageWindow(people,u);
+				String user = u.getName();
+				String combinedConvoName = "@" + user + "@" + people;
+				MessageWindow mw = new MessageWindow(combinedConvoName,u);
+	        	mw.setTitle(u.getName());
+	        	u.addToOnlineConversations(mw);
+	        	u.initiatePrivateConvoRequest(combinedConvoName);
 				}
 			} catch (NullPointerException npe){
 				System.out.println(npe.getMessage());
