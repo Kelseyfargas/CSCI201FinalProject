@@ -80,7 +80,7 @@ public class ChatMeClient {
 		 * * * * * * * * * * * * * * * * * * * */
 		boolean continueRunning = true;
 
-		/* Welcom Message */
+		/* Welcome Message */
 		public void readAndPrintWelcomeMessage() throws ClassNotFoundException, IOException {
 			System.out.println("Attempting to read welcome message: \n");
 			String message = (String) userIn.readObject();
@@ -144,7 +144,6 @@ public class ChatMeClient {
 				String imagePath = (String) userIn.readObject();
 				user.setBio(bio);
 				user.setImagePath(imagePath);
-				user.displayClearMessage();
 				System.out.println("you have been cleared to log in.");
 				user.createBuddyList();
 			} else {
@@ -154,12 +153,10 @@ public class ChatMeClient {
 		}
 		public void signOutRequest() throws IOException {
 			System.out.println("CLIENT:  signout request");
-			// unfinished, see comment
 			userOut.writeObject(user.getName());
 			userOut.flush();
-			user.signOut(); // need implementation
-			System.out
-					.println(user.getName() + " has signed out...Write Code!");
+			System.out.println(user.getName() + " has signed out...");
+			
 		}
 		public void newUserRequest() throws IOException {
 			// finished but needs database
@@ -197,6 +194,9 @@ public class ChatMeClient {
 			}
 			if (command == ChatMeServer.END_GROUP_REQUEST){
 				endGroupRequest(convo);
+			}
+			if(command == ChatMeServer.NEW_PRIVATE_REQUEST){
+				newPrivateRequest(convo);
 			}
 			lock.unlock();
 		}
@@ -236,7 +236,16 @@ public class ChatMeClient {
 				System.out.println("Can't remove group convo...");
 			}
 		}
-
+		public void newPrivateRequest(String convoName) throws IOException{
+			userOut.writeObject(convoName);
+			userOut.flush();
+			
+			boolean convoExists = userIn.readBoolean();
+			if( convoExists == false) {
+				System.out.println("CLIENT: User will pop a new window, other user doesn't know about it");
+				//pick up where you left off here///////////////////////////////////////////////////////////////////////////////////
+			}
+		}
 		// Takes Message as parameter
 		public void sendCommandAndObject(int command, Message msg)
 				throws IOException {

@@ -27,6 +27,9 @@ public class ChatMeServer {
 	public static int NEW_GROUP_REQUEST = 4;
 	public static int END_GROUP_REQUEST = 5;
 	public static int UPDATE_GROUP_REQUEST = 388;
+
+	public static int NEW_PRIVATE_REQUEST = 8;
+
 	public static int NEW_GROUP_MESSAGE_REQUEST = 6;
 	public static int NEW_PRIVATE_MESSAGE_REQUEST = 7;
 
@@ -170,6 +173,9 @@ public class ChatMeServer {
 				else if(command == END_GROUP_REQUEST){
 					endGroupRequest();
 				}
+				else if(command == NEW_PRIVATE_REQUEST){
+					newPrivateRequest();
+				}
 				else if(command == NEW_GROUP_MESSAGE_REQUEST){
 					newGroupMessageRequest();
 				}
@@ -259,7 +265,7 @@ public class ChatMeServer {
 			printDbg("Reading group convo initiation request");
 			String convoName = (String) threadUserIn.readObject();
 			boolean convoExists = database.verifyConvoNameExists(convoName);
-			threadUserOut.writeBoolean(convoExists ); //Change this later when we want to put limitations on when a new group conversation can be created
+			threadUserOut.writeBoolean(convoExists );
 			threadUserOut.flush();
 			if( ! convoExists){
 				System.out.println("SERVER: Should add to database......");
@@ -277,6 +283,17 @@ public class ChatMeServer {
 			String convoName = (String) threadUserIn.readObject();
 			database.endConvo(convoName); 
 			updateCurrentConversations();
+		}
+		private void newPrivateRequest() throws ClassNotFoundException, IOException{
+			String convoName = (String) threadUserIn.readObject();
+			boolean convoExists = database.verifyConvoNameExists(convoName);
+			threadUserOut.writeBoolean( convoExists);
+			threadUserOut.flush();
+			if( ! convoExists){
+				System.out.println("SERVER: adding private convo to database........");
+				database.createConversation(convoName, "");
+				//MessageWindowIsCreated, but Server doesn't do anything
+			}
 		}
 		
 		private void updateOnlineUsers() throws IOException{
