@@ -202,7 +202,8 @@ public class BuddyList extends JFrame{
 	        	if (u.windowIsOpen(user)){
 	        		System.out.println("@#$#!$%$%%$#%$ WINDOW IS OPENENNENEN!!@#!#@%$^$&%");
 	        	}
-	        	else{
+	        	else{//make more sense in chatmeclient.newprivaterequest since it would retrieve old history from
+	        		//data base, but since we're not going to implement that feature, then it's okay to leave here
 		        	String combinedConvoName = "@" + user + "@" + userName;
 		        	MessageWindow mw = new MessageWindow(combinedConvoName, u);
 		        	mw.setTitle(u.getName());
@@ -242,6 +243,7 @@ public class BuddyList extends JFrame{
 	        	if(!u.windowIsOpen(convoname)){
 		        	MessageWindow mw = new MessageWindow(convoname, u);
 		        	u.addToOnlineConversations(mw);
+		        	//doesn't call client cause we know conversation already exists via initiate convo from other user
 	        	}
 			}
 		}
@@ -268,14 +270,15 @@ public class BuddyList extends JFrame{
 			null, // icon
 			onlinelist, onlinelist[0]);
 			try{
-				if(!user.equals(null)){
-				System.out.println("User selected is" + people);
-				String user = u.getName();
-				String combinedConvoName = "@" + user + "@" + people;
-				MessageWindow mw = new MessageWindow(combinedConvoName,u);
-	        	mw.setTitle(u.getName());
-	        	u.addToOnlineConversations(mw);
-	        	u.initiatePrivateConvoRequest(combinedConvoName);
+				if(!user.equals(null)){//make more sense in chatmeclient.newprivaterequest since it would retrieve old history from
+	        		//data base, but since we're not going to implement that feature, then it's okay to leave here
+					System.out.println("User selected is" + people);
+					String user = u.getName();
+					String combinedConvoName = "@" + user + "@" + people;
+					MessageWindow mw = new MessageWindow(combinedConvoName,u);
+		        	mw.setTitle(u.getName());
+		        	u.addToOnlineConversations(mw);
+		        	u.initiatePrivateConvoRequest(combinedConvoName);
 				}
 			} catch (NullPointerException npe){
 				System.out.println(npe.getMessage());
@@ -318,6 +321,7 @@ public class BuddyList extends JFrame{
 //			 boolean isValid   = convoName.matches("[A-Za-z0-9]{10}");  
 //			 System.out.println("AlphaNumeric? " + isValid); 
 //			 if(isValid == true){
+			 	System.out.println("NOT CREATING MESSAGE WINDOW B/C CLIENT WILL TELL USER TO DO THAT");
 				 u.initiateGroupConvoRequest(convoName);
 //			 }
 //			 else{//if not alphanumeric
