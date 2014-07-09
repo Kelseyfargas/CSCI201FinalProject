@@ -132,7 +132,7 @@ public class BuddyList extends JFrame{
 		add(topPanel, gbc);//at grid 1
 		
 	
-		JTextArea jtaNote = new JTextArea("Online Users", 1, 20); // online users section of code
+		JTextArea jtaNote = new JTextArea("Online Users", 1, 23); // online users section of code
 		jtaNote.setEditable(false);
 		jtaNote.setLineWrap(true);
 		jtaNote.setWrapStyleWord(true);
@@ -148,13 +148,13 @@ public class BuddyList extends JFrame{
 		JScrollPane onlineUsersSP = new JScrollPane(inneronlineusersPanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 												JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		onlineUsersSP.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-		onlineUsersSP.setPreferredSize(new Dimension(210,250));
+		onlineUsersSP.setPreferredSize(new Dimension(300,250));
 		
 		gbc.gridx = 0; 
 		gbc.gridy = 3;
 		add(onlineUsersSP, gbc);//grid 3
 		
-		JTextArea ConversationJTA = new JTextArea("Online Conversations", 1, 20); // online users section of code
+		JTextArea ConversationJTA = new JTextArea("Online Conversations", 1, 23); // online users section of code
 		ConversationJTA.setEditable(false);
 		ConversationJTA.setLineWrap(true);
 		ConversationJTA.setWrapStyleWord(true);
@@ -170,7 +170,7 @@ public class BuddyList extends JFrame{
 		JScrollPane onlineconvoSP = new JScrollPane(innerConvoPanel,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 						JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		onlineconvoSP.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-		onlineconvoSP.setPreferredSize(new Dimension(210,250));
+		onlineconvoSP.setPreferredSize(new Dimension(300,250));
 		gbc.gridx = 0; 
 		gbc.gridy = 5;
 		add(onlineconvoSP,gbc);//grid 5
@@ -178,6 +178,7 @@ public class BuddyList extends JFrame{
 		addWindowListener(new windowAction());
 		this.setSize(300,700);
 		this.setLocation(950,500);
+		//this.pack();
 		this.setVisible(true);
 		
 	}//public buddy list
@@ -243,8 +244,8 @@ public class BuddyList extends JFrame{
 	        			"About", "Are you sure you want to know their 'About Me'?", JOptionPane.YES_NO_OPTION);
 	        	if(selection == 0){// yes
 	        		System.out.println("Yes option");
-	        		System.out.println("The user is : " + onlineuser );
-	        		aboutMeAction(onlineuser);
+	        		System.out.println("The user is : " + frienduserName );
+	        		onlineuser.getBioRequest(frienduserName);
 	        	}
 	        	else{//no option
 	        		System.out.println("No option");
@@ -459,6 +460,15 @@ public class BuddyList extends JFrame{
 				JOptionPane.INFORMATION_MESSAGE, userIcon);
 	}
 	
+	private void aboutmeAction(String username, String path, String bio){
+		System.out.println("The user you want info about is : " + username);
+		ImageIcon userIcon = new ImageIcon(path);
+		JOptionPane.showMessageDialog(null, 
+				bio, 
+				"About: " + username, 
+				JOptionPane.INFORMATION_MESSAGE, userIcon);
+	}
+	
 	public void updateOnlineUser(){ // update Online User GUI
 		inneronlineusersPanel.removeAll();
 		for(int i = 0; i < user.getOnlineUsers().size(); i++){
@@ -468,6 +478,7 @@ public class BuddyList extends JFrame{
 			OUButton.addMouseListener(new mouseClassOnlineUser(user.getOnlineUsers().get(i), user));//PRIVATE CHATS
 			inneronlineusersPanel.add(OUButton);
 		}
+		revalidate();
 		repaint();
 	}
 	
@@ -480,6 +491,7 @@ public class BuddyList extends JFrame{
 			ACButton.addMouseListener(new mouseClassActiveConvo(user.getConversations().get(i), user));//GROUP CHATS
 			innerConvoPanel.add(ACButton);
 		}
+		revalidate();
 		repaint();
 	}
 	//method that start the message window and called by the user
