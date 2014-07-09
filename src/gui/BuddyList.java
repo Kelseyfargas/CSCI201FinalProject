@@ -8,6 +8,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -22,6 +23,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
 
 import conversation.User;
 
@@ -54,12 +56,24 @@ public class BuddyList extends JFrame{
 		JMenuItem startGroupMessageMenuItem = new JMenuItem("Start Group Message");
 		JMenuItem editBioMenuItem = new JMenuItem("Edit Bio");
 		JMenuItem logOutMenuItem = new JMenuItem("Log Out");
+		JMenu helpMenu = new JMenu("Help");
+		JMenuItem aboutMenuItem = new JMenuItem("About");
+		
 		startMessageMenuItem.addActionListener(new StartPrivateMessage(getUser()));
 		startGroupMessageMenuItem.addActionListener(new StartGroupMessage(getUser()));
 		logOutMenuItem.addActionListener(new logoutAction(user));
 		
-		JMenu helpMenu = new JMenu("Help");
-		JMenuItem aboutMenuItem = new JMenuItem("About");
+		startMessageMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, 
+				ActionEvent.CTRL_MASK));
+		startGroupMessageMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, 
+				ActionEvent.CTRL_MASK));
+		editBioMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, 
+				ActionEvent.CTRL_MASK));
+		aboutMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, 
+				ActionEvent.CTRL_MASK));
+		logOutMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, 
+				ActionEvent.CTRL_MASK));
+		
 
 		aboutMenuItem.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
