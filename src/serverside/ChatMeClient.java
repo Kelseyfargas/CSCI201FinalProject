@@ -252,7 +252,7 @@ public class ChatMeClient {
 			String imagePath = (String) userIn.readObject();
 			String bio 		 = (String) userIn.readObject();
 			
-			user.displayFriendBio(imagePath, bio);
+			user.displayFriendBio(username, imagePath, bio);
 		}
 		// Takes Message as parameter
 		public void sendCommandAndObject(int command, Message msg)

@@ -200,8 +200,8 @@ public class User {
 		chatClient.sendCommand(ChatMeServer.GET_BIO_REQUEST, name);
 	}
 	
-	public void displayFriendBio(String imagePath, String bio){
-		buddyList.aboutMeAction(imagePath, bio);
+	public void displayFriendBio(String username, String imagePath, String bio){
+		buddyList.aboutMeAction(username, imagePath, bio);
 	}
 	public void nameExistError() {
 		accountWindow.displayError();
