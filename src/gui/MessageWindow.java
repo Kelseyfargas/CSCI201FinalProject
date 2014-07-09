@@ -182,7 +182,7 @@ public class MessageWindow extends JFrame {
 		messageBottomPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		outputTextField = new JTextField();
 		outputTextField.setRequestFocusEnabled(true);
-		outputTextField.setForeground(Color.WHITE);
+		outputTextField.setForeground(Color.BLACK);
 		outputTextField.setPreferredSize(new Dimension(510,20));
 		outputTextField.setEditable(true); 
 		outputTextField.setBorder(javax.swing.BorderFactory.createEmptyBorder());
