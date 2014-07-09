@@ -70,8 +70,14 @@ public class User {
 		this.chatClient = client;
 		//System.out.println("adding client");
 	}
-	public void setCurrentConversations(ArrayList<String> convos){
-		currentConversations = convos;
+	public void setCurrentConversations(ArrayList<String> convos) {
+		ArrayList<String> temp = new ArrayList<String>();
+		for(int i = 0; i < convos.size(); i++)	{
+			if(!convos.get(i).contains("@"))	{
+				temp.add(convos.get(i));
+			}
+		}
+		currentConversations = temp;
 		buddyList.updateActiveConversations();
 	}
 	public void initiateGroupConvoRequest(String convoName){
