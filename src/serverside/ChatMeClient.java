@@ -258,14 +258,14 @@ public class ChatMeClient {
 		}
 
 		public void newGroupMessageRequest(Message msg) throws IOException {
-			// unfinished, needs GUI implemnetation in Server Request Thread
-			System.out.println("Client: (SEND GMSG TO: " + msg.getConversationName() +") " + msg.getContent());
-			userOut.writeObject(msg); // all of this needs to be written
+			// unfinished, needs GUI implementation in Server Request Thread
+			System.out.println("CLIENT: (SEND GMSG TO: " + msg.getConversationName() +") " + msg.getContent());
+			userOut.writeObject(msg);
 			userOut.flush();
 		}
 		
 		public void newPrivateMessageRequest(Message msg) throws IOException {
-			System.out.println("Client: (SEND PMSG TO: " + msg.getConversationName() + ") " + msg.getContent());
+			System.out.println("CLIENT: (SEND PMSG TO: " + msg.getConversationName() + ") " + msg.getContent());
 			System.out.println("In newPrivateMessageRequest. Convo name is " + msg.getConversationName());
 			userOut.writeObject(msg);
 			userOut.flush();
