@@ -52,7 +52,7 @@ public class ChatMeServer {
 		ServerSocket ss2 = new ServerSocket(8888);
 		printDbg("Server started...");
 		
-		clients = new ArrayList<SocketHolder> ();
+		clients = new ArrayList<SocketHolder> (30);
 		database = new Database();
 		
 		System.out.println("IP Address: " + InetAddress.getLocalHost());
