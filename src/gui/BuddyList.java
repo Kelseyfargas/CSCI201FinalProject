@@ -170,10 +170,10 @@ public class BuddyList extends JFrame{
 /*******classes for action listeners************/
 /*******       						************/
 /*******							************/
-	private class mouseClass extends MouseAdapter{
+	private class mouseClassOnlineUser extends MouseAdapter{
 		private String convoname;
 		private User u;
-		mouseClass(String convoname, User us){
+		mouseClassOnlineUser(String convoname, User us){
 			this.convoname = convoname;
 			this.u = us;
 		}
@@ -202,18 +202,20 @@ public class BuddyList extends JFrame{
 	    }
 	
 	}
-	private class conversationClassAction implements ActionListener{
+	private class mouseClassActiveConvo extends MouseAdapter{
 		
 		private String convoname;
 		private User u;
 		
-		conversationClassAction(String convoname, User us){
+		mouseClassActiveConvo(String convoname, User us){
 			this.convoname = convoname;
 			this.u = us;
 		}
-		public void actionPerformed(ActionEvent ae){
-        	MessageWindow mw = new MessageWindow(convoname, u);
-        	u.addToOnlineConversations(mw);
+		public void mouseClicked(MouseEvent e){
+	        if(e.getClickCount()==2){//double clicked
+	        	MessageWindow mw = new MessageWindow(convoname, u);
+	        	u.addToOnlineConversations(mw);
+			}
 		}
 	}
 
@@ -361,7 +363,7 @@ public class BuddyList extends JFrame{
 			JButton OUButton = new JButton(user.getOnlineUsers().get(i));
 			OUButton.setEnabled(true);
 			OUButton.setBorderPainted(false);
-			OUButton.addMouseListener(new mouseClass(user.getOnlineUsers().get(i), user));//PRIVATE CHATS
+			OUButton.addMouseListener(new mouseClassOnlineUser(user.getOnlineUsers().get(i), user));//PRIVATE CHATS
 			inneronlineusersPanel.add(OUButton);
 		}
 		repaint();
@@ -373,7 +375,7 @@ public class BuddyList extends JFrame{
 			JButton ACButton = new JButton(user.getConversations().get(i));
 			ACButton.setEnabled(true);
 			ACButton.setBorderPainted(false);
-			ACButton.addActionListener(new conversationClassAction(user.getConversations().get(i), user));//GROUP CHATS
+			ACButton.addMouseListener(new mouseClassActiveConvo(user.getConversations().get(i), user));//GROUP CHATS
 			innerConvoPanel.add(ACButton);
 		}
 		repaint();

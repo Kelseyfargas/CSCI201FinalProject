@@ -216,35 +216,7 @@ public class MessageWindow extends JFrame {
 	}
 /*******CLASSES FOR THE ChatRoomGUI************/
 /***********************************************/
-/***********************************************/
-	private class addUserToChatClass implements ActionListener{
-		private String cn;
-		private JTextArea tx;	
-		addUserToChatClass(String selected, JTextArea tx){
-			this.cn = selected;
-			this.tx = tx;
-			
-		}
-		public void actionPerformed(ActionEvent ae){
-//			System.out.println(userSelectedCB.getItemListeners());
-//			String item = (String)userSelectedCB.getSelectedItem();
-			System.out.println("item is: " + cn);
-			tx.setText(cn+ ", ");
-			//temp += cn;
-			System.out.println("temp is: " + cn);
-		}
 
-
-	}
-	private class startChatClass implements ActionListener{
-		startChatClass(JTextField NOCTextField){
-			
-		}
-		public void actionPerformed(ActionEvent ae){
-			
-		}
-	}
-	
 	private class sendButtonAction implements ActionListener{
 		JTextField outputTF;
 		String messageinput;
@@ -297,9 +269,6 @@ public class MessageWindow extends JFrame {
 	}
 	
 	private class saveConversationAction implements ActionListener{
-		saveConversationAction(){
-			
-		}
 
 		public void actionPerformed(ActionEvent e) {
 			String text = chatBoxTextArea.getText();
@@ -308,14 +277,14 @@ public class MessageWindow extends JFrame {
 	
 	private class removeChatAction implements ActionListener{
 		
-		removeChatAction(){
-		}
 		public void actionPerformed(ActionEvent e){
-			sendButton.setEnabled(false);
+			//sendButton.setEnabled(false);
+			user.removeGroupConvoRequest(convoName);
 		}
 	}
 	
 	private class windowClosedAction implements WindowListener{
+		
 		String convoName;
 		windowClosedAction(String convoName){
 			this.convoName = convoName;
@@ -324,9 +293,10 @@ public class MessageWindow extends JFrame {
 		public void windowClosing(WindowEvent e) {
 			System.out.println("WINDOW CLOSING");
 			System.out.println("REMOVING: " + convoName);
-			if(moderator == true){
-				user.removeGroupConvoRequest(convoName);
-			}
+//			thinking about changing it
+//			if(moderator == true){
+//				user.removeGroupConvoRequest(convoName);
+//			}
 			
 		}
 		//UGGHH UNNCESSEARY
