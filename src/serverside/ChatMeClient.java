@@ -290,6 +290,7 @@ public class ChatMeClient {
 			System.out.println("b4 read bool");
 			//userIn.readBoolean();
 			System.out.println("4r read bool");
+			user.setBio(msg.getConversationName());
 		}
 		/* * * * * * * * * * * * * * * * *
 		 * END of USER Request Thread 	 * 
