@@ -221,7 +221,7 @@ public class BuddyList extends JFrame{
 	        			"About", "Are you sure you want to know their 'About Me'?", JOptionPane.YES_NO_OPTION);
 	        	if(selection == 0){// yes
 	        		System.out.println("Yes option");
-	        		aboutMeAction(user);
+	        		aboutMeAction(onlineuser);
 	        	}
 	        	else{//no option
 	        		System.out.println("No option");
@@ -265,7 +265,7 @@ public class BuddyList extends JFrame{
 			for(int o = 0; o < onlinelist.length; o++){
 				System.out.println("Online user: " + onlinelist[o]);
 			}
-
+			//NOTE AS OF 11:21PM MAKE SURE THAT PEOPLE ISN'T NULL. WINDOWLISTENER FOR X
 			String people = (String)JOptionPane.showInputDialog(BuddyList.this, 
 			"Choose User to Start Chat!", 
 			"Start Message", 
@@ -273,7 +273,7 @@ public class BuddyList extends JFrame{
 			null, // icon
 			onlinelist, onlinelist[0]);
 			try{
-				if(!user.equals(null)){//make more sense in chatmeclient.newprivaterequest since it would retrieve old history from
+				if(!user.equals("null")){//make more sense in chatmeclient.newprivaterequest since it would retrieve old history from
 	        		//data base, but since we're not going to implement that feature, then it's okay to leave here
 					System.out.println("User selected is" + people);
 					String user = u.getName();
@@ -308,18 +308,20 @@ public class BuddyList extends JFrame{
 								JOptionPane.OK_CANCEL_OPTION);
 				Pattern p = Pattern.compile("[^a-zA-Z0-9]");
 				boolean hasSpecialChar = p.matcher(convoName).find();
-				System.out.println("hasSpecialChar: " + hasSpecialChar);
+				//System.out.println("hasSpecialChar: " + hasSpecialChar);
 				if(hasSpecialChar){
+					 JOptionPane.showMessageDialog(null, "Must enter AlphaNumeric characters for Group"
+							 + " Conversations!", 
+							 "Group Message", JOptionPane.WARNING_MESSAGE);
+				}
+				if(convoName == null){//just pressed X 
 					throw new Exception();
 				}
 				//NOT CREATING MESSAGE WINDOW B/C CLIENT WILL TELL USER TO DO THAT
-
 				u.initiateGroupConvoRequest(convoName);
 				
 			 } catch (Exception e){
-				 JOptionPane.showMessageDialog(null, "Must enter AlphaNumeric characters for Group"
-				 + " Conversations!", 
-				 "Group Message", JOptionPane.WARNING_MESSAGE);
+				 e.printStackTrace();
 			 }
 		}
 	}
@@ -369,6 +371,7 @@ public class BuddyList extends JFrame{
 	}
 	
 	private void aboutMeAction(User onlineuser){//About me for Online User/Self
+		System.out.println("The user you want info about is : " + onlineuser.getName());
 		ImageIcon userIcon = new ImageIcon(onlineuser.getImagePath());
 		JOptionPane.showMessageDialog(null, 
 				onlineuser.getBio(), 

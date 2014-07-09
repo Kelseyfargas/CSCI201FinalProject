@@ -216,11 +216,9 @@ public class MessageWindow extends JFrame {
 			
 			messageinput = outputTF.getText();
 			if(getName().contains("@")){//PRIVATE
-				System.out.println("IN PRIVATE MESSAGE AFTER SEND BUTTON");
 				user.sendNewPrivateMessage(messageinput,convoName);
 			}
 			else{//GROUP
-				System.out.println("IN GROUP MESSAGE AFTER SEND BUTTON");
 				user.sendNewGroupMessage(messageinput,convoName);
 			}
 			outputTextField.setText("");
