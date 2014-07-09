@@ -291,6 +291,7 @@ public class ChatMeClient {
 			//userIn.readBoolean();
 			System.out.println("4r read bool");
 			user.setBio(msg.getConversationName());
+			System.out.println("new bio from client: " + msg.getConversationName());
 		}
 		/* * * * * * * * * * * * * * * * *
 		 * END of USER Request Thread 	 * 
