@@ -415,7 +415,7 @@ public class BuddyList extends JFrame{
 						"Edit Bio", 
 						JOptionPane.QUESTION_MESSAGE);
 						System.out.println("new bio is = " + newbio);
-				//editingUser.setBioRequest(editingUser.getName(), newbio);
+				editingUser.setBioRequest(editingUser.getName(), newbio);
 				if (newbio == null) {
 					System.out.println("Cancel button or X clicked");
 					throw new NullPointerException();
