@@ -251,6 +251,9 @@ public class ChatMeClient {
 			if (command == ChatMeServer.NEW_GROUP_MESSAGE_REQUEST) {
 				newGroupMessageRequest(msg);
 			}
+			else if(command == ChatMeServer.NEW_PRIVATE_MESSAGE_REQUEST) {
+				newPrivateMessageRequest(msg);
+			}
 			lock.unlock();
 		}
 
@@ -262,6 +265,13 @@ public class ChatMeClient {
 			userOut.flush();
 
 			// gui must be updated
+		}
+		
+		public void newPrivateMessageRequest(Message msg) throws IOException {
+			System.out.println("Client: NEW_PRIVATE_MESSAGE_REQUEST");
+			System.out.println("In newPrivateMessageRequest. Convo name is " + msg.getConversationName());
+			userOut.writeObject(msg);
+			userOut.flush();
 		}
 
 		/* * * * * * * * * * * * * * * * *
@@ -301,6 +311,9 @@ public class ChatMeClient {
 			if (command == ChatMeServer.NEW_GROUP_MESSAGE_REQUEST) {
 				newGroupMessageRequest();
 			} 
+			else if (command == ChatMeServer.NEW_PRIVATE_MESSAGE_REQUEST)	{
+				newPrivateMessageRequest();
+			}
 			else if(command == ChatMeServer.UPDATE_GROUP_REQUEST){
 				updateGroupRequest();
 			}
@@ -316,6 +329,14 @@ public class ChatMeClient {
 			Message msg = (Message) servIn.readObject();
 			System.out.println("You have the message now: " + msg.getContent());
 			user.getGroupMessage(msg);
+		}
+		
+		public void newPrivateMessageRequest() throws ClassNotFoundException,IOException {
+			System.out.println("Client: about to get private msg...");
+			Message msg = (Message) servIn.readObject();
+			System.out.println("You have the private message now: " + msg.getContent());
+			user.getPrivateMessage(msg);					// needs new method
+
 		}
 		public void updateGroupRequest() throws ClassNotFoundException, IOException {
 			System.out.println("in new grouprequest");

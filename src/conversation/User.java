@@ -116,6 +116,18 @@ public class User {
 			}
 		}
 	}
+	public void getPrivateMessage(Message msg)	{
+		System.out.println("Client: Conversation name : " + msg.getConversationName());
+		for(MessageWindow element : openConversations)	{	// only update GUI if open conversations exist
+			System.out.println("convo name: " + element.getName());
+			if(element.getName().equals(msg.getConversationName())) {
+				element.updateContent(msg.getContent()); 				  
+			}
+		}
+		System.out.println("$$$$$$$$$$$$$conversation window was not openeddd$$$$$$$$$$");
+		createNewMessageWindow(msg.getConversationName(),false,msg.getContent());
+		
+	}
 	public void addToOnlineConversations(MessageWindow mw)	{
 		openConversations.add(mw);
 	}
@@ -211,4 +223,19 @@ public class User {
 		}
 		openConversations.add(mw);
 	}
+	
+	public void createNewMessageWindow(String conversationName, boolean moderator, String msg)	{
+		MessageWindow mw = new MessageWindow(conversationName,this);
+		System.out.println("Entered createNewMessageWindow");
+		if(moderator == true )	{									// set moderator 
+			System.out.println("moderator is true");
+			mw.setModerator();
+		}
+		else {
+			System.out.println("not moderator!");
+		}
+		mw.updateContent(msg);
+		openConversations.add(mw);
+	}
+	
 }
