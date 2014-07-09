@@ -132,7 +132,8 @@ public class User {
 			//System.out.println("convo name: " + element.getName());
 			System.out.println("name of the message window is " + element.getName());
 			if(element.getName().equals(msg.getConversationName())) {
-				element.updateContent(msg.getContent()); 				  
+				element.updateContent(msg.getContent()); 	
+				return;
 			}
 		}
 //		System.out.println("$$$$$$$$$$$$$conversation window was not openeddd$$$$$$$$$$");
