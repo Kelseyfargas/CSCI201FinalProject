@@ -128,6 +128,15 @@ public class User {
 		createNewMessageWindow(msg.getConversationName(),false,msg.getContent());
 		
 	}
+	
+	public boolean windowIsOpen(String name)		{
+		for(MessageWindow element : openConversations )	{
+			if(element.getName() == name)	{
+				return true;
+			}
+		}
+		 return false; 
+	}
 	public void addToOnlineConversations(MessageWindow mw)	{
 		openConversations.add(mw);
 	}
