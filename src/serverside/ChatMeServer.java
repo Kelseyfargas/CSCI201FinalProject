@@ -261,8 +261,8 @@ public class ChatMeServer {
 			
 			clientLock.lock(); //don't want people sending me messages as I log out
 				database.signOut(name); //might have to work out nitty gritty details w/ Kelsey
-				updateOnlineUsers();
 				clients.remove(this.sh);
+				updateOnlineUsers();
 			clientLock.unlock();
 			
 			//By the time we get this message, client will have shut down.
