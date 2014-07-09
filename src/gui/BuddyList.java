@@ -230,7 +230,7 @@ public class BuddyList extends JFrame{
 			        	onlineuser.initiatePrivateConvoRequest(combinedConvoName);
 		        	}
 	        	} catch (NullPointerException npe){
-					System.out.println(npe.getMessage());
+	        		System.out.println("Caught NPE cause of Cancel button: " + npe.getMessage());
 				} catch(ArrayIndexOutOfBoundsException aiobe){
 					JOptionPane.showMessageDialog(null,  
 							"Nobody is online, can not chat.", 
@@ -361,7 +361,7 @@ public class BuddyList extends JFrame{
 				groupUser.initiateGroupConvoRequest(convoName);
 				
 			 } catch(NullPointerException npe){
-				 System.out.println("NPE: " + npe.getMessage());
+				 System.out.println("Caught NPE cause of Cancel button: " + npe.getMessage());
 			 }
 		}
 	}
@@ -400,12 +400,26 @@ public class BuddyList extends JFrame{
 	}
 	
 	private class editBioAction implements ActionListener{
-		///////SAVE FOR RYAN LATER////////
-		editBioAction(){
-			
+		
+		User editingUser;
+		editBioAction(User user){
+			this.editingUser = user;
 		}
 		public void actionPerformed(ActionEvent ae){
-			
+			try{
+				String newbio = JOptionPane.showInputDialog(null, 
+						"Edit Bio:", 
+						"Edit Bio", 
+						JOptionPane.QUESTION_MESSAGE);
+						System.out.println("new bio is = " + newbio);
+				if (newbio == null) {
+					System.out.println("Cancel button or X clicked");
+					throw new NullPointerException();
+				}
+			}catch(NullPointerException npe){
+				 System.out.println("Caught NPE cause of Cancel button: " + npe.getMessage());
+			 }
+
 		}
 	}
 	private class windowAction implements WindowListener{
@@ -491,6 +505,10 @@ public class BuddyList extends JFrame{
 			revalidate();
 			repaint();
 		}
+		else if(OS.indexOf("nix") >= 0 || OS.indexOf("nux") >= 0 || OS.indexOf("aix") > 0){
+			System.out.println("This is Unix or Linux");
+			repaint();
+		}
 		
 	}
 	
@@ -513,6 +531,10 @@ public class BuddyList extends JFrame{
 		else if (OS.indexOf("mac") >= 0) {
 			System.out.println("This is Mac");
 			revalidate();
+			repaint();
+		}
+		else if(OS.indexOf("nix") >= 0 || OS.indexOf("nux") >= 0 || OS.indexOf("aix") > 0){
+			System.out.println("This is Unix or Linux");
 			repaint();
 		}
 	}
