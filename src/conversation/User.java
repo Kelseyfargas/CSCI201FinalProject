@@ -143,6 +143,7 @@ public class User {
 			if(!name[i].isEmpty() && !name[i].equals(this.getName())) {
 				mw.setTitle(name[i]);
 				mw.updateContent(msg.getContent());
+				addToOpenConversations(mw);
 				return;
 			}
 		}		
