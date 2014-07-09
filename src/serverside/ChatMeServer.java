@@ -281,7 +281,9 @@ public class ChatMeServer {
 		private void setBioRequest() throws ClassNotFoundException, IOException{
 			Message msg = (Message) threadUserIn.readObject();
 			database.updateBio(msg.getContent(), msg.getConversationName());
+			System.out.println("SERVER: fjfjfjfjff");
 			threadUserOut.writeBoolean(true);
+			System.out.println("ok");
 		}
 		
 		private void newGroupRequest() throws ClassNotFoundException, IOException{
