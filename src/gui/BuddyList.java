@@ -206,10 +206,10 @@ public class BuddyList extends JFrame{
         		System.out.println("Comparing : " + user + " to: " + frienduserName);
         		int comparingusers = user.compareTo(frienduserName);
         		System.out.println("The comparingusers int is " + comparingusers);
-        		if(comparingusers < 0){
+        		if(comparingusers > 0){
         			combinedConvoName = "@" + onlineuser.getName() + "@" + frienduserName;
         		}
-        		else if(comparingusers > 0){//friend is before user
+        		else if(comparingusers < 0){//friend is before user
         			combinedConvoName = "@" + onlineuser.getName() + "@" + frienduserName;
         		}
 	        	
