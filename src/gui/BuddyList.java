@@ -245,7 +245,9 @@ public class BuddyList extends JFrame{
 	        else if(e.getModifiers() == MouseEvent.BUTTON3_MASK){
 	        	
 	        	int selection = JOptionPane.showConfirmDialog(BuddyList.this, 
-	        			"About", "Are you sure you want to know their 'About Me'?", JOptionPane.YES_NO_OPTION);
+	        			"Are you sure you want to know their 'About Me'?", 
+	        			"About", 
+	        			JOptionPane.YES_NO_OPTION);
 	        	if(selection == 0){// yes
 	        		System.out.println("Yes option");
 	        		System.out.println("The user is : " + frienduserName );
