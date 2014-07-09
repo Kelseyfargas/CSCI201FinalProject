@@ -254,9 +254,9 @@ public class BuddyList extends JFrame{
 
 	private class StartPrivateMessage implements ActionListener{
 		
-		private User u;
+		private User privateUser;
 		StartPrivateMessage(User user){
-			this.u = user;
+			this.privateUser = user;
 		}
 		
 		public void actionPerformed(ActionEvent ae){
@@ -273,15 +273,15 @@ public class BuddyList extends JFrame{
 			null, // icon
 			onlinelist, onlinelist[0]);
 			try{
-				if(!user.equals("null")){//make more sense in chatmeclient.newprivaterequest since it would retrieve old history from
+				if(!privateUser.equals("null")){//make more sense in chatmeclient.newprivaterequest since it would retrieve old history from
 	        		//data base, but since we're not going to implement that feature, then it's okay to leave here
 					System.out.println("User selected is" + people);
-					String user = u.getName();
+					String user = privateUser.getName();
 					String combinedConvoName = "@" + user + "@" + people;
-					MessageWindow mw = new MessageWindow(combinedConvoName,u);
-		        	mw.setTitle(u.getName());
-		        	u.addToOnlineConversations(mw);
-		        	u.initiatePrivateConvoRequest(combinedConvoName);
+					MessageWindow mw = new MessageWindow(combinedConvoName,privateUser);
+		        	mw.setTitle(privateUser.getName());
+		        	privateUser.addToOnlineConversations(mw);
+		        	privateUser.initiatePrivateConvoRequest(combinedConvoName);
 				}
 			} catch (NullPointerException npe){
 				System.out.println(npe.getMessage());
@@ -295,9 +295,9 @@ public class BuddyList extends JFrame{
 	}
 
 	private class StartGroupMessage implements ActionListener{
-		private User u;
+		private User groupUser;
 		StartGroupMessage(User user){
-			this.u = user;
+			this.groupUser = user;
 		}
 		public void actionPerformed(ActionEvent ae){
 			String convoName = null;
@@ -318,7 +318,7 @@ public class BuddyList extends JFrame{
 					throw new Exception();
 				}
 				//NOT CREATING MESSAGE WINDOW B/C CLIENT WILL TELL USER TO DO THAT
-				u.initiateGroupConvoRequest(convoName);
+				groupUser.initiateGroupConvoRequest(convoName);
 				
 			 } catch (Exception e){
 				 e.printStackTrace();
