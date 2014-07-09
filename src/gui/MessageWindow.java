@@ -13,6 +13,12 @@ import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -21,6 +27,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -79,7 +86,8 @@ public class MessageWindow extends JFrame {
 		copyMenuItem.addActionListener(new CutCopyPasteAction(copyMenuItem.getText()));
 		cutMenuItem.addActionListener(new CutCopyPasteAction(cutMenuItem.getText()));
 		pasteMenuItem.addActionListener(new CutCopyPasteAction(pasteMenuItem.getText()));
-		saveConversationMenuItem.addActionListener(new saveConversationAction());
+		saveConversationMenuItem.addActionListener(new saveConversationAction(convoName));
+		
 		copyMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, 
 				ActionEvent.CTRL_MASK));
 		cutMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, 
@@ -259,9 +267,35 @@ public class MessageWindow extends JFrame {
 	}
 	
 	private class saveConversationAction implements ActionListener{
-
+		String convoname;
+		
+		saveConversationAction(String convoname){
+			this.convoname = convoname;
+		}
+		
 		public void actionPerformed(ActionEvent e) {
+			System.out.println("SVAAAAVV");
 			String text = chatBoxTextArea.getText();
+			
+	        //PrintWriter printWriter = null;
+			try {
+//		        FileOutputStream fos = new FileOutputStream(text);
+//		        ObjectOutputStream oos = new ObjectOutputStream(fos);
+//		        oos.writeObject(list);
+//		        oos.close();
+				System.out.println("Saiving in try");
+				File saveConvoFile = new File(convoname);
+				PrintWriter printWriter = new PrintWriter(saveConvoFile +".txt");
+				printWriter.println(text);
+				printWriter.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			
+			JOptionPane.showMessageDialog(null, 
+					"Saved the convo!", 
+					"Save Conversation", 
+					JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 	
@@ -273,6 +307,7 @@ public class MessageWindow extends JFrame {
 			user.closeMessageWindow(convoName);
 		}
 	}
+	
 	
 	private class windowClosedAction implements WindowListener{
 		

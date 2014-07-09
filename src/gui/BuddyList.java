@@ -65,7 +65,7 @@ public class BuddyList extends JFrame{
 		startMessageMenuItem.addActionListener(new StartPrivateMessage(getUser()));
 		startGroupMessageMenuItem.addActionListener(new StartGroupMessage(getUser()));
 		logOutMenuItem.addActionListener(new logoutAction(user));
-		
+		//editBioMenuItem.addActionListener(new editBioAction(bio)); TALK TO RYAN ABOUT BIOS
 		startMessageMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, 
 				ActionEvent.CTRL_MASK));
 		startGroupMessageMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, 
@@ -402,6 +402,15 @@ public class BuddyList extends JFrame{
 		}
 	}
 	
+	private class editBioAction implements ActionListener{
+		///////SAVE FOR RYAN LATER////////
+		editBioAction(){
+			
+		}
+		public void actionPerformed(ActionEvent ae){
+			
+		}
+	}
 	private class windowAction implements WindowListener{
 		
 		public void windowClosing(WindowEvent e) {
@@ -472,7 +481,7 @@ public class BuddyList extends JFrame{
 		for(int i = 0; i < user.getConversations().size(); i++){
 			JButton ACButton = new JButton(user.getConversations().get(i));
 			ACButton.setEnabled(true);
-			ACButton.setBorderPainted(true);
+			ACButton.setBorderPainted(false);
 			ACButton.addMouseListener(new mouseClassActiveConvo(user.getConversations().get(i), user));//GROUP CHATS
 			innerConvoPanel.add(ACButton);
 		}
