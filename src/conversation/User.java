@@ -89,11 +89,15 @@ public class User {
 		
 	}
 	public void closeMessageWindow(String convoName){
+		System.out.println("size of open conversation is " + openConversations.size());
 		for(MessageWindow element : openConversations)	{
+			System.out.println("Name of the message window is " + element.getName());
 			if(element.getName().equals(convoName))	{
-				element.remove(element);
+				openConversations.remove(element);
+				break;
 			}
 		}
+		System.out.println("new size of open convo is " + openConversations.size());
 	}
 	
 	public void sendNewGroupMessage(String content, String conversationName)		{															// send new message to server
@@ -141,7 +145,14 @@ public class User {
 		 return false; 
 	}
 	public void addToOnlineConversations(MessageWindow mw)	{
+		System.out.println("$$$$$$$$Inside addtoOnlineConversations$$$$$$");
+		for(MessageWindow element : openConversations)	{
+			System.out.println("message window name is " + element.getName());
+		}
+		System.out.println("For loop done. Adding message window " + mw.getName());
 		openConversations.add(mw);
+		System.out.println("new open conversations size is " + openConversations.size());
+
 		// set conditions to check if it is private 
 	}
 
@@ -234,7 +245,7 @@ public class User {
 		else {
 			//System.out.println("not moderator!");
 		}
-		openConversations.add(mw);
+		addToOnlineConversations(mw);
 	}
 	
 	public void createNewMessageWindow(String conversationName, boolean moderator, String msg)	{
@@ -248,7 +259,6 @@ public class User {
 			//System.out.println("not moderator!");
 		}
 		mw.updateContent(msg);
-		openConversations.add(mw);
+		addToOnlineConversations(mw);
 	}
-	
 }
