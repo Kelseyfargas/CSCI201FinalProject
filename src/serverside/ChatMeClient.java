@@ -209,7 +209,7 @@ public class ChatMeClient {
 			boolean convoExists = userIn.readBoolean();
 			if (convoExists == false) {
 				System.out.println("CLIENT: User will then add convo to buddy list. Write Code!");
-				user.createNewMessageWindow(convoName);
+				user.createNewMessageWindow(convoName, true); //true for "setModerator()" 
 			} else if (convoExists == true) {
 				user.displayConvoError();
 				System.out.println("CLIENT: Can't start new group convo!!!");
@@ -226,6 +226,8 @@ public class ChatMeClient {
 			 * MODERATOR COULD HAVE MADE THIS CALL. CHECK INSIDE GUI
 			 * IMPLEMENTATION
 			 */
+			
+			////////////////////////////////////////////////////////////////////////////////////////
 
 			boolean OK = userIn.readBoolean();
 			if (OK == true) {
@@ -243,7 +245,10 @@ public class ChatMeClient {
 			boolean convoExists = userIn.readBoolean();
 			if( convoExists == false) {
 				System.out.println("CLIENT: User will pop a new window, other user doesn't know about it");
-				//pick up where you left off here///////////////////////////////////////////////////////////////////////////////////
+				user.createNewMessageWindow(convoName, false); //no moderator
+				//////////////////////////////////////////////////////////////
+				//PickUpFromHere (private chat)
+				/////////////////////////////////////////////////////////////
 			}
 		}
 		// Takes Message as parameter
