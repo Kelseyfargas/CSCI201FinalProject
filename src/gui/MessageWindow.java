@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
@@ -51,7 +52,6 @@ public class MessageWindow extends JFrame {
 	private JMenu fileMenu;
 	private String convoName;
 	private User user;
-	//private String moderator;
 	private int messageType;
 	private JComboBox<?> fontCB;
 	private JComboBox<?> colorCB;
@@ -60,14 +60,8 @@ public class MessageWindow extends JFrame {
 	private JComboBox<?> colorCBBackground;
 	private Color HILIT_COLOR = Color.ORANGE;
 	private Highlighter hilit;
-//	private Highlighter.HighlightPainter painter;
 	private String copieditem = "";
 	private boolean moderator = false;
-	
-	//SEND BUTTON-- CHECK IF EMPTY
-	//MODERATOR  MENU
-		// -- disable send button/chat
-		// -- close chat (remove chat)
 	
 	public MessageWindow(String convoName, User user){
 		
@@ -169,6 +163,7 @@ public class MessageWindow extends JFrame {
  		});
         colorCBBackground.addItemListener(new ItemListener(){
  			public void itemStateChanged(ItemEvent ie){
+ 				System.out.println("IN COLOR CB BACKGROUND");
  				setInputTextField();
  			}
  		});
@@ -307,7 +302,7 @@ public class MessageWindow extends JFrame {
 	}
 	
 	
-	private class windowClosedAction implements WindowListener{
+	private class windowClosedAction extends WindowAdapter{
 		
 		String convoName;
 		windowClosedAction(String convoName){
@@ -317,22 +312,6 @@ public class MessageWindow extends JFrame {
 		public void windowClosing(WindowEvent e) {
 			System.out.println("WINDOW CLOSING " + convoName);
 			user.closeMessageWindow(convoName);
-//			thinking about changing it
-//			if(moderator == true){
-//				user.removeGroupConvoRequest(convoName);
-//			}
-			
-		}
-		//UGGHH UNNCESSEARY
-		public void windowClosed(WindowEvent e) {
-		}
-		public void windowIconified(WindowEvent e) {
-		}
-		public void windowDeiconified(WindowEvent e) {
-		}
-		public void windowActivated(WindowEvent e) {
-		}
-		public void windowDeactivated(WindowEvent e) {
 		}
 		public void windowOpened(WindowEvent e) {
 			outputTextField.requestFocus();
@@ -346,7 +325,6 @@ public class MessageWindow extends JFrame {
 	public void updateContent(String messageinput){
 		
 		String text = chatBoxTextArea.getText();
-//		System.out.println(user.getName() + ": " + text);
 		if (text == null || text.length() == 0) {
 			chatBoxTextArea.setText(messageinput);
 		}

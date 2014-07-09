@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.regex.Pattern;
@@ -426,7 +427,7 @@ public class BuddyList extends JFrame{
 
 		}
 	}
-	private class windowAction implements WindowListener{
+	private class windowAction extends WindowAdapter{
 		
 		public void windowClosing(WindowEvent e) {
 			System.out.println("WINDOW LISTENER IS LOGGING OUT SHARING ACTION LISTENER FOR LOGOUT");
@@ -443,19 +444,6 @@ public class BuddyList extends JFrame{
 					System.out.println("No, user doesn't want to Log Out");
 					break;
 			}
-		}
-		//UGGHH UNNCESSEARY
-		public void windowClosed(WindowEvent e) {
-		}
-		public void windowIconified(WindowEvent e) {
-		}
-		public void windowDeiconified(WindowEvent e) {
-		}
-		public void windowActivated(WindowEvent e) {
-		}
-		public void windowDeactivated(WindowEvent e) {
-		}
-		public void windowOpened(WindowEvent e) {
 		}
 	}
 
