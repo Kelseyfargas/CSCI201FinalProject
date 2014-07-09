@@ -282,7 +282,7 @@ public class ChatMeServer {
 			Message msg = (Message) threadUserIn.readObject();
 			database.updateBio(msg.getContent(), msg.getConversationName());
 			System.out.println("SERVER: fjfjfjfjff");
-			threadUserOut.writeBoolean(true);
+			//threadUserOut.writeBoolean(true);
 			System.out.println("ok");
 		}
 		

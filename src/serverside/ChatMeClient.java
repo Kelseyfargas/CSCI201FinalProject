@@ -288,7 +288,7 @@ public class ChatMeClient {
 			//SUPER HACKY
 			userOut.writeObject(msg);
 			System.out.println("b4 read bool");
-			userIn.readBoolean();
+			//userIn.readBoolean();
 			System.out.println("4r read bool");
 		}
 		/* * * * * * * * * * * * * * * * *
