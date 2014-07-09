@@ -74,18 +74,18 @@ public class User {
 		buddyList.updateActiveConversations();
 	}
 	public void initiateGroupConvoRequest(String convoName){
-		System.out.println("IN initiateGroupConvoRequest. Convo is : " + convoName);
+		//System.out.println("IN initiateGroupConvoRequest. Convo is : " + convoName);
 		chatClient.sendCommand(ChatMeServer.NEW_GROUP_REQUEST, convoName);
 	}
 	
 	public void initiatePrivateConvoRequest(String convoName){
-		System.out.println("IN initiatePrivateConvoRequest. Convo is : " + convoName);
+		//System.out.println("IN initiatePrivateConvoRequest. Convo is : " + convoName);
 		chatClient.sendCommand(ChatMeServer.NEW_PRIVATE_REQUEST, convoName);
 	}
 	
 	public void removeGroupConvoRequest(String convoName){
 		chatClient.sendCommand(ChatMeServer.END_GROUP_REQUEST, convoName);
-		System.out.println("remove request entered");
+		//System.out.println("remove request entered");
 		
 	}
 	public void closeMessageWindow(String convoName){
@@ -109,23 +109,23 @@ public class User {
 		chatClient.sendCommand(ChatMeServer.NEW_PRIVATE_MESSAGE_REQUEST, messageToSend);									
 	}	
 	public void getGroupMessage (Message msg)		{
-		System.out.println("CLIENT: (CHECKING OPEN CONVERSATIONS) Conversation name: " + msg.getConversationName());
+//		System.out.println("CLIENT: (CHECKING OPEN CONVERSATIONS) Conversation name: " + msg.getConversationName());
 		for(MessageWindow element : openConversations)	{	// only update GUI if open conversations exist
-			System.out.println("convo name: " + element.getName());
+//			System.out.println("convo name: " + element.getName());
 			if(element.getName().equals(msg.getConversationName())) {
 				element.updateContent(msg.getContent()); 				  
 			}
 		}
 	}
 	public void getPrivateMessage(Message msg)	{
-		System.out.println("Client: Conversation name : " + msg.getConversationName());
+		//System.out.println("Client: Conversation name : " + msg.getConversationName());
 		for(MessageWindow element : openConversations)	{	// only update GUI if open conversations exist
-			System.out.println("convo name: " + element.getName());
+			//System.out.println("convo name: " + element.getName());
 			if(element.getName().equals(msg.getConversationName())) {
 				element.updateContent(msg.getContent()); 				  
 			}
 		}
-		System.out.println("$$$$$$$$$$$$$conversation window was not openeddd$$$$$$$$$$");
+//		System.out.println("$$$$$$$$$$$$$conversation window was not openeddd$$$$$$$$$$");
 		createNewMessageWindow(msg.getConversationName(),false,msg.getContent());
 		
 	}
@@ -140,6 +140,7 @@ public class User {
 	}
 	public void addToOnlineConversations(MessageWindow mw)	{
 		openConversations.add(mw);
+		// set conditions to check if it is private 
 	}
 
 	public void displayConvoError() {						//called when addGroupConvo failed 
@@ -223,26 +224,26 @@ public class User {
 	
 	public void createNewMessageWindow(String conversationName, boolean moderator)	{
 		MessageWindow mw = new MessageWindow(conversationName,this);
-		System.out.println("Entered createNewMessageWindow");
+		//System.out.println("Entered createNewMessageWindow");
 		if(moderator == true )	{									// set moderator 
-			System.out.println("moderator is true");
+			//System.out.println("moderator is true");
 			mw.setModerator();
 		}
 		else {
-			System.out.println("not moderator!");
+			//System.out.println("not moderator!");
 		}
 		openConversations.add(mw);
 	}
 	
 	public void createNewMessageWindow(String conversationName, boolean moderator, String msg)	{
 		MessageWindow mw = new MessageWindow(conversationName,this);
-		System.out.println("Entered createNewMessageWindow");
+		//System.out.println("Entered createNewMessageWindow");
 		if(moderator == true )	{									// set moderator 
-			System.out.println("moderator is true");
+			//System.out.println("moderator is true");
 			mw.setModerator();
 		}
 		else {
-			System.out.println("not moderator!");
+			//System.out.println("not moderator!");
 		}
 		mw.updateContent(msg);
 		openConversations.add(mw);

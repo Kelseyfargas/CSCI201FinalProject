@@ -109,6 +109,8 @@ public class MessageWindow extends JFrame {
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		chatBoxScrollPane.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		chatBoxScrollPane.setPreferredSize(new Dimension(590,280));
+//		chatBoxTextArea.setCaret(new SelectionPreservingCaret());
+//		chatBoxScrollPane.setCaret(new SelectionPreservingCaret());
 //		DefaultCaret caret = (DefaultCaret)chatBoxTextArea.getCaret();
 //		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 		

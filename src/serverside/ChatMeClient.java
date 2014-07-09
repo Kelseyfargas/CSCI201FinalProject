@@ -28,7 +28,7 @@ public class ChatMeClient {
 
 	private Lock lock = new ReentrantLock();
 
-	public ChatMeClient(String hostname) throws IOException {
+	public ChatMeClient() throws IOException {
 		String ipAddress = "10.122.192.141";
 
 		System.out.println("Connecting...");
@@ -137,22 +137,21 @@ public class ChatMeClient {
 			userOut.writeObject(pw);
 			userOut.flush();
 
-			System.out.println("waiting . . .");
 			boolean OK = userIn.readBoolean();
 			if (OK == true) {
 				String bio = (String) userIn.readObject();
 				String imagePath = (String) userIn.readObject();
 				user.setBio(bio);
 				user.setImagePath(imagePath);
-				System.out.println("you have been cleared to log in.");
+				System.out.println("CLIENT: cleared to log in.");
 				user.createBuddyList();
 			} else {
-				System.out.println("Could not log in. Incorrect Credentials");
+				System.err.println("CLIENT: Could not log in. Incorrect Credentials");
 				user.incorrectInfoError();
 			}
 		}
 		public void signOutRequest() throws IOException {
-			System.out.println("CLIENT:  signout request");
+			System.out.print("CLIENT:  (SIGN OUT) ");
 			userOut.writeObject(user.getName());
 			userOut.flush();
 			System.out.println(user.getName() + " has signed out...");
@@ -160,14 +159,12 @@ public class ChatMeClient {
 		}
 		public void newUserRequest() throws IOException {
 			// finished but needs database
-			System.out.println("Got new user request on client");
+			System.out.println("CLIENT: (NEW USER) obtaining from data fields");
 			String username = user.getName();
 			String password = user.getPassword();
 			String aboutMe = user.getBio();
 			String imagePath = user.getImagePath();
 
-			System.out
-					.println("writing username, password, aboutme, and image");
 			userOut.writeObject(username);
 			userOut.writeObject(password);
 			userOut.writeObject(aboutMe);
@@ -175,9 +172,9 @@ public class ChatMeClient {
 			userOut.flush();
 			boolean OK = userIn.readBoolean();
 			if (OK == false) {
-				System.out.println("CLIENT: Username is not taken :D ");
+				System.out.println("CLIENT: (NEW USER) username available.");
 			} else {
-				System.out.println("This user name is already taken!!!");
+				System.out.println("CLIENT: (NEW USER) username not available.");
 				user.nameExistError();
 			}
 		}
@@ -202,32 +199,30 @@ public class ChatMeClient {
 		}
 
 		public void newGroupRequest(String convoName) throws IOException {
-			//bugs
 			userOut.writeObject(convoName);
 			userOut.flush();
 			
 			boolean convoExists = userIn.readBoolean();
 			if (convoExists == false) {
-				System.out.println("CLIENT: User will then add convo to buddy list. Write Code!");
+				System.out.println("CLIENT: (NEW GROUP) Adding Convo to BL");
 				user.createNewMessageWindow(convoName, true); //true for "setModerator()" 
 			} else if (convoExists == true) {
 				user.displayConvoError();
-				System.out.println("CLIENT: Can't start new group convo!!!");
+				System.err.println("CLIENT: (NEW GROUP) conversation name unavailable");
 				JOptionPane.showMessageDialog(null, "Conversation name is already taken!", "Convo Err", JOptionPane.WARNING_MESSAGE);
 			}
 		}
 		public void endGroupRequest(String convoName) throws IOException {
 			// unfinished, needs GUI implementation
 			userOut.writeObject(convoName);
-
 			userOut.flush();
 			
 			boolean OK = userIn.readBoolean();
 			if (OK == true) {
-				System.out.println("CLIENT: ending group convo.");
+				System.out.println("CLIENT: (END GCONVO) Terminating GConvo");
 			} else if (OK == false) {
 				user.displayConvoError();
-				System.out.println("CLIENT: Can't remove group convo...weird");
+				System.err.println("CLIENT: (END GCONVO) Unable to remove GConvo");
 			}
 		}
 		public void newPrivateRequest(String convoName) throws IOException{
@@ -236,7 +231,7 @@ public class ChatMeClient {
 			
 			boolean convoExists = userIn.readBoolean();
 			if( convoExists == false) {
-				System.out.println("CLIENT: User will pop a new window, other user doesn't know about it");
+				System.out.println("CLIENT: (NEW PCONVO) Opening new PConvo");
 				//user.createNewMessageWindow(convoName, false); //no moderator
 				
 				/* Hacky Note: */
@@ -245,7 +240,7 @@ public class ChatMeClient {
 				//because we don't want to have to write extra methods/ do extra checks
 			}
 			else{
-				System.out.println("CLIENGGG: convo already in the database but you're gonna load dat ish up anyway.");
+				System.out.println("CLIENT: (NEW PCONVO) Opening existing PConvo");
 			}
 		}
 		// Takes Message as parameter
@@ -264,16 +259,13 @@ public class ChatMeClient {
 
 		public void newGroupMessageRequest(Message msg) throws IOException {
 			// unfinished, needs GUI implemnetation in Server Request Thread
-			System.out.println("Client: NEW_GROUP_MESSAGE_REQUEST");
-			System.out.println("In newGroupMessageRequest. Convo name is " + msg.getConversationName());
+			System.out.println("Client: (GMSG: " + msg.getConversationName() +") sending new g. message");
 			userOut.writeObject(msg); // all of this needs to be written
 			userOut.flush();
-
-			// gui must be updated
 		}
 		
 		public void newPrivateMessageRequest(Message msg) throws IOException {
-			System.out.println("Client: NEW_PRIVATE_MESSAGE_REQUEST");
+			System.out.println("Client: (PMSG: " + msg.getConversationName() + ") sending new p. message)");
 			System.out.println("In newPrivateMessageRequest. Convo name is " + msg.getConversationName());
 			userOut.writeObject(msg);
 			userOut.flush();
@@ -328,30 +320,23 @@ public class ChatMeClient {
 		}
 		
 		public void newGroupMessageRequest() throws ClassNotFoundException, IOException{
-			// getting a new-message-request here means the gui needs to update
-			// unfinished, see comment
-			System.out.println("CLIENTEeeee : about to get msg...");
+			System.out.println("CLIENT: (RECIEVE GMSG)");
 			Message msg = (Message) servIn.readObject();
-			System.out.println("You have the message now: " + msg.getContent());
 			user.getGroupMessage(msg);
 		}
 		
 		public void newPrivateMessageRequest() throws ClassNotFoundException,IOException {
-			System.out.println("Client: about to get private msg...");
+			System.out.println("CLIENT: (RECIEVE PMSG)");
 			Message msg = (Message) servIn.readObject();
-			System.out.println("You have the private message now: " + msg.getContent());
-			user.getPrivateMessage(msg);					// needs new method
+			user.getPrivateMessage(msg);
 
 		}
 		public void updateGroupRequest() throws ClassNotFoundException, IOException {
-			System.out.println("in new grouprequest");
 			ArrayList<String> convos = (ArrayList<String>) servIn.readObject();
 			user.setCurrentConversations(convos);
 		}
 		public void updateOnlineUsersRequest() throws ClassNotFoundException, IOException{
-			System.out.println("Reading global update online user request...");
 			ArrayList<String> onlineUsers = (ArrayList<String>) servIn.readObject();
-
 			lock.lock();
 			user.setOnlineUsers(onlineUsers);
 			lock.unlock();
@@ -366,19 +351,12 @@ public class ChatMeClient {
 	public static void main(String[] args) {
 		try {
 			User user = new User();
-			System.out.println("The path of the image is :"
-					+ user.getImagePath());
-			ChatMeClient cme = new ChatMeClient("localhost");
+			ChatMeClient cme = new ChatMeClient();
 			user.addClient(cme);
 			cme.addUser(user);
 			cme.startUserIO();
-			// debug
-			// Scanner scan = new Scanner(System.in);
-			// String response = scan.nextLine();
-
-			// client.sendCommand(NEW_USER_REQUEST)
+			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

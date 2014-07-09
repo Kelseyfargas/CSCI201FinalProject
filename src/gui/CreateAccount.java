@@ -4,13 +4,10 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -152,7 +149,6 @@ public class CreateAccount extends JFrame{
 		
 
 		Bio = new JTextArea(3,25);
-		//Bio.setLineWrap(true);
 		Bio.setWrapStyleWord(true);
 		gbc.gridx = 0;
 		gbc.gridy = 8;
@@ -181,7 +177,6 @@ public class CreateAccount extends JFrame{
 			}
 
 			public void actionPerformed(ActionEvent e) {
-				//System.out.println("Button Pressed");
 				user.createLoginWindow();
 			}
 		}
@@ -200,17 +195,10 @@ public class CreateAccount extends JFrame{
 				this.us = u;
 			}
 			public void actionPerformed(ActionEvent  ae) {
-//				char[] password = passwordField.getPassword();
-//				System.out.println("Password field is in char array ");
-//				String test = password.toString();
-//				System.out.println("Password char to string is " + test);
-				String test2 = passwordField.getText();
-				System.out.println("password as string is " + test2);
-				
+
 				us.setPassword(passwordField.getText());
 				us.setName(usernameField.getText());
 				us.setBio(Bio.getText());
-				System.out.println("AFTER SETTING THE BIO^^^^^");
 				us.createNewAccount(); //This method also calls user.createNewAccount. No need to call it again
 				System.out.println("Name is:" + us.getName());
 				System.out.println("Password is:" + us.getPassword());

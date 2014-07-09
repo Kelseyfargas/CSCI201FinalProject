@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.regex.Pattern;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -186,10 +187,10 @@ public class BuddyList extends JFrame{
 /*******							************/
 	private class mouseClassOnlineUser extends MouseAdapter{
 		private String userName;
-		private User u;
+		private User onlineuser;
 		mouseClassOnlineUser(String userName, User us){
 			this.userName = userName;
-			this.u = us;
+			this.onlineuser = us;
 		}
 		public void mouseClicked(MouseEvent e){
 	    	
@@ -198,27 +199,29 @@ public class BuddyList extends JFrame{
 	        	//double click button , make null to make sure that the the moderator is NOT anyone
 	        	
 	        	//create a string that has Atuser and Atfriend
-	        	String user = u.getName();
-	        	if (u.windowIsOpen(user)){
-	        		System.out.println("@#$#!$%$%%$#%$ WINDOW IS OPENENNENEN!!@#!#@%$^$&%");
+	        	String user = onlineuser.getName();
+	        	System.out.println("Online user selected is : " + user);
+	        	if (onlineuser.windowIsOpen(user)){
+	        		System.out.println("~~~~~~~Window is open from double clicking"
+	        				+ " user from 'Online user' list ~~~~~~~~");
 	        	}
 	        	else{//make more sense in chatmeclient.newprivaterequest since it would retrieve old history from
 	        		//data base, but since we're not going to implement that feature, then it's okay to leave here
 		        	String combinedConvoName = "@" + user + "@" + userName;
-		        	MessageWindow mw = new MessageWindow(combinedConvoName, u);
-		        	mw.setTitle(u.getName());
-		        	u.addToOnlineConversations(mw);
-		        	u.initiatePrivateConvoRequest(combinedConvoName);
+		        	MessageWindow mw = new MessageWindow(combinedConvoName, onlineuser);
+		        	mw.setTitle(onlineuser.getName());
+		        	onlineuser.addToOnlineConversations(mw);
+		        	onlineuser.initiatePrivateConvoRequest(combinedConvoName);
 	        	}
 	        	
 	        }
 	        else if(e.getModifiers() == MouseEvent.BUTTON3_MASK){
-	        	//if right click, then the about me should displayed
+	        	//FIX THIS AS OF 10:56PM IT SHOWS THE ABOUT ME OF THE CURRENT USER NOT THE FRIEND
 	        	int selection = JOptionPane.showConfirmDialog(BuddyList.this, 
 	        			"About", "Are you sure you want to know their 'About Me'?", JOptionPane.YES_NO_OPTION);
 	        	if(selection == 0){// yes
 	        		System.out.println("Yes option");
-	        		aboutMeAction(u);
+	        		aboutMeAction(user);
 	        	}
 	        	else{//no option
 	        		System.out.println("No option");
@@ -283,7 +286,6 @@ public class BuddyList extends JFrame{
 			} catch (NullPointerException npe){
 				System.out.println(npe.getMessage());
 			} catch(ArrayIndexOutOfBoundsException aiobe){
-				System.out.println("NOBODY IS ONLINE NOOB");
 				JOptionPane.showMessageDialog(null,  
 						"Nobody is online, can not chat.", 
 						"ERROR",
@@ -298,41 +300,27 @@ public class BuddyList extends JFrame{
 			this.u = user;
 		}
 		public void actionPerformed(ActionEvent ae){
-			 //setModeratorForChat();//INITIALIZE THE MODERATOR ONLY IF YOURE THE ONE CLICKING THE BUTTON
-			 System.out.println("In StartGroupMessage AE ");
-			 String convoName = null;
-//			 try{
+			String convoName = null;
+			 try{
 				 convoName = JOptionPane.showInputDialog(null, 
 								"Group Message", 
 								"Name Conversation:", 
 								JOptionPane.OK_CANCEL_OPTION);
-//			 } catch (Exception e) { 
-//				 System.out.println("Person clicked Cancel");
-//			 }
-			 System.out.println("Convo name is " + convoName);
-			 if(convoName.equals(JOptionPane.CANCEL_OPTION)){
-				   System.out.println("Cancel is pressed");
-			}
-//			 if (convoName == null) {
-//				 System.out.println("Cancel button or X clicked");
-//				 break;
-//			 }
-			
-//			 boolean isValid   = convoName.matches("[A-Za-z0-9]{10}");  
-//			 System.out.println("AlphaNumeric? " + isValid); 
-//			 if(isValid == true){
-			 	System.out.println("NOT CREATING MESSAGE WINDOW B/C CLIENT WILL TELL USER TO DO THAT");
-				 u.initiateGroupConvoRequest(convoName);
-//			 }
-//			 else{//if not alphanumeric
-//				 JOptionPane.showMessageDialog(null, "Must enter AlphaNumeric characters for Group"
-//				 		+ " Conversations!", 
-//						 "Group Message", JOptionPane.WARNING_MESSAGE);
-//			 }
-			 //u.createNewMessageWindow(convoName);
-			 //new MessageWindow(convoName, u,messageType);
-			 //check for alphanumeric on convoName
-			 
+				Pattern p = Pattern.compile("[^a-zA-Z0-9]");
+				boolean hasSpecialChar = p.matcher(convoName).find();
+				System.out.println("hasSpecialChar: " + hasSpecialChar);
+				if(hasSpecialChar){
+					throw new Exception();
+				}
+				//NOT CREATING MESSAGE WINDOW B/C CLIENT WILL TELL USER TO DO THAT
+
+				u.initiateGroupConvoRequest(convoName);
+				
+			 } catch (Exception e){
+				 JOptionPane.showMessageDialog(null, "Must enter AlphaNumeric characters for Group"
+				 + " Conversations!", 
+				 "Group Message", JOptionPane.WARNING_MESSAGE);
+			 }
 		}
 	}
 
@@ -359,11 +347,11 @@ public class BuddyList extends JFrame{
 					JOptionPane.YES_NO_OPTION);
 			switch (selection) {
 				case JOptionPane.YES_OPTION: // case JOptionPane.OK_OPTION is the same
-					System.out.println("Yes");
+					System.out.println("Yes, user wants to Log Out");
 					us.signOut();
 					break;
 				case JOptionPane.NO_OPTION:
-					System.out.println("No");
+					System.out.println("No, user doesn't want to Log Out");
 					break;
 			}
 		}
@@ -380,8 +368,7 @@ public class BuddyList extends JFrame{
 		return this.user;
 	}
 	
-	private void aboutMeAction(User onlineuser){
-        System.out.println("You right clicked, so It'll show the about me.");
+	private void aboutMeAction(User onlineuser){//About me for Online User/Self
 		ImageIcon userIcon = new ImageIcon(onlineuser.getImagePath());
 		JOptionPane.showMessageDialog(null, 
 				onlineuser.getBio(), 
@@ -389,12 +376,7 @@ public class BuddyList extends JFrame{
 				JOptionPane.INFORMATION_MESSAGE, userIcon);
 	}
 	
-//	public void StartChat(String value){
-//		 MessageWindow mw = new MessageWindow(value, user);
-//		 user.addToOnlineConversations(mw);
-//	}
-	
-	public void updateOnlineUser(){
+	public void updateOnlineUser(){ // update Online User GUI
 		inneronlineusersPanel.removeAll();
 		for(int i = 0; i < user.getOnlineUsers().size(); i++){
 			JButton OUButton = new JButton(user.getOnlineUsers().get(i));
@@ -406,7 +388,7 @@ public class BuddyList extends JFrame{
 		repaint();
 	}
 	
-	public void updateActiveConversations(){
+	public void updateActiveConversations(){//update Online Conversations GUI
 		innerConvoPanel.removeAll();
 		for(int i = 0; i < user.getConversations().size(); i++){
 			JButton ACButton = new JButton(user.getConversations().get(i));
