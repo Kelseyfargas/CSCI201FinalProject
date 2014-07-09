@@ -243,6 +243,7 @@ public class ChatMeClient {
 				System.out.println("CLIENT: (NEW PCONVO) Opening existing PConvo");
 			}
 		}
+		
 		// Takes Message as parameter
 		public void sendCommandAndObject(int command, Message msg)
 				throws IOException {
@@ -263,7 +264,6 @@ public class ChatMeClient {
 			userOut.writeObject(msg);
 			userOut.flush();
 		}
-		
 		public void newPrivateMessageRequest(Message msg) throws IOException {
 			System.out.println("CLIENT: (SEND PMSG TO: " + msg.getConversationName() + ") " + msg.getContent());
 			System.out.println("In newPrivateMessageRequest. Convo name is " + msg.getConversationName());
