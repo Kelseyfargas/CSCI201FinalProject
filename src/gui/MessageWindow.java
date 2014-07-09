@@ -216,6 +216,7 @@ public class MessageWindow extends JFrame {
 			
 			messageinput = outputTF.getText();
 			if(getName().contains("@")){//PRIVATE
+				System.out.println("@");
 				user.sendNewPrivateMessage(messageinput,convoName);
 			}
 			else{//GROUP
