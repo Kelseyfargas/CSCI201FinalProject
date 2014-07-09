@@ -221,21 +221,13 @@ public class ChatMeClient {
 			userOut.writeObject(convoName);
 
 			userOut.flush();
-			/*
-			 * NOTE: THIS METHOD IS CALLED UNDER THE ASSUMPTION THAT ONLY THE
-			 * MODERATOR COULD HAVE MADE THIS CALL. CHECK INSIDE GUI
-			 * IMPLEMENTATION
-			 */
 			
-			////////////////////////////////////////////////////////////////////////////////////////
-
 			boolean OK = userIn.readBoolean();
 			if (OK == true) {
-				
-				System.out.println("ending group convo. write code!");
+				System.out.println("CLIENT: ending group convo.");
 			} else if (OK == false) {
 				user.displayConvoError();
-				System.out.println("Can't remove group convo...");
+				System.out.println("CLIENT: Can't remove group convo...");
 			}
 		}
 		public void newPrivateRequest(String convoName) throws IOException{

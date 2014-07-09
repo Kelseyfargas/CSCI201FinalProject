@@ -34,6 +34,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.ListCellRenderer;
+import javax.swing.text.DefaultCaret;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 
@@ -77,11 +78,6 @@ public class MessageWindow extends JFrame {
 		this.user = user;
 		setName(convoName);
 		
-//		if(messageType == GROUP_CHAT){
-//			this.moderator = user.getName();//sets moderator to the person opening the window
-//			//setModerator(user.getName());
-//		}
-		
 		//Menu bars
 		JMenuBar jmb = new JMenuBar();
 		fileMenu = new JMenu("File");
@@ -121,11 +117,12 @@ public class MessageWindow extends JFrame {
 		chatBoxTextArea.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		chatBoxTextArea.setBorder(BorderFactory.createMatteBorder(1,1,1,1, Color.GRAY));
 		chatBoxTextArea.setPreferredSize(new Dimension(590,280));
-		
 		JScrollPane chatBoxScrollPane = new JScrollPane(chatBoxTextArea,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		chatBoxScrollPane.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		chatBoxScrollPane.setPreferredSize(new Dimension(590,280));
+//		DefaultCaret caret = (DefaultCaret)chatBoxTextArea.getCaret();
+//		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 		
 		JPanel choicesPanel = new JPanel();
 		choicesPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -216,35 +213,7 @@ public class MessageWindow extends JFrame {
 	}
 /*******CLASSES FOR THE ChatRoomGUI************/
 /***********************************************/
-/***********************************************/
-	private class addUserToChatClass implements ActionListener{
-		private String cn;
-		private JTextArea tx;	
-		addUserToChatClass(String selected, JTextArea tx){
-			this.cn = selected;
-			this.tx = tx;
-			
-		}
-		public void actionPerformed(ActionEvent ae){
-//			System.out.println(userSelectedCB.getItemListeners());
-//			String item = (String)userSelectedCB.getSelectedItem();
-			System.out.println("item is: " + cn);
-			tx.setText(cn+ ", ");
-			//temp += cn;
-			System.out.println("temp is: " + cn);
-		}
 
-
-	}
-	private class startChatClass implements ActionListener{
-		startChatClass(JTextField NOCTextField){
-			
-		}
-		public void actionPerformed(ActionEvent ae){
-			
-		}
-	}
-	
 	private class sendButtonAction implements ActionListener{
 		JTextField outputTF;
 		String messageinput;
@@ -297,9 +266,6 @@ public class MessageWindow extends JFrame {
 	}
 	
 	private class saveConversationAction implements ActionListener{
-		saveConversationAction(){
-			
-		}
 
 		public void actionPerformed(ActionEvent e) {
 			String text = chatBoxTextArea.getText();
@@ -308,14 +274,15 @@ public class MessageWindow extends JFrame {
 	
 	private class removeChatAction implements ActionListener{
 		
-		removeChatAction(){
-		}
 		public void actionPerformed(ActionEvent e){
-			sendButton.setEnabled(false);
+			//sendButton.setEnabled(false);
+			user.removeGroupConvoRequest(convoName);
+			user.closeMessageWindow(convoName);
 		}
 	}
 	
 	private class windowClosedAction implements WindowListener{
+		
 		String convoName;
 		windowClosedAction(String convoName){
 			this.convoName = convoName;
@@ -324,9 +291,10 @@ public class MessageWindow extends JFrame {
 		public void windowClosing(WindowEvent e) {
 			System.out.println("WINDOW CLOSING");
 			System.out.println("REMOVING: " + convoName);
-			if(moderator == true){
-				user.removeGroupConvoRequest(convoName);
-			}
+//			thinking about changing it
+//			if(moderator == true){
+//				user.removeGroupConvoRequest(convoName);
+//			}
 			
 		}
 		//UGGHH UNNCESSEARY
@@ -394,17 +362,7 @@ public class MessageWindow extends JFrame {
 		outputTextField.setForeground(colors[color]);
 		
 	}
-//	private void setModerator(String username){
-//		System.out.println("The moderator is " + username);
-//		if(username == moderator){
-//			setModerator = true;
-//			System.out.println("Moderator is set to  " + setModerator);
-//		}
-//		else{
-//			setModerator = false;
-//		}
-//	}
-	
+
 	public void setModerator(){
 		this.moderator = true;
 		removeChatMenuItem.addActionListener(new removeChatAction());

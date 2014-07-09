@@ -85,6 +85,9 @@ public class User {
 	public void removeGroupConvoRequest(String convoName){
 		chatClient.sendCommand(ChatMeServer.END_GROUP_REQUEST, convoName);
 		System.out.println("remove request entered");
+		
+	}
+	public void closeMessageWindow(String convoName){
 		for(MessageWindow element : openConversations)	{
 			if(element.getName().equals(convoName))	{
 				element.remove(element);
