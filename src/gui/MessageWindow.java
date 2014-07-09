@@ -213,13 +213,14 @@ public class MessageWindow extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			
 			messageinput = outputTF.getText();
-//			if(messageType == GROUP_CHAT){
+			if(getName().contains("@")){//PRIVATE
+				System.out.println("IN PRIVATE MESSAGE AFTER SEND BUTTON");
+				user.sendNewPrivateMessage(messageinput,convoName);
+			}
+			else{//GROUP
 				System.out.println("IN GROUP MESSAGE AFTER SEND BUTTON");
 				user.sendNewGroupMessage(messageinput,convoName);
-//			}
-//			else if(messageType == PRIVATE_CHAT){
-//				user.sendNewPrivateMessage(messageinput,convoName);
-//			}
+			}
 			outputTextField.setText("");
 			//updateContent(messageinput);
 		}
@@ -317,12 +318,7 @@ public class MessageWindow extends JFrame {
 		
 	}
 	
-	public void setName(String convoName){
-		this.convoName = convoName;
-	}
-	public String getName(){
-		return convoName;
-	}
+
 	public void setInputTextField(){
 		
 		Color colors[] = {Color.BLACK,Color.GRAY,
@@ -360,6 +356,12 @@ public class MessageWindow extends JFrame {
 		return this.moderator;
 	}
 	
+	public void setName(String convoName){
+		this.convoName = convoName;
+	}
+	public String getName(){
+		return convoName;
+	}
 	public static void main(String []args){
 	}
 }
