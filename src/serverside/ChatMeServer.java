@@ -174,6 +174,9 @@ public class ChatMeServer {
 				else if(command == END_GROUP_REQUEST){
 					endGroupRequest();
 				}
+				else if(command == GET_BIO_REQUEST){
+					getBioRequest();
+				}
 				else if(command == NEW_PRIVATE_REQUEST){
 					newPrivateRequest();
 				}
@@ -258,6 +261,16 @@ public class ChatMeServer {
 			
 			//By the time we get this message, client will have shut down.
 
+		}
+		
+		private void getBioRequest() throws IOException, ClassNotFoundException{
+			String un = (String) threadUserIn.readObject();
+			
+			String path = database.getImagePath(un);
+			String bio = database.getBio(un);
+			
+			threadUserOut.writeObject(path);
+			threadUserOut.writeObject(bio);
 		}
 		
 		private void newGroupRequest() throws ClassNotFoundException, IOException{
