@@ -109,7 +109,6 @@ public class MessageWindow extends JFrame {
 		CenterPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		Font textfont = new Font("SansSerif", Font.BOLD, 12);
 		chatBoxTextArea = new JTextArea();
-		//chatBoxTextArea.setFont(textfont);
 		chatBoxTextArea.setEditable(false); 
 		chatBoxTextArea.setBorder(javax.swing.BorderFactory.createEmptyBorder());
 		chatBoxTextArea.setLineWrap(true);
@@ -182,7 +181,6 @@ public class MessageWindow extends JFrame {
 		
 		JPanel messageBottomPanel = new JPanel();
 		messageBottomPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-		//outputTextField.setFont(textfont);
 		outputTextField = new JTextField();
 		outputTextField.setRequestFocusEnabled(true);
 		outputTextField.setForeground(Color.BLACK);
@@ -361,7 +359,7 @@ public class MessageWindow extends JFrame {
 
 	public void setInputTextField(){
 		
-		
+		chatBoxTextArea.setBackground(Color.WHITE);
 		Color colors[] = {Color.BLACK,Color.GRAY,
 						  Color.GREEN,Color.MAGENTA,
 						  Color.BLUE, Color.PINK,
