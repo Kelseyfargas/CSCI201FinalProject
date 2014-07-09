@@ -79,6 +79,7 @@ public class User {
 	}
 	
 	public void initiatePrivateConvoRequest(String convoName){
+		System.out.println("IN initiatePrivateConvoRequest. Convo is : " + convoName);
 		chatClient.sendCommand(ChatMeServer.NEW_PRIVATE_REQUEST, convoName);
 	}
 	
