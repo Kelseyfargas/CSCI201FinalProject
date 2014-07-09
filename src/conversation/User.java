@@ -136,8 +136,13 @@ public class User {
 			}
 		}
 //		System.out.println("$$$$$$$$$$$$$conversation window was not openeddd$$$$$$$$$$");
-		createNewMessageWindow(msg.getConversationName(),false,msg.getContent());
-		
+		MessageWindow mw = new MessageWindow(msg.getConversationName(),this);
+		String [] name = msg.getConversationName().split("@");
+		for(int i = 0; i < name.length; i++)	{
+			if(!name[i].isEmpty() && !name[i].equals(this.getName())) {
+				mw.setTitle(name[i]);
+			}
+		}		
 	}
 	
 	public boolean windowIsOpen(String name)		{
