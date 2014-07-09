@@ -207,10 +207,10 @@ public class BuddyList extends JFrame{
         		int comparingusers = user.compareTo(frienduserName);
         		System.out.println("The comparingusers int is " + comparingusers);
         		if(comparingusers > 0){
-        			combinedConvoName = "@" + onlineuser.getName() + "@" + frienduserName;
+        			combinedConvoName = "@" + frienduserName + "@" + user;
         		}
         		else if(comparingusers < 0){//friend is before user
-        			combinedConvoName = "@" + onlineuser.getName() + "@" + frienduserName;
+        			combinedConvoName = "@" + user + "@" + frienduserName;
         		}
 	        	
 	        	
@@ -299,11 +299,11 @@ public class BuddyList extends JFrame{
     		int comparingusers = user.compareTo(frienduserName);
     		System.out.println("The comparingusers int is " + comparingusers);
     		if(comparingusers > 0){
-    			combinedConvoName = "@" + privateUser.getName() + "@" + frienduserName;
+    			combinedConvoName = "@" + frienduserName + "@" + user;
     		}
     		
     		else if(comparingusers < 0){//friend is before user
-    			combinedConvoName = "@" + privateUser.getName() + "@" + frienduserName;
+    			combinedConvoName = "@" + user + "@" + frienduserName;
     		}
     		System.out.println("combined string = " + combinedConvoName);
 			
