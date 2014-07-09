@@ -59,9 +59,9 @@ public class ChatMeClient {
 			e.printStackTrace();
 		}
 	}
-	public void sendCommand(int command, String convo) {
+	public void sendCommand(int command, String string) {
 		try {
-			uioclass.sendCommandAndObject(command, convo);
+			uioclass.sendCommandAndObject(command, string);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -181,19 +181,22 @@ public class ChatMeClient {
 
 		/* Command does need arguments */
 
-		// Takes Conversation Name as parameter
-		public void sendCommandAndObject(int command, String convo)
-				throws IOException {
+		// Takes String as parameter
+		public void sendCommandAndObject(int command, String string)
+				throws IOException, ClassNotFoundException {
 			lock.lock();
 			userOut.writeInt(command);
 			if (command == ChatMeServer.NEW_GROUP_REQUEST) {
-				newGroupRequest(convo);
+				newGroupRequest(string);
 			}
 			if (command == ChatMeServer.END_GROUP_REQUEST){
-				endGroupRequest(convo);
+				endGroupRequest(string);
 			}
 			if(command == ChatMeServer.NEW_PRIVATE_REQUEST){
-				newPrivateRequest(convo);
+				newPrivateRequest(string);
+			}
+			if(command == ChatMeServer.GET_BIO_REQUEST){
+				getBioRequest(string);
 			}
 			lock.unlock();
 		}
@@ -243,7 +246,14 @@ public class ChatMeClient {
 				System.out.println("CLIENT: (NEW PCONVO) Opening existing PConvo");
 			}
 		}
-		
+		public void getBioRequest(String username) throws IOException, ClassNotFoundException{
+			userOut.writeObject(username);
+			
+			String imagePath = (String) userIn.readObject();
+			String bio 		 = (String) userIn.readObject();
+			
+			user.displayFriendBio(imagePath, bio);
+		}
 		// Takes Message as parameter
 		public void sendCommandAndObject(int command, Message msg)
 				throws IOException {
