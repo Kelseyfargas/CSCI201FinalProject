@@ -294,6 +294,7 @@ public class ChatMeServer {
 				database.createConversation(convoName, "");
 				//MessageWindowIsCreated, but Server doesn't do anything
 			}
+			///////////////////////////////////////////////finish code
 		}
 		
 		private void updateOnlineUsers() throws IOException{
