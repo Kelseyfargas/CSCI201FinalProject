@@ -66,7 +66,7 @@ public class BuddyList extends JFrame{
 		startMessageMenuItem.addActionListener(new StartPrivateMessage(getUser()));
 		startGroupMessageMenuItem.addActionListener(new StartGroupMessage(getUser()));
 		logOutMenuItem.addActionListener(new logoutAction(user));
-		//editBioMenuItem.addActionListener(new editBioAction(bio)); TALK TO RYAN ABOUT BIOS
+		editBioMenuItem.addActionListener(new editBioAction(user));
 		startMessageMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, 
 				ActionEvent.CTRL_MASK));
 		startGroupMessageMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, 
@@ -495,20 +495,23 @@ public class BuddyList extends JFrame{
 		}
 		OS = System.getProperty("os.name").toLowerCase();
 		System.out.println(OS);
-	
-		if (OS.indexOf("win") >= 0) {
-			System.out.println("This is Windows");
-			repaint();
-		} 
-		else if (OS.indexOf("mac") >= 0) {
+		if (OS.indexOf("mac") >= 0) {
 			System.out.println("This is Mac");
 			revalidate();
 			repaint();
 		}
-		else if(OS.indexOf("nix") >= 0 || OS.indexOf("nux") >= 0 || OS.indexOf("aix") > 0){
-			System.out.println("This is Unix or Linux");
+		else{
 			repaint();
 		}
+//		if (OS.indexOf("win") >= 0) {
+//			System.out.println("This is Windows");
+//			repaint();
+//		} 
+
+//		else if(OS.indexOf("nix") >= 0 || OS.indexOf("nux") >= 0 || OS.indexOf("aix") > 0){
+//			System.out.println("This is Unix or Linux");
+//			repaint();
+//		}
 		
 	}
 	
@@ -523,18 +526,12 @@ public class BuddyList extends JFrame{
 		}
 		OS = System.getProperty("os.name").toLowerCase();
 		System.out.println(OS);
-	
-		if (OS.indexOf("win") >= 0) {
-			System.out.println("This is Windows");
-			repaint();
-		} 
-		else if (OS.indexOf("mac") >= 0) {
+		if (OS.indexOf("mac") >= 0) {
 			System.out.println("This is Mac");
 			revalidate();
 			repaint();
 		}
-		else if(OS.indexOf("nix") >= 0 || OS.indexOf("nux") >= 0 || OS.indexOf("aix") > 0){
-			System.out.println("This is Unix or Linux");
+		else{
 			repaint();
 		}
 	}
