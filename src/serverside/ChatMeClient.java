@@ -243,6 +243,7 @@ public class ChatMeClient {
 				System.out.println("CLIENT: (NEW PCONVO) Opening existing PConvo");
 			}
 		}
+		
 		// Takes Message as parameter
 		public void sendCommandAndObject(int command, Message msg)
 				throws IOException {
@@ -258,14 +259,13 @@ public class ChatMeClient {
 		}
 
 		public void newGroupMessageRequest(Message msg) throws IOException {
-			// unfinished, needs GUI implemnetation in Server Request Thread
-			System.out.println("Client: (GMSG: " + msg.getConversationName() +") sending new g. message");
-			userOut.writeObject(msg); // all of this needs to be written
+			// unfinished, needs GUI implementation in Server Request Thread
+			System.out.println("CLIENT: (SEND GMSG TO: " + msg.getConversationName() +") " + msg.getContent());
+			userOut.writeObject(msg);
 			userOut.flush();
 		}
-		
 		public void newPrivateMessageRequest(Message msg) throws IOException {
-			System.out.println("Client: (PMSG: " + msg.getConversationName() + ") sending new p. message)");
+			System.out.println("CLIENT: (SEND PMSG TO: " + msg.getConversationName() + ") " + msg.getContent());
 			System.out.println("In newPrivateMessageRequest. Convo name is " + msg.getConversationName());
 			userOut.writeObject(msg);
 			userOut.flush();
@@ -320,14 +320,14 @@ public class ChatMeClient {
 		}
 		
 		public void newGroupMessageRequest() throws ClassNotFoundException, IOException{
-			System.out.println("CLIENT: (RECIEVE GMSG)");
 			Message msg = (Message) servIn.readObject();
+			System.out.println("CLIENT: (RECIEVE GMSG IN: " + msg.getConversationName() + ")" + msg.getContent());
 			user.getGroupMessage(msg);
 		}
 		
 		public void newPrivateMessageRequest() throws ClassNotFoundException,IOException {
-			System.out.println("CLIENT: (RECIEVE PMSG)");
 			Message msg = (Message) servIn.readObject();
+			System.out.println("CLIENT: (RECIEVE PMSG IN: " + msg.getConversationName() + ")" + msg.getContent());
 			user.getPrivateMessage(msg);
 
 		}

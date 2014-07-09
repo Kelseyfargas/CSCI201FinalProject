@@ -67,7 +67,7 @@ public class ChatMeServer {
 			
 		
 			SocketHolder sh = new SocketHolder(userIn, userOut, servIn, servOut);
-			printDbg(" ~ line 63 problem line.");
+//			printDbg(" ~ line 63 problem line.");
 
 			clientLock.lock();
 			clients.add(sh);
@@ -189,13 +189,12 @@ public class ChatMeServer {
 		
 		private void newUserRequest() throws IOException, ClassNotFoundException, SQLException{
 			//SAT: FINISHED
-			printDbg("SERVER: Command recieved on server: New User");
+			//printDbg("SERVER: Command recieved on server: New User");
 			String username = (String) threadUserIn.readObject();
 			String password = (String) threadUserIn.readObject();
 			String bio 	    = (String) threadUserIn.readObject();
 			String imgPath 	= (String) threadUserIn.readObject();
-			printDbg("SERVER READS:"
-					+ username + " " + password + " " + bio + " " + imgPath);
+			//printDbg("SERVER READS:" + username + " " + password + " " + bio + " " + imgPath);
 			
 			boolean OK = database.verifyUserExists(username); //database compatible
 			
@@ -210,16 +209,16 @@ public class ChatMeServer {
 			printDbg("Command recieved on server: Login\n");
 			String un = (String) threadUserIn.readObject();
 			String pw = (String) threadUserIn.readObject();
-			printDbg("Reading in: " + un);
-			printDbg("Reading in: " + pw);
+//			printDbg("Reading in: " + un);
+//			printDbg("Reading in: " + pw);
 
 			boolean OK = database.login(un, pw);
 
 			if(OK == true){
 				
 				database.addToOnlineList(un); //synchronized
-				printDbg("Giving OK to log in.");
-				printDbg("Attempting to send online Users");
+//				printDbg("Giving OK to log in.");
+//				printDbg("Attempting to send online Users");
 				
 				threadUserOut.writeBoolean(true);
 				threadUserOut.flush(); //send OK
@@ -231,7 +230,7 @@ public class ChatMeServer {
 
 				threadUserOut.flush();
 				
-				printDbg("Finished command");
+//				printDbg("Finished command");
 				
 				registerSocket(un); //<-- Synchronized server log in
 				updateOnlineUsers();
@@ -242,7 +241,7 @@ public class ChatMeServer {
 				printDbg("Denying user.");
 				threadUserOut.writeBoolean(false);
 				threadUserOut.flush();
-				printDbg("Finished command");
+//				printDbg("Finished command");
 			}
 		}
 		private void signOutRequest()throws IOException, ClassNotFoundException{
@@ -268,12 +267,12 @@ public class ChatMeServer {
 			threadUserOut.writeBoolean(convoExists );
 			threadUserOut.flush();
 			if( ! convoExists){
-				System.out.println("SERVER: Should add to database......");
+				//System.out.println("SERVER: Should add to database......");
 				database.createConversation(convoName, "");				
 				updateCurrentConversations();
 			}
 			else{
-				System.out.println("SEVER: could not add to database");
+				System.out.println("SERVER: Could not add to database");
 			}
 
 		}
@@ -288,7 +287,7 @@ public class ChatMeServer {
 				updateCurrentConversations();
 			}
 			else{
-				printDbg("ERRORS IN MY BREAD");
+				printDbg("ERRORS IN ENDGROUPREQUEST");
 			}
 
 		}
@@ -299,7 +298,7 @@ public class ChatMeServer {
 			threadUserOut.writeBoolean( convoExists);
 			threadUserOut.flush();
 			if( ! convoExists){
-				System.out.println("SERVER: adding private convo to database........");
+				System.out.println("SERVER: Adding private convo to database........");
 				database.createConversation(convoName, "");
 				//MessageWindowIsCreated, but Server doesn't do anything
 			}
@@ -323,11 +322,11 @@ public class ChatMeServer {
 		}
 		
 		private void newGroupMessageRequest() throws ClassNotFoundException, IOException{
-			printDbg(" *** *** about to read GROUP msg *** ***");
+			//printDbg(" *** *** about to read GROUP msg *** ***");
 			
 			Message msg = (Message) threadUserIn.readObject();
 			
-			printDbg(" *** *** read GROUP message ***** * \n conversation name is: " + msg.getConversationName());
+			//printDbg(" *** *** read GROUP message ***** * \n conversation name is: " + msg.getConversationName());
 			
 			srt.sendMessageToAll(msg);
 		}
@@ -341,7 +340,7 @@ public class ChatMeServer {
 			//synchronized client grabbing operation
 			clientLock.lock();
 				Iterator<SocketHolder> it = clients.iterator();
-				printDbg("Clients has " + clients.size() + " elemnts in it...");
+				//printDbg("Clients has " + clients.size() + " elemnts in it...");
 				while(it.hasNext()){
 					if(this.sh == it.next()){
 						sh.setName(name);
@@ -384,10 +383,10 @@ public class ChatMeServer {
 		 * 	Send Information to clients  *
 		 * * * * * * * * * * * * * * * * */
 		public void updateAllOnlineUsers(ArrayList<String> onlineUsers) throws IOException{
-			printDbg("Online users: ");
-			for(int i=0;i<onlineUsers.size();i++){
-				printDbg("user: " + onlineUsers.get(i));
-			}
+//			printDbg("Online users: ");
+//			for(int i=0;i<onlineUsers.size();i++){
+//				printDbg("user: " + onlineUsers.get(i));
+//			}
 			clientLock.lock();
 				for(int i=0; i<clients.size();i++){
 					if( ! clients.get(i).getName().isEmpty() ){
@@ -401,7 +400,7 @@ public class ChatMeServer {
 			clientLock.unlock();
 		}
 		public void updateAllConvos(ArrayList<String> convos) throws IOException{
-			System.out.println("all convos are: ");
+			System.out.println("All convos are: ");
 			for(String elements : convos){
 				System.out.println(elements);
 			}
@@ -419,12 +418,12 @@ public class ChatMeServer {
 		}
 		
 		public void sendMessageToAll(Message msg) throws IOException{
-			printDbg("----- before lock ------");
+//			printDbg("----- before lock ------");
 			clientLock.lock();
-			printDbg("------sendMsgToAllAfterLock-------");
-			printDbg("------writingMsg to DATABASE ------");
+//			printDbg("------sendMsgToAllAfterLock-------");
+//			printDbg("------writingMsg to DATABASE ------");
 				database.updateConvoContent(msg.getConversationName(), msg.getContent());
-				printDbg(" ~~~~~ done writing to DATABASE ~~~~~~");
+//				printDbg(" ~~~~~ done writing to DATABASE ~~~~~~");
 				for(int i=0; i<clients.size();i++){
 					if( ! clients.get(i).getName().isEmpty()){
 						ObjectOutputStream oos = clients.get(i).serverOut;
