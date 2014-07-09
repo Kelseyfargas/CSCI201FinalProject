@@ -44,6 +44,7 @@ public class User {
 		currentConversations = new ArrayList<String>();
 		//messageWindow = new ArrayList<MessageWindow>();
 		openConversations = new ArrayList<MessageWindow>();
+		
 	}
 
 	public void createAccountWindow() {
@@ -125,6 +126,7 @@ public class User {
 		//System.out.println("Client: Conversation name : " + msg.getConversationName());
 		for(MessageWindow element : openConversations)	{	// only update GUI if open conversations exist
 			//System.out.println("convo name: " + element.getName());
+			System.out.println("name of the message window is " + element.getName());
 			if(element.getName().equals(msg.getConversationName())) {
 				element.updateContent(msg.getContent()); 				  
 			}
