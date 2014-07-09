@@ -142,8 +142,11 @@ public class User {
 		for(int i = 0; i < name.length; i++)	{
 			if(!name[i].isEmpty() && !name[i].equals(this.getName())) {
 				mw.setTitle(name[i]);
+				mw.updateContent(msg.getContent());
+				return;
 			}
 		}		
+		System.err.println("should have returned by now....error");
 	}
 	
 	public boolean windowIsOpen(String name)		{
