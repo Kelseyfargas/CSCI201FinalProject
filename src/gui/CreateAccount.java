@@ -200,10 +200,17 @@ public class CreateAccount extends JFrame{
 				this.us = u;
 			}
 			public void actionPerformed(ActionEvent  ae) {
-
+//				char[] password = passwordField.getPassword();
+//				System.out.println("Password field is in char array ");
+//				String test = password.toString();
+//				System.out.println("Password char to string is " + test);
+				String test2 = passwordField.getText();
+				System.out.println("password as string is " + test2);
+				
 				us.setPassword(passwordField.getText());
 				us.setName(usernameField.getText());
 				us.setBio(Bio.getText());
+				System.out.println("AFTER SETTING THE BIO^^^^^");
 				us.createNewAccount(); //This method also calls user.createNewAccount. No need to call it again
 				System.out.println("Name is:" + us.getName());
 				System.out.println("Password is:" + us.getPassword());
