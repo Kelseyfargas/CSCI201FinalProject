@@ -259,13 +259,13 @@ public class MessageWindow extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			
 			messageinput = outputTF.getText();
-			if(messageType == GROUP_CHAT){
+//			if(messageType == GROUP_CHAT){
 				System.out.println("IN GROUP MESSAGE AFTER SEND BUTTON");
 				user.sendNewGroupMessage(messageinput,convoName);
-			}
-			else if(messageType == PRIVATE_CHAT){
-				user.sendNewPrivateMessage(messageinput,convoName);
-			}
+//			}
+//			else if(messageType == PRIVATE_CHAT){
+//				user.sendNewPrivateMessage(messageinput,convoName);
+//			}
 			outputTextField.setText("");
 			//updateContent(messageinput);
 		}
