@@ -131,8 +131,10 @@ public class User {
 	}
 	
 	public boolean windowIsOpen(String name)		{
+		System.out.println(" Inside window is open");
 		for(MessageWindow element : openConversations )	{
-			if(element.getName() == name)	{
+			System.out.println("message window name is " + element.getName() );
+			if(element.getName().equals(name))	{
 				return true;
 			}
 		}
