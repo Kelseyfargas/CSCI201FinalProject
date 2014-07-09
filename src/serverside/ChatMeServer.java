@@ -61,6 +61,8 @@ public class ChatMeServer {
 			userReqSocket = ss1.accept();
 			servReqSocket = ss2.accept();
 			
+		
+			
 			printDbg("Connection from: " + userReqSocket.getInetAddress());
 			
 			ObjectOutputStream userOut = new ObjectOutputStream(userReqSocket.getOutputStream());
@@ -76,6 +78,10 @@ public class ChatMeServer {
 			clientLock.lock();
 			clients.add(sh);
 			clientLock.unlock();
+			
+			if (clients.size() == 0) {
+				System.exit(1);
+			}
 			
 			UserReqThread ct = new UserReqThread(userIn, userOut);
 			ServReqThread srt = new ServReqThread(servIn, servOut);
@@ -147,11 +153,19 @@ public class ChatMeServer {
 					int command = threadUserIn.readInt(); //Read in whatever command is sent from across socket
 					handleCommand(command);
 					
+				} catch (NullPointerException eof) {
+					threadUserIn = null;
+					threadUserIn = null;
+							
+				} catch (EOFException eof) {
+					threadUserIn = null;
+					threadUserIn = null;
+							
 				} catch (IOException | ClassNotFoundException e) {
 					e.printStackTrace();
 					threadUserOut = null;
 					threadUserIn = null;
-				}
+				} 
 			}
 		}
 		
