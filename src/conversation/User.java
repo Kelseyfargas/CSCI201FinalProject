@@ -84,6 +84,10 @@ public class User {
 		chatClient.sendCommand(ChatMeServer.NEW_PRIVATE_REQUEST, convoName);
 	}
 	
+	public void addToOpenConversations(MessageWindow mw)	{
+		openConversations.add(mw);
+	}
+	
 	public void removeGroupConvoRequest(String convoName){
 		chatClient.sendCommand(ChatMeServer.END_GROUP_REQUEST, convoName);
 		//System.out.println("remove request entered");
