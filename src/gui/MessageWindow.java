@@ -140,7 +140,7 @@ public class MessageWindow extends JFrame {
 		
 		//background color
 		colorCBBackground = new JComboBox<>(colorArray);
-		colorCBBackground.setSelectedItem("Black");
+		colorCBBackground.setSelectedItem("White");
 		
         fontCB.addItemListener(new ItemListener(){
  			public void itemStateChanged(ItemEvent ie){
@@ -171,11 +171,11 @@ public class MessageWindow extends JFrame {
         JLabel font = new JLabel("Text");
         JLabel background = new JLabel("Background:");
  		choicesPanel.add(fontCB);
- 		choicesPanel.add(font);
+ 		//choicesPanel.add(font);
 		choicesPanel.add(colorCB);
 		choicesPanel.add(sizeCB);
 		choicesPanel.add(fontTypeCB);
-		choicesPanel.add(background);
+		//choicesPanel.add(background);
 		choicesPanel.add(colorCBBackground);
 		
 		JPanel messageBottomPanel = new JPanel();

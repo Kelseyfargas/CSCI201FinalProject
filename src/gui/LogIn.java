@@ -26,6 +26,7 @@ public class LogIn extends JFrame {
 	private JPasswordField passwordTF;
 	private User user;
 	public JButton logInButton;
+	public JButton createAccountButton;
 	
 	public LogIn(User user){
 		super("Login");
@@ -55,6 +56,7 @@ public class LogIn extends JFrame {
 		flowPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		logInButton = new JButton("Log In");
 		getRootPane().setDefaultButton(logInButton);//DOES THE ENTER BUTTON
+//		createAccountButton = new JButton("Create Account");
 /**********INNER CLASSES FOR LOG IN*************/
 /***********************************************/
 /***********************************************/
@@ -70,8 +72,20 @@ public class LogIn extends JFrame {
 			}
 		}
 		logInButton.addActionListener(new LogInListener(user));
-
+//		class CreateAccountListener implements ActionListener{
+//			User user;
+//			public CreateAccountListener(User user){
+//				user = user;
+//			}
+//			public void actionPerformed(ActionEvent ae){
+//				new CreateAccount(user);
+//			}
+//		}
+//		createAccountButton.addActionListener(new CreateAccountListener(user));
+		
+		
 		flowPanel.add(logInButton);
+//		flowPanel.add(createAccountButton);
 		centerPanel.add(flowPanel);
 		
 		add(centerPanel, BorderLayout.CENTER);
