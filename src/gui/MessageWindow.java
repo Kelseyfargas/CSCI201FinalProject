@@ -387,7 +387,7 @@ public class MessageWindow extends JFrame {
 			outputTextField.setFont(new Font(font,Font.ITALIC, size));
 		}
 		chatBoxTextArea.setForeground(colors[color]);
-		chatBoxTextArea.setBackground((colors[color]);
+		chatBoxTextArea.setBackground(colors[color]);
 		outputTextField.setForeground(colors[color]);
 		
 	}
