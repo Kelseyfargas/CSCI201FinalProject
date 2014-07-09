@@ -74,6 +74,7 @@ public class User {
 		buddyList.updateActiveConversations();
 	}
 	public void initiateGroupConvoRequest(String convoName){
+		System.out.println("IN initiateGroupConvoRequest. Convo is : " + convoName);
 		chatClient.sendCommand(ChatMeServer.NEW_GROUP_REQUEST, convoName);
 	}
 	

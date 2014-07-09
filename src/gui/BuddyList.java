@@ -373,7 +373,7 @@ public class BuddyList extends JFrame{
 			JButton ACButton = new JButton(user.getConversations().get(i));
 			ACButton.setEnabled(true);
 			ACButton.setBorderPainted(false);
-			ACButton.addActionListener(new conversationClassAction(user.getOnlineUsers().get(i), user));//GROUP CHATS
+			ACButton.addActionListener(new conversationClassAction(user.getConversations().get(i), user));//GROUP CHATS
 			innerConvoPanel.add(ACButton);
 		}
 		repaint();

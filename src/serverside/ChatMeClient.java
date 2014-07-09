@@ -265,6 +265,7 @@ public class ChatMeClient {
 		public void newGroupMessageRequest(Message msg) throws IOException {
 			// unfinished, needs GUI implemnetation in Server Request Thread
 			System.out.println("Client: NEW_GROUP_MESSAGE_REQUEST");
+			System.out.println("In newGroupMessageRequest. Convo name is " + msg.getConversationName());
 			userOut.writeObject(msg); // all of this needs to be written
 			userOut.flush();
 
