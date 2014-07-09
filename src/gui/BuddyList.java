@@ -11,6 +11,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.regex.Pattern;
 
 import javax.swing.BoxLayout;
@@ -173,6 +175,7 @@ public class BuddyList extends JFrame{
 		gbc.gridy = 5;
 		add(onlineconvoSP,gbc);//grid 5
 		
+		addWindowListener(new windowAction());
 		this.setSize(300,700);
 		this.setLocation(950,500);
 		this.setVisible(true);
@@ -383,7 +386,6 @@ public class BuddyList extends JFrame{
 		}
 	
 		public void actionPerformed(ActionEvent ae){
-			ImageIcon message = new ImageIcon("Pictures/Message_Icon.png");
 			int selection = JOptionPane.showConfirmDialog(null, 
 					"Are you sure you want to Log Out?", "Log Out", 
 					JOptionPane.YES_NO_OPTION);
@@ -391,11 +393,45 @@ public class BuddyList extends JFrame{
 				case JOptionPane.YES_OPTION: // case JOptionPane.OK_OPTION is the same
 					System.out.println("Yes, user wants to Log Out");
 					us.signOut();
+					System.exit(1);
 					break;
 				case JOptionPane.NO_OPTION:
 					System.out.println("No, user doesn't want to Log Out");
 					break;
 			}
+		}
+	}
+	
+	private class windowAction implements WindowListener{
+		
+		public void windowClosing(WindowEvent e) {
+			System.out.println("WINDOW LISTENER IS LOGGING OUT SHARING ACTION LISTENER FOR LOGOUT");
+			int selection = JOptionPane.showConfirmDialog(null, 
+					"Are you sure you want to Log Out?", "Log Out", 
+					JOptionPane.YES_NO_OPTION);
+			switch (selection) {
+				case JOptionPane.YES_OPTION: // case JOptionPane.OK_OPTION is the same
+					System.out.println("Yes, user wants to Log Out");
+					user.signOut();
+					System.exit(1);
+					break;
+				case JOptionPane.NO_OPTION:
+					System.out.println("No, user doesn't want to Log Out");
+					break;
+			}
+		}
+		//UGGHH UNNCESSEARY
+		public void windowClosed(WindowEvent e) {
+		}
+		public void windowIconified(WindowEvent e) {
+		}
+		public void windowDeiconified(WindowEvent e) {
+		}
+		public void windowActivated(WindowEvent e) {
+		}
+		public void windowDeactivated(WindowEvent e) {
+		}
+		public void windowOpened(WindowEvent e) {
 		}
 	}
 

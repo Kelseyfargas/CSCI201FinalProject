@@ -26,6 +26,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.text.DefaultCaret;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 
@@ -103,16 +104,16 @@ public class MessageWindow extends JFrame {
 		
 		chatBoxTextArea.setEditable(false); 
 		chatBoxTextArea.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-		chatBoxTextArea.setBorder(BorderFactory.createMatteBorder(1,1,1,1, Color.GRAY));
-		chatBoxTextArea.setPreferredSize(new Dimension(590,280));
+		chatBoxTextArea.setLineWrap(true);
+		chatBoxTextArea.setWrapStyleWord(true);
+		chatBoxTextArea.setBounds(20, 20, 590, 280);
 		JScrollPane chatBoxScrollPane = new JScrollPane(chatBoxTextArea,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		chatBoxScrollPane.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+		chatBoxScrollPane.setBounds(20, 20, 590, 280);
+		chatBoxScrollPane.setBorder(BorderFactory.createTitledBorder("Message"));
 		chatBoxScrollPane.setPreferredSize(new Dimension(590,280));
-//		chatBoxTextArea.setCaret(new SelectionPreservingCaret());
-//		chatBoxScrollPane.setCaret(new SelectionPreservingCaret());
-//		DefaultCaret caret = (DefaultCaret)chatBoxTextArea.getCaret();
-//		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+		DefaultCaret caret = (DefaultCaret)chatBoxTextArea.getCaret();
+		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 		
 		JPanel choicesPanel = new JPanel();
 		choicesPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -175,6 +176,7 @@ public class MessageWindow extends JFrame {
 		JPanel messageBottomPanel = new JPanel();
 		messageBottomPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		outputTextField = new JTextField();
+		outputTextField.setRequestFocusEnabled(true);
 		outputTextField.setForeground(Color.BLACK);
 		outputTextField.setPreferredSize(new Dimension(510,20));
 		outputTextField.setEditable(true); 
@@ -213,17 +215,18 @@ public class MessageWindow extends JFrame {
 			this.messageType = messageType;
 		}
 		public void actionPerformed(ActionEvent e) {
-			
+		
 			messageinput = outputTF.getText();
-			if(getName().contains("@")){//PRIVATE
-				System.out.println("@");
-				user.sendNewPrivateMessage(messageinput,convoName);
+			if(!messageinput.isEmpty()){//IF IT'S NOT EMPTY
+				if(getName().contains("@")){//PRIVATE
+					System.out.println("@");
+					user.sendNewPrivateMessage(messageinput,convoName);
+				}
+				else{//GROUP
+					user.sendNewGroupMessage(messageinput,convoName);
+				}
+				outputTextField.setText("");
 			}
-			else{//GROUP
-				user.sendNewGroupMessage(messageinput,convoName);
-			}
-			outputTextField.setText("");
-			//updateContent(messageinput);
 		}
 	}
 	private class CutCopyPasteAction implements ActionListener{
@@ -299,6 +302,7 @@ public class MessageWindow extends JFrame {
 		public void windowDeactivated(WindowEvent e) {
 		}
 		public void windowOpened(WindowEvent e) {
+			outputTextField.requestFocus();
 		}
 
 		
