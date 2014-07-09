@@ -212,7 +212,7 @@ public class Database {
 		}
 		String bio = getBio(username);
 		try {
-			if (!bio.equals(null)) {
+			//if (!bio.equals(null)) {
 				//update bio
 				bio = newBio;
 				System.out.println("New Bio: " + bio);
@@ -222,7 +222,7 @@ public class Database {
 				sql = sql.replace("__BIO__", bio);
 				sql = sql.replace("__USERNAME__", username);
 				stmt.execute(sql);
-			}
+			//}
 
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
