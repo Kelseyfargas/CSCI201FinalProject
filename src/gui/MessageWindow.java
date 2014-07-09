@@ -278,8 +278,7 @@ public class MessageWindow extends JFrame {
 		}
 
 		public void windowClosing(WindowEvent e) {
-			System.out.println("WINDOW CLOSING");
-			System.out.println("REMOVING: " + convoName);
+			System.out.println("WINDOW CLOSING " + convoName);
 			user.closeMessageWindow(convoName);
 //			thinking about changing it
 //			if(moderator == true){
@@ -309,7 +308,7 @@ public class MessageWindow extends JFrame {
 	public void updateContent(String messageinput){
 		
 		String text = chatBoxTextArea.getText();
-		System.out.println(user.getName() + ": " + text);
+//		System.out.println(user.getName() + ": " + text);
 		if (text == null || text.length() == 0) {
 			chatBoxTextArea.setText(messageinput);
 		}
