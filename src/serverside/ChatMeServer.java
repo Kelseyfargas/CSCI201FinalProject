@@ -31,7 +31,7 @@ public class ChatMeServer {
 
 	public static int NEW_PRIVATE_REQUEST = 8;
 
-	public static int NEW_GROUP_MESSAGE_REQUEST = 6;
+	public static int NEW_GROUP_MESSAGE_REQUEST = 20;
 	public static int NEW_PRIVATE_MESSAGE_REQUEST = 7;
 
 
