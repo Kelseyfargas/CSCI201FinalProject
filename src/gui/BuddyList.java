@@ -460,7 +460,7 @@ public class BuddyList extends JFrame{
 				JOptionPane.INFORMATION_MESSAGE, userIcon);
 	}
 	
-	private void aboutmeAction(String username, String path, String bio){
+	public void aboutmeAction(String username, String path, String bio){
 		System.out.println("The user you want info about is : " + username);
 		ImageIcon userIcon = new ImageIcon(path);
 		JOptionPane.showMessageDialog(null, 
