@@ -345,8 +345,7 @@ public class ChatMeClient {
 			Message msg = (Message) servIn.readObject();
 			System.out.println("CLIENT: (RECIEVE GMSG IN: " + msg.getConversationName() + ")" + msg.getContent());
 			user.getGroupMessage(msg);
-		}
-		
+		}	
 		public void newPrivateMessageRequest() throws ClassNotFoundException,IOException {
 			Message msg = (Message) servIn.readObject();
 			System.out.println("CLIENT: (RECIEVE PMSG IN: " + msg.getConversationName() + ")" + msg.getContent());
